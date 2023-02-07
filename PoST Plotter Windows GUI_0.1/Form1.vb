@@ -11,10 +11,13 @@ Public Class Form1
         DebugTempDir1.Visible = False
         DebugTempDir2.Visible = False
         DebugFinalDir.Visible = False
+        DebugPoolKey.Visible = False
+        DebugContractKey.Visible = False
+        DebugFarmerKey.Visible = False
         For i As Integer = 1 To 9
             CLCombo.Items.Add(i.ToString())
         Next
-        ContractKeyCheck.Checked = True
+        ContractKeyRadio.Checked = True
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -26,6 +29,9 @@ Public Class Form1
         DebugTempDir1.Visible = DebugModeToolStripMenuItem.Checked
         DebugTempDir2.Visible = DebugModeToolStripMenuItem.Checked
         DebugFinalDir.Visible = DebugModeToolStripMenuItem.Checked
+        DebugPoolKey.Visible = DebugModeToolStripMenuItem.Checked
+        DebugContractKey.Visible = DebugModeToolStripMenuItem.Checked
+        DebugFarmerKey.Visible = DebugModeToolStripMenuItem.Checked
     End Sub
 
     Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
@@ -309,10 +315,10 @@ Public Class Form1
         Debug.WriteLine("-p " & arguments("-p"))
     End Sub
 
-    Private Sub PoolKeyCheck_CheckedChanged(sender As Object, e As EventArgs) Handles PoolKeyCheck.CheckedChanged
-        If PoolKeyCheck.Checked Then
+    Private Sub PoolKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles PoolKeyRadio.CheckedChanged
+        If PoolKeyRadio.Checked Then
             ContractKeyText.Enabled = False
-            ContractKeyCheck.Checked = False
+            ContractKeyRadio.Checked = False
             ContractKeyText.Text = ""
         Else
             ContractKeyText.Enabled = True
@@ -320,13 +326,43 @@ Public Class Form1
     End Sub
 
     Private Sub ContractKeyText_TextChanged(sender As Object, e As EventArgs) Handles ContractKeyText.TextChanged
-
+        Dim textbox As TextBox = DirectCast(sender, TextBox)
+        Dim addy As String = textbox.Text
+        If Not String.IsNullOrEmpty(addy) Then
+            arguments("-c") = addy
+        Else
+            arguments("-c") = ""
+            DebugContractKey.Text = "Invalid Address"
+        End If
+        If arguments.ContainsKey("-c") Then
+            DebugContractKey.Text = "-c " & arguments("-c").ToString()
+        Else
+            DebugContractKey.Text = "Invalid Address"
+        End If
+        Debug.WriteLine("-c " & arguments("-c"))
     End Sub
 
-    Private Sub ContractKeyCheck_CheckedChanged(sender As Object, e As EventArgs) Handles ContractKeyCheck.CheckedChanged
-        If ContractKeyCheck.Checked Then
+    Private Sub FarmerKeyText_TextChanged(sender As Object, e As EventArgs) Handles FarmerKeyText.TextChanged
+        Dim textbox As TextBox = DirectCast(sender, TextBox)
+        Dim addy As String = textbox.Text
+        If Not String.IsNullOrEmpty(addy) Then
+            arguments("-f") = addy
+        Else
+            arguments("-f") = ""
+            DebugFarmerKey.Text = "Invalid Address"
+        End If
+        If arguments.ContainsKey("-f") Then
+            DebugFarmerKey.Text = "-f " & arguments("-f").ToString()
+        Else
+            DebugFarmerKey.Text = "Invalid Address"
+        End If
+        Debug.WriteLine("-f " & arguments("-f"))
+    End Sub
+
+    Private Sub ContractKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles ContractKeyRadio.CheckedChanged
+        If ContractKeyRadio.Checked Then
             PoolKeyText.Enabled = False
-            PoolKeyCheck.Checked = False
+            PoolKeyRadio.Checked = False
             PoolKeyText.Text = ""
         Else
             PoolKeyText.Enabled = True

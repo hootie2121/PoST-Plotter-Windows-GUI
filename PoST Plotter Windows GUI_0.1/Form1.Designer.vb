@@ -53,11 +53,14 @@ Partial Class Form1
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonOptions = New System.Windows.Forms.GroupBox()
-        Me.ContractKeyCheck = New System.Windows.Forms.CheckBox()
+        Me.ContractKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.PoolKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.DebugFarmerKey = New System.Windows.Forms.Label()
+        Me.FarmerKeyText = New System.Windows.Forms.TextBox()
+        Me.FarmerKeyLabel = New System.Windows.Forms.Label()
         Me.DebugContractKey = New System.Windows.Forms.Label()
         Me.ContractKeyText = New System.Windows.Forms.TextBox()
         Me.ContractKeyLabel = New System.Windows.Forms.Label()
-        Me.PoolKeyCheck = New System.Windows.Forms.CheckBox()
         Me.DebugPoolKey = New System.Windows.Forms.Label()
         Me.PoolKeyText = New System.Windows.Forms.TextBox()
         Me.PoolKeyLabel = New System.Windows.Forms.Label()
@@ -297,11 +300,14 @@ Partial Class Form1
         '
         'CommonOptions
         '
-        Me.CommonOptions.Controls.Add(Me.ContractKeyCheck)
+        Me.CommonOptions.Controls.Add(Me.ContractKeyRadio)
+        Me.CommonOptions.Controls.Add(Me.PoolKeyRadio)
+        Me.CommonOptions.Controls.Add(Me.DebugFarmerKey)
+        Me.CommonOptions.Controls.Add(Me.FarmerKeyText)
+        Me.CommonOptions.Controls.Add(Me.FarmerKeyLabel)
         Me.CommonOptions.Controls.Add(Me.DebugContractKey)
         Me.CommonOptions.Controls.Add(Me.ContractKeyText)
         Me.CommonOptions.Controls.Add(Me.ContractKeyLabel)
-        Me.CommonOptions.Controls.Add(Me.PoolKeyCheck)
         Me.CommonOptions.Controls.Add(Me.DebugPoolKey)
         Me.CommonOptions.Controls.Add(Me.PoolKeyText)
         Me.CommonOptions.Controls.Add(Me.PoolKeyLabel)
@@ -337,21 +343,61 @@ Partial Class Form1
         Me.CommonOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.CommonOptions.Location = New System.Drawing.Point(8, 39)
         Me.CommonOptions.Name = "CommonOptions"
-        Me.CommonOptions.Size = New System.Drawing.Size(842, 466)
+        Me.CommonOptions.Size = New System.Drawing.Size(842, 498)
         Me.CommonOptions.TabIndex = 1
         Me.CommonOptions.TabStop = False
         Me.CommonOptions.Text = "Common Options:"
         '
-        'ContractKeyCheck
+        'ContractKeyRadio
         '
-        Me.ContractKeyCheck.AutoSize = True
-        Me.ContractKeyCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyCheck.Location = New System.Drawing.Point(736, 384)
-        Me.ContractKeyCheck.Name = "ContractKeyCheck"
-        Me.ContractKeyCheck.Size = New System.Drawing.Size(76, 24)
-        Me.ContractKeyCheck.TabIndex = 36
-        Me.ContractKeyCheck.Text = "Enable"
-        Me.ContractKeyCheck.UseVisualStyleBackColor = True
+        Me.ContractKeyRadio.AutoSize = True
+        Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyRadio.Location = New System.Drawing.Point(736, 383)
+        Me.ContractKeyRadio.Name = "ContractKeyRadio"
+        Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.ContractKeyRadio.TabIndex = 41
+        Me.ContractKeyRadio.TabStop = True
+        Me.ContractKeyRadio.Text = "Enable"
+        Me.ContractKeyRadio.UseVisualStyleBackColor = True
+        '
+        'PoolKeyRadio
+        '
+        Me.PoolKeyRadio.AutoSize = True
+        Me.PoolKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyRadio.Location = New System.Drawing.Point(720, 331)
+        Me.PoolKeyRadio.Name = "PoolKeyRadio"
+        Me.PoolKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.PoolKeyRadio.TabIndex = 40
+        Me.PoolKeyRadio.TabStop = True
+        Me.PoolKeyRadio.Text = "Enable"
+        Me.PoolKeyRadio.UseVisualStyleBackColor = True
+        '
+        'DebugFarmerKey
+        '
+        Me.DebugFarmerKey.AutoSize = True
+        Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 460)
+        Me.DebugFarmerKey.Name = "DebugFarmerKey"
+        Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugFarmerKey.TabIndex = 39
+        '
+        'FarmerKeyText
+        '
+        Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 432)
+        Me.FarmerKeyText.Name = "FarmerKeyText"
+        Me.FarmerKeyText.Size = New System.Drawing.Size(589, 27)
+        Me.FarmerKeyText.TabIndex = 38
+        '
+        'FarmerKeyLabel
+        '
+        Me.FarmerKeyLabel.AutoSize = True
+        Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 435)
+        Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
+        Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
+        Me.FarmerKeyLabel.TabIndex = 37
+        Me.FarmerKeyLabel.Text = "Farmer Public Key:"
         '
         'DebugContractKey
         '
@@ -379,17 +425,6 @@ Partial Class Form1
         Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
         Me.ContractKeyLabel.TabIndex = 33
         Me.ContractKeyLabel.Text = "Pool Contract Key:"
-        '
-        'PoolKeyCheck
-        '
-        Me.PoolKeyCheck.AutoSize = True
-        Me.PoolKeyCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyCheck.Location = New System.Drawing.Point(720, 334)
-        Me.PoolKeyCheck.Name = "PoolKeyCheck"
-        Me.PoolKeyCheck.Size = New System.Drawing.Size(76, 24)
-        Me.PoolKeyCheck.TabIndex = 32
-        Me.PoolKeyCheck.Text = "Enable"
-        Me.PoolKeyCheck.UseVisualStyleBackColor = True
         '
         'DebugPoolKey
         '
@@ -777,12 +812,15 @@ Partial Class Form1
     Friend WithEvents FinalDirButton As Button
     Friend WithEvents FinalDirText As TextBox
     Friend WithEvents FinalDirLabel As Label
-    Friend WithEvents ContractKeyCheck As CheckBox
     Friend WithEvents DebugContractKey As Label
     Friend WithEvents ContractKeyText As TextBox
     Friend WithEvents ContractKeyLabel As Label
-    Friend WithEvents PoolKeyCheck As CheckBox
     Friend WithEvents DebugPoolKey As Label
     Friend WithEvents PoolKeyText As TextBox
     Friend WithEvents PoolKeyLabel As Label
+    Friend WithEvents DebugFarmerKey As Label
+    Friend WithEvents FarmerKeyText As TextBox
+    Friend WithEvents FarmerKeyLabel As Label
+    Friend WithEvents ContractKeyRadio As RadioButton
+    Friend WithEvents PoolKeyRadio As RadioButton
 End Class
