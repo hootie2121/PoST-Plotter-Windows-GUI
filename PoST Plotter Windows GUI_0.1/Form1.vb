@@ -492,18 +492,20 @@ Public Class Form1
     End Sub
 
     Private Sub StreamsText_TextChanged(sender As Object, e As EventArgs) Handles StreamsText.TextChanged
-        If Not Integer.TryParse(StreamsText.Text, Nothing) Then
+        If StreamsText.Text = "" Then
+            arguments("-S") = StreamsText.Text.ToString()
+        ElseIf Not Integer.TryParse(StreamsText.Text, Nothing) Then
             StreamsText.Text = 2
         Else
             If CInt(StreamsText.Text) < 2 Then
                 StreamsText.Text = 2
             End If
-        End If
         arguments("-S") = StreamsText.Text.ToString()
+        End If
         If arguments.ContainsKey("-S") Then
             DebugStreams.Text = "-S " & arguments("-S").ToString()
         Else
-            DebugStreams.Text = "Invalid Value"
+            DebugStreams.Text = "Invalid Streams Value"
         End If
         Debug.WriteLine("-S " & arguments("-S"))
     End Sub
@@ -513,51 +515,17 @@ Public Class Form1
     End Sub
 
     Private Sub MaxMemText_TextChanged(sender As Object, e As EventArgs) Handles MaxMemText.TextChanged
-        Dim selectedDevice As Integer = arguments("-g") ' change this to the desired CUDA device ID
-
-        Dim dedicatedMemory As Integer = 0
-        Dim sharedMemory As Integer = 0
-        Dim maxValue As Integer = 0
-
-        ' Run the nvidia-smi command and retrieve the output
-        Dim process As New Process()
-        process.StartInfo.FileName = "nvidia-smi.exe"
-        process.StartInfo.Arguments = "--query-gpu=memory.dedicated.usage,memory.shared.usage --format=csv,noheader"
-        process.StartInfo.UseShellExecute = False
-        process.StartInfo.RedirectStandardOutput = True
-        process.StartInfo.CreateNoWindow = True
-        process.Start()
-
-        Dim output As String = process.StandardOutput.ReadToEnd()
-
-        ' Parse the output to get the dedicated and shared GPU memory values for the selected GPU
-        Dim lines As String() = output.Split(vbCrLf)
-        Dim lineNumber As Integer = 0
-        For Each line As String In lines
-            If line.Trim() <> "" Then
-                If lineNumber = selectedDevice Then
-                    Dim parts As String() = line.Split(","c)
-                    dedicatedMemory = Integer.Parse(parts(0))
-                    sharedMemory = Integer.Parse(parts(1))
-                    Exit For
-                End If
-                lineNumber += 1
+        Try
+            Dim mem As Integer = Integer.Parse(MaxMemText.Text)
+            If mem < 8 Then
             End If
-        Next
-
-        maxValue = dedicatedMemory + sharedMemory
-
-        ' Validate the MaxMemText value
-        Dim maxMem As Integer
-        If Integer.TryParse(MaxMemText.Text, maxMem) Then
-            If maxMem < 8 Then
-                MaxMemText.Text = 8
-            ElseIf maxMem > maxValue Then
-                MaxMemText.Text = maxValue
+        Catch ex As FormatException
+            MessageBox.Show("Invalid input. Please enter a valid integer.")
+        End Try
             End If
         End If
+        Debug.WriteLine("-M " & arguments("-M"))
     End Sub
-
 
     Private Sub DebugMaxMem_Click(sender As Object, e As EventArgs) Handles DebugMaxMem.Click
 
