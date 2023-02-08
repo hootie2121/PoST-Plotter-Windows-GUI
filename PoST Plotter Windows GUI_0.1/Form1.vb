@@ -515,14 +515,22 @@ Public Class Form1
     End Sub
 
     Private Sub MaxMemText_TextChanged(sender As Object, e As EventArgs) Handles MaxMemText.TextChanged
+        If MaxMemText.Text = "" Then
+            arguments("-M") = MaxMemText.Text.ToString()
+        Else
         Try
             Dim mem As Integer = Integer.Parse(MaxMemText.Text)
             If mem < 8 Then
             End If
+                arguments("-M") = MaxMemText.Text.ToString()
         Catch ex As FormatException
             MessageBox.Show("Invalid input. Please enter a valid integer.")
         End Try
-            End If
+        End If
+        If arguments.ContainsKey("-M") Then
+            DebugMaxMem.Text = "-M " & arguments("-M").ToString()
+        Else
+            DebugMaxMem.Text = "Invalid Value"
         End If
         Debug.WriteLine("-M " & arguments("-M"))
     End Sub
