@@ -53,17 +53,6 @@ Partial Class Form1
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonOptions = New System.Windows.Forms.GroupBox()
-        Me.ContractKeyRadio = New System.Windows.Forms.RadioButton()
-        Me.PoolKeyRadio = New System.Windows.Forms.RadioButton()
-        Me.DebugFarmerKey = New System.Windows.Forms.Label()
-        Me.FarmerKeyText = New System.Windows.Forms.TextBox()
-        Me.FarmerKeyLabel = New System.Windows.Forms.Label()
-        Me.DebugContractKey = New System.Windows.Forms.Label()
-        Me.ContractKeyText = New System.Windows.Forms.TextBox()
-        Me.ContractKeyLabel = New System.Windows.Forms.Label()
-        Me.DebugPoolKey = New System.Windows.Forms.Label()
-        Me.PoolKeyText = New System.Windows.Forms.TextBox()
-        Me.PoolKeyLabel = New System.Windows.Forms.Label()
         Me.FinalDirCheck = New System.Windows.Forms.CheckBox()
         Me.DebugFinalDir = New System.Windows.Forms.Label()
         Me.FinalDirButton = New System.Windows.Forms.Button()
@@ -93,8 +82,46 @@ Partial Class Form1
         Me.PMGPURadio = New System.Windows.Forms.RadioButton()
         Me.PMCPURadio = New System.Windows.Forms.RadioButton()
         Me.PMLabel = New System.Windows.Forms.Label()
+        Me.ContractKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.PoolKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.DebugFarmerKey = New System.Windows.Forms.Label()
+        Me.FarmerKeyText = New System.Windows.Forms.TextBox()
+        Me.FarmerKeyLabel = New System.Windows.Forms.Label()
+        Me.DebugContractKey = New System.Windows.Forms.Label()
+        Me.ContractKeyText = New System.Windows.Forms.TextBox()
+        Me.ContractKeyLabel = New System.Windows.Forms.Label()
+        Me.DebugPoolKey = New System.Windows.Forms.Label()
+        Me.PoolKeyText = New System.Windows.Forms.TextBox()
+        Me.PoolKeyLabel = New System.Windows.Forms.Label()
+        Me.AccountKeys = New System.Windows.Forms.GroupBox()
+        Me.CPUOptions = New System.Windows.Forms.GroupBox()
+        Me.BucketsP23Text = New System.Windows.Forms.TextBox()
+        Me.DebugBucketsP23 = New System.Windows.Forms.Label()
+        Me.BucketsP23Label = New System.Windows.Forms.Label()
+        Me.BucketsText = New System.Windows.Forms.TextBox()
+        Me.DebugBuckets = New System.Windows.Forms.Label()
+        Me.BucketsLabel = New System.Windows.Forms.Label()
+        Me.DebugNumThreads = New System.Windows.Forms.Label()
+        Me.NumThreadsCombo = New System.Windows.Forms.ComboBox()
+        Me.NumThreadsLabel = New System.Windows.Forms.Label()
+        Me.GPUOptions = New System.Windows.Forms.GroupBox()
+        Me.MaxMemText = New System.Windows.Forms.TextBox()
+        Me.DebugMaxMem = New System.Windows.Forms.Label()
+        Me.MaxMemLabel = New System.Windows.Forms.Label()
+        Me.NumCudaText = New System.Windows.Forms.TextBox()
+        Me.StreamsText = New System.Windows.Forms.TextBox()
+        Me.DebugStreams = New System.Windows.Forms.Label()
+        Me.NumStreamsLabel = New System.Windows.Forms.Label()
+        Me.CudaDeviceText = New System.Windows.Forms.TextBox()
+        Me.DebugNumCuda = New System.Windows.Forms.Label()
+        Me.NumCudaLabel = New System.Windows.Forms.Label()
+        Me.DebugCudaDevice = New System.Windows.Forms.Label()
+        Me.CudaDeviceLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
+        Me.AccountKeys.SuspendLayout()
+        Me.CPUOptions.SuspendLayout()
+        Me.GPUOptions.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -103,7 +130,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(934, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(2114, 28)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -300,17 +327,6 @@ Partial Class Form1
         '
         'CommonOptions
         '
-        Me.CommonOptions.Controls.Add(Me.ContractKeyRadio)
-        Me.CommonOptions.Controls.Add(Me.PoolKeyRadio)
-        Me.CommonOptions.Controls.Add(Me.DebugFarmerKey)
-        Me.CommonOptions.Controls.Add(Me.FarmerKeyText)
-        Me.CommonOptions.Controls.Add(Me.FarmerKeyLabel)
-        Me.CommonOptions.Controls.Add(Me.DebugContractKey)
-        Me.CommonOptions.Controls.Add(Me.ContractKeyText)
-        Me.CommonOptions.Controls.Add(Me.ContractKeyLabel)
-        Me.CommonOptions.Controls.Add(Me.DebugPoolKey)
-        Me.CommonOptions.Controls.Add(Me.PoolKeyText)
-        Me.CommonOptions.Controls.Add(Me.PoolKeyLabel)
         Me.CommonOptions.Controls.Add(Me.FinalDirCheck)
         Me.CommonOptions.Controls.Add(Me.DebugFinalDir)
         Me.CommonOptions.Controls.Add(Me.FinalDirButton)
@@ -343,115 +359,10 @@ Partial Class Form1
         Me.CommonOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.CommonOptions.Location = New System.Drawing.Point(8, 39)
         Me.CommonOptions.Name = "CommonOptions"
-        Me.CommonOptions.Size = New System.Drawing.Size(842, 498)
+        Me.CommonOptions.Size = New System.Drawing.Size(612, 325)
         Me.CommonOptions.TabIndex = 1
         Me.CommonOptions.TabStop = False
         Me.CommonOptions.Text = "Common Options:"
-        '
-        'ContractKeyRadio
-        '
-        Me.ContractKeyRadio.AutoSize = True
-        Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyRadio.Location = New System.Drawing.Point(736, 383)
-        Me.ContractKeyRadio.Name = "ContractKeyRadio"
-        Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
-        Me.ContractKeyRadio.TabIndex = 41
-        Me.ContractKeyRadio.TabStop = True
-        Me.ContractKeyRadio.Text = "Enable"
-        Me.ContractKeyRadio.UseVisualStyleBackColor = True
-        '
-        'PoolKeyRadio
-        '
-        Me.PoolKeyRadio.AutoSize = True
-        Me.PoolKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyRadio.Location = New System.Drawing.Point(720, 331)
-        Me.PoolKeyRadio.Name = "PoolKeyRadio"
-        Me.PoolKeyRadio.Size = New System.Drawing.Size(75, 24)
-        Me.PoolKeyRadio.TabIndex = 40
-        Me.PoolKeyRadio.TabStop = True
-        Me.PoolKeyRadio.Text = "Enable"
-        Me.PoolKeyRadio.UseVisualStyleBackColor = True
-        '
-        'DebugFarmerKey
-        '
-        Me.DebugFarmerKey.AutoSize = True
-        Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 460)
-        Me.DebugFarmerKey.Name = "DebugFarmerKey"
-        Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugFarmerKey.TabIndex = 39
-        '
-        'FarmerKeyText
-        '
-        Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 432)
-        Me.FarmerKeyText.Name = "FarmerKeyText"
-        Me.FarmerKeyText.Size = New System.Drawing.Size(589, 27)
-        Me.FarmerKeyText.TabIndex = 38
-        '
-        'FarmerKeyLabel
-        '
-        Me.FarmerKeyLabel.AutoSize = True
-        Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 435)
-        Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
-        Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
-        Me.FarmerKeyLabel.TabIndex = 37
-        Me.FarmerKeyLabel.Text = "Farmer Public Key:"
-        '
-        'DebugContractKey
-        '
-        Me.DebugContractKey.AutoSize = True
-        Me.DebugContractKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugContractKey.Location = New System.Drawing.Point(6, 410)
-        Me.DebugContractKey.Name = "DebugContractKey"
-        Me.DebugContractKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugContractKey.TabIndex = 35
-        '
-        'ContractKeyText
-        '
-        Me.ContractKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyText.Location = New System.Drawing.Point(141, 382)
-        Me.ContractKeyText.Name = "ContractKeyText"
-        Me.ContractKeyText.Size = New System.Drawing.Size(589, 27)
-        Me.ContractKeyText.TabIndex = 34
-        '
-        'ContractKeyLabel
-        '
-        Me.ContractKeyLabel.AutoSize = True
-        Me.ContractKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 385)
-        Me.ContractKeyLabel.Name = "ContractKeyLabel"
-        Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
-        Me.ContractKeyLabel.TabIndex = 33
-        Me.ContractKeyLabel.Text = "Pool Contract Key:"
-        '
-        'DebugPoolKey
-        '
-        Me.DebugPoolKey.AutoSize = True
-        Me.DebugPoolKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 360)
-        Me.DebugPoolKey.Name = "DebugPoolKey"
-        Me.DebugPoolKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugPoolKey.TabIndex = 31
-        '
-        'PoolKeyText
-        '
-        Me.PoolKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyText.Location = New System.Drawing.Point(125, 332)
-        Me.PoolKeyText.Name = "PoolKeyText"
-        Me.PoolKeyText.Size = New System.Drawing.Size(589, 27)
-        Me.PoolKeyText.TabIndex = 30
-        '
-        'PoolKeyLabel
-        '
-        Me.PoolKeyLabel.AutoSize = True
-        Me.PoolKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyLabel.Location = New System.Drawing.Point(6, 335)
-        Me.PoolKeyLabel.Name = "PoolKeyLabel"
-        Me.PoolKeyLabel.Size = New System.Drawing.Size(113, 20)
-        Me.PoolKeyLabel.TabIndex = 29
-        Me.PoolKeyLabel.Text = "Pool Public Key:"
         '
         'FinalDirCheck
         '
@@ -734,11 +645,371 @@ Partial Class Form1
         Me.PMLabel.TabIndex = 0
         Me.PMLabel.Text = "Plotting Method:"
         '
+        'ContractKeyRadio
+        '
+        Me.ContractKeyRadio.AutoSize = True
+        Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyRadio.Location = New System.Drawing.Point(993, 73)
+        Me.ContractKeyRadio.Name = "ContractKeyRadio"
+        Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.ContractKeyRadio.TabIndex = 41
+        Me.ContractKeyRadio.TabStop = True
+        Me.ContractKeyRadio.Text = "Enable"
+        Me.ContractKeyRadio.UseVisualStyleBackColor = True
+        '
+        'PoolKeyRadio
+        '
+        Me.PoolKeyRadio.AutoSize = True
+        Me.PoolKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyRadio.Location = New System.Drawing.Point(993, 23)
+        Me.PoolKeyRadio.Name = "PoolKeyRadio"
+        Me.PoolKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.PoolKeyRadio.TabIndex = 40
+        Me.PoolKeyRadio.TabStop = True
+        Me.PoolKeyRadio.Text = "Enable"
+        Me.PoolKeyRadio.UseVisualStyleBackColor = True
+        '
+        'DebugFarmerKey
+        '
+        Me.DebugFarmerKey.AutoSize = True
+        Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 150)
+        Me.DebugFarmerKey.Name = "DebugFarmerKey"
+        Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugFarmerKey.TabIndex = 39
+        '
+        'FarmerKeyText
+        '
+        Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 122)
+        Me.FarmerKeyText.Name = "FarmerKeyText"
+        Me.FarmerKeyText.Size = New System.Drawing.Size(846, 27)
+        Me.FarmerKeyText.TabIndex = 38
+        '
+        'FarmerKeyLabel
+        '
+        Me.FarmerKeyLabel.AutoSize = True
+        Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 125)
+        Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
+        Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
+        Me.FarmerKeyLabel.TabIndex = 37
+        Me.FarmerKeyLabel.Text = "Farmer Public Key:"
+        '
+        'DebugContractKey
+        '
+        Me.DebugContractKey.AutoSize = True
+        Me.DebugContractKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugContractKey.Location = New System.Drawing.Point(6, 100)
+        Me.DebugContractKey.Name = "DebugContractKey"
+        Me.DebugContractKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugContractKey.TabIndex = 35
+        '
+        'ContractKeyText
+        '
+        Me.ContractKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyText.Location = New System.Drawing.Point(141, 72)
+        Me.ContractKeyText.Name = "ContractKeyText"
+        Me.ContractKeyText.Size = New System.Drawing.Size(846, 27)
+        Me.ContractKeyText.TabIndex = 34
+        '
+        'ContractKeyLabel
+        '
+        Me.ContractKeyLabel.AutoSize = True
+        Me.ContractKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 75)
+        Me.ContractKeyLabel.Name = "ContractKeyLabel"
+        Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
+        Me.ContractKeyLabel.TabIndex = 33
+        Me.ContractKeyLabel.Text = "Pool Contract Key:"
+        '
+        'DebugPoolKey
+        '
+        Me.DebugPoolKey.AutoSize = True
+        Me.DebugPoolKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 50)
+        Me.DebugPoolKey.Name = "DebugPoolKey"
+        Me.DebugPoolKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugPoolKey.TabIndex = 31
+        '
+        'PoolKeyText
+        '
+        Me.PoolKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyText.Location = New System.Drawing.Point(125, 22)
+        Me.PoolKeyText.Name = "PoolKeyText"
+        Me.PoolKeyText.Size = New System.Drawing.Size(862, 27)
+        Me.PoolKeyText.TabIndex = 30
+        '
+        'PoolKeyLabel
+        '
+        Me.PoolKeyLabel.AutoSize = True
+        Me.PoolKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyLabel.Location = New System.Drawing.Point(6, 25)
+        Me.PoolKeyLabel.Name = "PoolKeyLabel"
+        Me.PoolKeyLabel.Size = New System.Drawing.Size(113, 20)
+        Me.PoolKeyLabel.TabIndex = 29
+        Me.PoolKeyLabel.Text = "Pool Public Key:"
+        '
+        'AccountKeys
+        '
+        Me.AccountKeys.Controls.Add(Me.ContractKeyRadio)
+        Me.AccountKeys.Controls.Add(Me.ContractKeyText)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyRadio)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.DebugFarmerKey)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyText)
+        Me.AccountKeys.Controls.Add(Me.FarmerKeyText)
+        Me.AccountKeys.Controls.Add(Me.DebugPoolKey)
+        Me.AccountKeys.Controls.Add(Me.FarmerKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.ContractKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.DebugContractKey)
+        Me.AccountKeys.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.AccountKeys.Location = New System.Drawing.Point(8, 372)
+        Me.AccountKeys.Name = "AccountKeys"
+        Me.AccountKeys.Size = New System.Drawing.Size(1073, 161)
+        Me.AccountKeys.TabIndex = 2
+        Me.AccountKeys.TabStop = False
+        Me.AccountKeys.Text = "Account Keys:"
+        '
+        'CPUOptions
+        '
+        Me.CPUOptions.Controls.Add(Me.BucketsP23Text)
+        Me.CPUOptions.Controls.Add(Me.DebugBucketsP23)
+        Me.CPUOptions.Controls.Add(Me.BucketsP23Label)
+        Me.CPUOptions.Controls.Add(Me.BucketsText)
+        Me.CPUOptions.Controls.Add(Me.DebugBuckets)
+        Me.CPUOptions.Controls.Add(Me.BucketsLabel)
+        Me.CPUOptions.Controls.Add(Me.DebugNumThreads)
+        Me.CPUOptions.Controls.Add(Me.NumThreadsCombo)
+        Me.CPUOptions.Controls.Add(Me.NumThreadsLabel)
+        Me.CPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.CPUOptions.Location = New System.Drawing.Point(638, 39)
+        Me.CPUOptions.Name = "CPUOptions"
+        Me.CPUOptions.Size = New System.Drawing.Size(357, 150)
+        Me.CPUOptions.TabIndex = 3
+        Me.CPUOptions.TabStop = False
+        Me.CPUOptions.Text = "CPU Options:"
+        '
+        'BucketsP23Text
+        '
+        Me.BucketsP23Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.BucketsP23Text.Location = New System.Drawing.Point(198, 102)
+        Me.BucketsP23Text.Name = "BucketsP23Text"
+        Me.BucketsP23Text.Size = New System.Drawing.Size(78, 27)
+        Me.BucketsP23Text.TabIndex = 16
+        '
+        'DebugBucketsP23
+        '
+        Me.DebugBucketsP23.AutoSize = True
+        Me.DebugBucketsP23.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugBucketsP23.Location = New System.Drawing.Point(282, 105)
+        Me.DebugBucketsP23.Name = "DebugBucketsP23"
+        Me.DebugBucketsP23.Size = New System.Drawing.Size(0, 20)
+        Me.DebugBucketsP23.TabIndex = 15
+        '
+        'BucketsP23Label
+        '
+        Me.BucketsP23Label.AutoSize = True
+        Me.BucketsP23Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.BucketsP23Label.Location = New System.Drawing.Point(6, 105)
+        Me.BucketsP23Label.Name = "BucketsP23Label"
+        Me.BucketsP23Label.Size = New System.Drawing.Size(186, 20)
+        Me.BucketsP23Label.TabIndex = 14
+        Me.BucketsP23Label.Text = "Buckets for Phases 2 and 3:"
+        '
+        'BucketsText
+        '
+        Me.BucketsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.BucketsText.Location = New System.Drawing.Point(74, 62)
+        Me.BucketsText.Name = "BucketsText"
+        Me.BucketsText.Size = New System.Drawing.Size(78, 27)
+        Me.BucketsText.TabIndex = 13
+        '
+        'DebugBuckets
+        '
+        Me.DebugBuckets.AutoSize = True
+        Me.DebugBuckets.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugBuckets.Location = New System.Drawing.Point(158, 65)
+        Me.DebugBuckets.Name = "DebugBuckets"
+        Me.DebugBuckets.Size = New System.Drawing.Size(0, 20)
+        Me.DebugBuckets.TabIndex = 12
+        '
+        'BucketsLabel
+        '
+        Me.BucketsLabel.AutoSize = True
+        Me.BucketsLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.BucketsLabel.Location = New System.Drawing.Point(6, 65)
+        Me.BucketsLabel.Name = "BucketsLabel"
+        Me.BucketsLabel.Size = New System.Drawing.Size(62, 20)
+        Me.BucketsLabel.TabIndex = 10
+        Me.BucketsLabel.Text = "Buckets:"
+        '
+        'DebugNumThreads
+        '
+        Me.DebugNumThreads.AutoSize = True
+        Me.DebugNumThreads.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugNumThreads.Location = New System.Drawing.Point(209, 25)
+        Me.DebugNumThreads.Name = "DebugNumThreads"
+        Me.DebugNumThreads.Size = New System.Drawing.Size(0, 20)
+        Me.DebugNumThreads.TabIndex = 9
+        '
+        'NumThreadsCombo
+        '
+        Me.NumThreadsCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumThreadsCombo.FormattingEnabled = True
+        Me.NumThreadsCombo.Location = New System.Drawing.Point(152, 22)
+        Me.NumThreadsCombo.Name = "NumThreadsCombo"
+        Me.NumThreadsCombo.Size = New System.Drawing.Size(51, 28)
+        Me.NumThreadsCombo.TabIndex = 8
+        '
+        'NumThreadsLabel
+        '
+        Me.NumThreadsLabel.AutoSize = True
+        Me.NumThreadsLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumThreadsLabel.Location = New System.Drawing.Point(6, 25)
+        Me.NumThreadsLabel.Name = "NumThreadsLabel"
+        Me.NumThreadsLabel.Size = New System.Drawing.Size(140, 20)
+        Me.NumThreadsLabel.TabIndex = 7
+        Me.NumThreadsLabel.Text = "Number of Threads:"
+        '
+        'GPUOptions
+        '
+        Me.GPUOptions.Controls.Add(Me.MaxMemText)
+        Me.GPUOptions.Controls.Add(Me.DebugMaxMem)
+        Me.GPUOptions.Controls.Add(Me.MaxMemLabel)
+        Me.GPUOptions.Controls.Add(Me.NumCudaText)
+        Me.GPUOptions.Controls.Add(Me.StreamsText)
+        Me.GPUOptions.Controls.Add(Me.DebugStreams)
+        Me.GPUOptions.Controls.Add(Me.NumStreamsLabel)
+        Me.GPUOptions.Controls.Add(Me.CudaDeviceText)
+        Me.GPUOptions.Controls.Add(Me.DebugNumCuda)
+        Me.GPUOptions.Controls.Add(Me.NumCudaLabel)
+        Me.GPUOptions.Controls.Add(Me.DebugCudaDevice)
+        Me.GPUOptions.Controls.Add(Me.CudaDeviceLabel)
+        Me.GPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.GPUOptions.Location = New System.Drawing.Point(638, 194)
+        Me.GPUOptions.Name = "GPUOptions"
+        Me.GPUOptions.Size = New System.Drawing.Size(357, 150)
+        Me.GPUOptions.TabIndex = 4
+        Me.GPUOptions.TabStop = False
+        Me.GPUOptions.Text = "GPU Options:"
+        '
+        'MaxMemText
+        '
+        Me.MaxMemText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxMemText.Location = New System.Drawing.Point(190, 112)
+        Me.MaxMemText.Name = "MaxMemText"
+        Me.MaxMemText.Size = New System.Drawing.Size(47, 27)
+        Me.MaxMemText.TabIndex = 20
+        '
+        'DebugMaxMem
+        '
+        Me.DebugMaxMem.AutoSize = True
+        Me.DebugMaxMem.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugMaxMem.Location = New System.Drawing.Point(243, 115)
+        Me.DebugMaxMem.Name = "DebugMaxMem"
+        Me.DebugMaxMem.Size = New System.Drawing.Size(0, 20)
+        Me.DebugMaxMem.TabIndex = 19
+        '
+        'MaxMemLabel
+        '
+        Me.MaxMemLabel.AutoSize = True
+        Me.MaxMemLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxMemLabel.Location = New System.Drawing.Point(6, 115)
+        Me.MaxMemLabel.Name = "MaxMemLabel"
+        Me.MaxMemLabel.Size = New System.Drawing.Size(178, 20)
+        Me.MaxMemLabel.TabIndex = 18
+        Me.MaxMemLabel.Text = "Max Shared Memory(GB):"
+        '
+        'NumCudaText
+        '
+        Me.NumCudaText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumCudaText.Location = New System.Drawing.Point(189, 48)
+        Me.NumCudaText.Name = "NumCudaText"
+        Me.NumCudaText.Size = New System.Drawing.Size(34, 27)
+        Me.NumCudaText.TabIndex = 17
+        '
+        'StreamsText
+        '
+        Me.StreamsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StreamsText.Location = New System.Drawing.Point(205, 78)
+        Me.StreamsText.Name = "StreamsText"
+        Me.StreamsText.Size = New System.Drawing.Size(34, 27)
+        Me.StreamsText.TabIndex = 16
+        '
+        'DebugStreams
+        '
+        Me.DebugStreams.AutoSize = True
+        Me.DebugStreams.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugStreams.Location = New System.Drawing.Point(245, 82)
+        Me.DebugStreams.Name = "DebugStreams"
+        Me.DebugStreams.Size = New System.Drawing.Size(0, 20)
+        Me.DebugStreams.TabIndex = 15
+        '
+        'NumStreamsLabel
+        '
+        Me.NumStreamsLabel.AutoSize = True
+        Me.NumStreamsLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumStreamsLabel.Location = New System.Drawing.Point(6, 85)
+        Me.NumStreamsLabel.Name = "NumStreamsLabel"
+        Me.NumStreamsLabel.Size = New System.Drawing.Size(193, 20)
+        Me.NumStreamsLabel.TabIndex = 14
+        Me.NumStreamsLabel.Text = "Number of Parallel Streams:"
+        '
+        'CudaDeviceText
+        '
+        Me.CudaDeviceText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CudaDeviceText.Location = New System.Drawing.Point(107, 18)
+        Me.CudaDeviceText.Name = "CudaDeviceText"
+        Me.CudaDeviceText.Size = New System.Drawing.Size(51, 27)
+        Me.CudaDeviceText.TabIndex = 13
+        '
+        'DebugNumCuda
+        '
+        Me.DebugNumCuda.AutoSize = True
+        Me.DebugNumCuda.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugNumCuda.Location = New System.Drawing.Point(229, 55)
+        Me.DebugNumCuda.Name = "DebugNumCuda"
+        Me.DebugNumCuda.Size = New System.Drawing.Size(0, 20)
+        Me.DebugNumCuda.TabIndex = 12
+        '
+        'NumCudaLabel
+        '
+        Me.NumCudaLabel.AutoSize = True
+        Me.NumCudaLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumCudaLabel.Location = New System.Drawing.Point(6, 55)
+        Me.NumCudaLabel.Name = "NumCudaLabel"
+        Me.NumCudaLabel.Size = New System.Drawing.Size(177, 20)
+        Me.NumCudaLabel.TabIndex = 10
+        Me.NumCudaLabel.Text = "Number of Cuda Devices:"
+        '
+        'DebugCudaDevice
+        '
+        Me.DebugCudaDevice.AutoSize = True
+        Me.DebugCudaDevice.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugCudaDevice.Location = New System.Drawing.Point(164, 25)
+        Me.DebugCudaDevice.Name = "DebugCudaDevice"
+        Me.DebugCudaDevice.Size = New System.Drawing.Size(0, 20)
+        Me.DebugCudaDevice.TabIndex = 9
+        '
+        'CudaDeviceLabel
+        '
+        Me.CudaDeviceLabel.AutoSize = True
+        Me.CudaDeviceLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CudaDeviceLabel.Location = New System.Drawing.Point(6, 25)
+        Me.CudaDeviceLabel.Name = "CudaDeviceLabel"
+        Me.CudaDeviceLabel.Size = New System.Drawing.Size(95, 20)
+        Me.CudaDeviceLabel.TabIndex = 7
+        Me.CudaDeviceLabel.Text = "Cuda Device:"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(934, 549)
+        Me.ClientSize = New System.Drawing.Size(2114, 1000)
+        Me.Controls.Add(Me.GPUOptions)
+        Me.Controls.Add(Me.CPUOptions)
+        Me.Controls.Add(Me.AccountKeys)
         Me.Controls.Add(Me.CommonOptions)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -748,6 +1019,12 @@ Partial Class Form1
         Me.MenuStrip1.PerformLayout()
         Me.CommonOptions.ResumeLayout(False)
         Me.CommonOptions.PerformLayout()
+        Me.AccountKeys.ResumeLayout(False)
+        Me.AccountKeys.PerformLayout()
+        Me.CPUOptions.ResumeLayout(False)
+        Me.CPUOptions.PerformLayout()
+        Me.GPUOptions.ResumeLayout(False)
+        Me.GPUOptions.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -823,4 +1100,28 @@ Partial Class Form1
     Friend WithEvents FarmerKeyLabel As Label
     Friend WithEvents ContractKeyRadio As RadioButton
     Friend WithEvents PoolKeyRadio As RadioButton
+    Friend WithEvents AccountKeys As GroupBox
+    Friend WithEvents CPUOptions As GroupBox
+    Friend WithEvents DebugNumThreads As Label
+    Friend WithEvents NumThreadsCombo As ComboBox
+    Friend WithEvents NumThreadsLabel As Label
+    Friend WithEvents BucketsText As TextBox
+    Friend WithEvents DebugBuckets As Label
+    Friend WithEvents BucketsLabel As Label
+    Friend WithEvents BucketsP23Text As TextBox
+    Friend WithEvents DebugBucketsP23 As Label
+    Friend WithEvents BucketsP23Label As Label
+    Friend WithEvents GPUOptions As GroupBox
+    Friend WithEvents StreamsText As TextBox
+    Friend WithEvents DebugStreams As Label
+    Friend WithEvents NumStreamsLabel As Label
+    Friend WithEvents CudaDeviceText As TextBox
+    Friend WithEvents DebugNumCuda As Label
+    Friend WithEvents NumCudaLabel As Label
+    Friend WithEvents DebugCudaDevice As Label
+    Friend WithEvents CudaDeviceLabel As Label
+    Friend WithEvents NumCudaText As TextBox
+    Friend WithEvents MaxMemText As TextBox
+    Friend WithEvents DebugMaxMem As Label
+    Friend WithEvents MaxMemLabel As Label
 End Class

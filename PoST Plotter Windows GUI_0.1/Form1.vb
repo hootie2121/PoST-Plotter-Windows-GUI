@@ -14,10 +14,25 @@ Public Class Form1
         DebugPoolKey.Visible = False
         DebugContractKey.Visible = False
         DebugFarmerKey.Visible = False
+        DebugNumThreads.Visible = False
+        DebugBuckets.Visible = False
+        DebugBucketsP23.Visible = False
+        DebugCudaDevice.Visible = False
+        DebugNumCuda.Visible = False
+        DebugStreams.Visible = False
+        DebugMaxMem.Visible = False
         For i As Integer = 1 To 9
             CLCombo.Items.Add(i.ToString())
         Next
         ContractKeyRadio.Checked = True
+        Dim numThreads As Integer = System.Environment.ProcessorCount
+        NumThreadsCombo.Items.Clear()
+        For i As Integer = 1 To numThreads - 1
+            NumThreadsCombo.Items.Add(i)
+        Next
+        KValueCombo.Text = "32"
+        CLCombo.Text = "1"
+        NPlotsText.Text = "1"
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -32,6 +47,13 @@ Public Class Form1
         DebugPoolKey.Visible = DebugModeToolStripMenuItem.Checked
         DebugContractKey.Visible = DebugModeToolStripMenuItem.Checked
         DebugFarmerKey.Visible = DebugModeToolStripMenuItem.Checked
+        DebugNumThreads.Visible = DebugModeToolStripMenuItem.Checked
+        DebugBuckets.Visible = DebugModeToolStripMenuItem.Checked
+        DebugBucketsP23.Visible = DebugModeToolStripMenuItem.Checked
+        DebugCudaDevice.Visible = DebugModeToolStripMenuItem.Checked
+        DebugNumCuda.Visible = DebugModeToolStripMenuItem.Checked
+        DebugStreams.Visible = DebugModeToolStripMenuItem.Checked
+        DebugMaxMem.Visible = DebugModeToolStripMenuItem.Checked
     End Sub
 
     Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
@@ -46,6 +68,15 @@ Public Class Form1
                 KValueCombo.Text = "" 'reset k value combo box text
                 DebugKValue.Text = "No K-Value selected" 'reset debug  k value label text
             End If
+            CudaDeviceText.Text = ""
+            NumCudaText.Text = ""
+            StreamsText.Text = ""
+            MaxMemText.Text = ""
+            NumThreadsCombo.Text = "4"
+            BucketsText.Text = "256"
+            BucketsP23Text.Text = BucketsText.Text
+            CPUOptions.Enabled = True
+            GPUOptions.Enabled = False
         End If
         If arguments.ContainsKey("-PM") Then
             DebugPM.Text = "-PM " & arguments("-PM").ToString()
@@ -67,6 +98,15 @@ Public Class Form1
                 KValueCombo.Text = "" 'reset k value combo box text
                 DebugKValue.Text = "No K-Value selected" 'reset debug  k value label text
             End If
+            NumThreadsCombo.Text = ""
+            BucketsText.Text = ""
+            BucketsP23Text.Text = ""
+            CudaDeviceText.Text = "0"
+            NumCudaText.Text = "1"
+            StreamsText.Text = "4"
+            MaxMemText.Text = "8"
+            GPUOptions.Enabled = True
+            CPUOptions.Enabled = False
         End If
         If arguments.ContainsKey("-PM") Then
             DebugPM.Text = "-PM " & arguments("-PM").ToString()
@@ -367,5 +407,163 @@ Public Class Form1
         Else
             PoolKeyText.Enabled = True
         End If
+    End Sub
+
+    Private Sub NumThreadsCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles NumThreadsCombo.SelectedIndexChanged
+        arguments("-r") = NumThreadsCombo.SelectedItem.ToString()
+        If arguments.ContainsKey("-r") Then
+            DebugNumThreads.Text = "-r " & arguments("-r").ToString()
+        Else
+            DebugNumThreads.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-r " & arguments("-r"))
+    End Sub
+
+
+    Private Sub DebugNumThreads_Click(sender As Object, e As EventArgs) Handles DebugNumThreads.Click
+
+    End Sub
+
+    Private Sub BucketsText_TextChanged(sender As Object, e As EventArgs) Handles BucketsText.TextChanged
+        arguments("-u") = BucketsText.Text.ToString()
+        If arguments.ContainsKey("-u") Then
+            DebugBuckets.Text = "-u " & arguments("-u").ToString()
+        Else
+            DebugBuckets.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-u " & arguments("-u"))
+        BucketsP23Text.Text = BucketsText.Text
+    End Sub
+
+    Private Sub DebugBuckets_Click(sender As Object, e As EventArgs) Handles DebugBuckets.Click
+
+    End Sub
+
+    Private Sub BucketsP23Text_TextChanged(sender As Object, e As EventArgs) Handles BucketsP23Text.TextChanged
+        arguments("-v") = BucketsP23Text.Text.ToString()
+        If arguments.ContainsKey("-v") Then
+            DebugBucketsP23.Text = "-v " & arguments("-v").ToString()
+        Else
+            DebugBucketsP23.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-v " & arguments("-v"))
+    End Sub
+
+    Private Sub DebugBucketsP23_Click(sender As Object, e As EventArgs) Handles DebugBucketsP23.Click
+
+    End Sub
+
+    Private Sub CudaDeviceText_TextChanged(sender As Object, e As EventArgs) Handles CudaDeviceText.TextChanged
+        Dim previousText As String = CudaDeviceText.Text
+        For Each c As Char In CudaDeviceText.Text
+            If Not Char.IsDigit(c) AndAlso c <> "," Then
+                CudaDeviceText.Text = previousText
+                Exit Sub
+            End If
+        Next
+        arguments("-g") = CudaDeviceText.Text.ToString()
+        If arguments.ContainsKey("-g") Then
+            DebugCudaDevice.Text = "-g " & arguments("-g").ToString()
+        Else
+            DebugCudaDevice.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-g " & arguments("-g"))
+    End Sub
+
+    Private Sub NumCudaText_TextChanged(sender As Object, e As EventArgs) Handles NumCudaText.TextChanged
+        Dim previousText As String = NumCudaText.Text
+        For Each c As Char In NumCudaText.Text
+            If Not Char.IsDigit(c) Then
+                NumCudaText.Text = previousText
+                Exit Sub
+            End If
+        Next
+        arguments("-r2") = NumCudaText.Text.ToString()
+        If arguments.ContainsKey("-r2") Then
+            DebugNumCuda.Text = "-r " & arguments("-r2").ToString()
+        Else
+            DebugNumCuda.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-r " & arguments("-r2"))
+    End Sub
+
+    Private Sub DebugNumCuda_Click(sender As Object, e As EventArgs) Handles DebugNumCuda.Click
+
+    End Sub
+
+    Private Sub StreamsText_TextChanged(sender As Object, e As EventArgs) Handles StreamsText.TextChanged
+        If Not Integer.TryParse(StreamsText.Text, Nothing) Then
+            StreamsText.Text = 2
+        Else
+            If CInt(StreamsText.Text) < 2 Then
+                StreamsText.Text = 2
+            End If
+        End If
+        arguments("-S") = StreamsText.Text.ToString()
+        If arguments.ContainsKey("-S") Then
+            DebugStreams.Text = "-S " & arguments("-S").ToString()
+        Else
+            DebugStreams.Text = "Invalid Value"
+        End If
+        Debug.WriteLine("-S " & arguments("-S"))
+    End Sub
+
+    Private Sub DebugStreams_Click(sender As Object, e As EventArgs) Handles DebugStreams.Click
+
+    End Sub
+
+    Private Sub MaxMemText_TextChanged(sender As Object, e As EventArgs) Handles MaxMemText.TextChanged
+        Dim selectedDevice As Integer = arguments("-g") ' change this to the desired CUDA device ID
+
+        Dim dedicatedMemory As Integer = 0
+        Dim sharedMemory As Integer = 0
+        Dim maxValue As Integer = 0
+
+        ' Run the nvidia-smi command and retrieve the output
+        Dim process As New Process()
+        process.StartInfo.FileName = "nvidia-smi.exe"
+        process.StartInfo.Arguments = "--query-gpu=memory.dedicated.usage,memory.shared.usage --format=csv,noheader"
+        process.StartInfo.UseShellExecute = False
+        process.StartInfo.RedirectStandardOutput = True
+        process.StartInfo.CreateNoWindow = True
+        process.Start()
+
+        Dim output As String = process.StandardOutput.ReadToEnd()
+
+        ' Parse the output to get the dedicated and shared GPU memory values for the selected GPU
+        Dim lines As String() = output.Split(vbCrLf)
+        Dim lineNumber As Integer = 0
+        For Each line As String In lines
+            If line.Trim() <> "" Then
+                If lineNumber = selectedDevice Then
+                    Dim parts As String() = line.Split(","c)
+                    dedicatedMemory = Integer.Parse(parts(0))
+                    sharedMemory = Integer.Parse(parts(1))
+                    Exit For
+                End If
+                lineNumber += 1
+            End If
+        Next
+
+        maxValue = dedicatedMemory + sharedMemory
+
+        ' Validate the MaxMemText value
+        Dim maxMem As Integer
+        If Integer.TryParse(MaxMemText.Text, maxMem) Then
+            If maxMem < 8 Then
+                MaxMemText.Text = 8
+            ElseIf maxMem > maxValue Then
+                MaxMemText.Text = maxValue
+            End If
+        End If
+    End Sub
+
+
+    Private Sub DebugMaxMem_Click(sender As Object, e As EventArgs) Handles DebugMaxMem.Click
+
+    End Sub
+
+    Private Sub AvailMemValue_Click(sender As Object, e As EventArgs)
+
     End Sub
 End Class
