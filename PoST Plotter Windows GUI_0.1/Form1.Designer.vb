@@ -46,6 +46,9 @@ Partial Class Form1
         Me.SelectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OpenConfigLocationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContentsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.IndexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -117,6 +120,7 @@ Partial Class Form1
         Me.NumCudaLabel = New System.Windows.Forms.Label()
         Me.DebugCudaDevice = New System.Windows.Forms.Label()
         Me.CudaDeviceLabel = New System.Windows.Forms.Label()
+        Me.PlotButton = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -130,7 +134,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(2114, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1126, 28)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -278,7 +282,7 @@ Partial Class Form1
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DebugModeToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DebugModeToolStripMenuItem, Me.OpenConfigToolStripMenuItem, Me.OpenConfigLocationToolStripMenuItem, Me.ClearConfigToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(58, 24)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -286,8 +290,26 @@ Partial Class Form1
         'DebugModeToolStripMenuItem
         '
         Me.DebugModeToolStripMenuItem.Name = "DebugModeToolStripMenuItem"
-        Me.DebugModeToolStripMenuItem.Size = New System.Drawing.Size(180, 26)
+        Me.DebugModeToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
         Me.DebugModeToolStripMenuItem.Text = "Debug Mode"
+        '
+        'OpenConfigToolStripMenuItem
+        '
+        Me.OpenConfigToolStripMenuItem.Name = "OpenConfigToolStripMenuItem"
+        Me.OpenConfigToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
+        Me.OpenConfigToolStripMenuItem.Text = "Open Config"
+        '
+        'OpenConfigLocationToolStripMenuItem
+        '
+        Me.OpenConfigLocationToolStripMenuItem.Name = "OpenConfigLocationToolStripMenuItem"
+        Me.OpenConfigLocationToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
+        Me.OpenConfigLocationToolStripMenuItem.Text = "Open Config Location"
+        '
+        'ClearConfigToolStripMenuItem
+        '
+        Me.ClearConfigToolStripMenuItem.Name = "ClearConfigToolStripMenuItem"
+        Me.ClearConfigToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
+        Me.ClearConfigToolStripMenuItem.Text = "Clear Config"
         '
         'HelpToolStripMenuItem
         '
@@ -887,7 +909,7 @@ Partial Class Form1
         Me.GPUOptions.Controls.Add(Me.DebugCudaDevice)
         Me.GPUOptions.Controls.Add(Me.CudaDeviceLabel)
         Me.GPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.GPUOptions.Location = New System.Drawing.Point(638, 194)
+        Me.GPUOptions.Location = New System.Drawing.Point(638, 214)
         Me.GPUOptions.Name = "GPUOptions"
         Me.GPUOptions.Size = New System.Drawing.Size(357, 150)
         Me.GPUOptions.TabIndex = 4
@@ -1002,11 +1024,22 @@ Partial Class Form1
         Me.CudaDeviceLabel.TabIndex = 7
         Me.CudaDeviceLabel.Text = "Cuda Device:"
         '
+        'PlotButton
+        '
+        Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.PlotButton.Location = New System.Drawing.Point(489, 552)
+        Me.PlotButton.Name = "PlotButton"
+        Me.PlotButton.Size = New System.Drawing.Size(150, 29)
+        Me.PlotButton.TabIndex = 5
+        Me.PlotButton.Text = "Ready. Set. Plot!"
+        Me.PlotButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(2114, 1000)
+        Me.ClientSize = New System.Drawing.Size(1126, 603)
+        Me.Controls.Add(Me.PlotButton)
         Me.Controls.Add(Me.GPUOptions)
         Me.Controls.Add(Me.CPUOptions)
         Me.Controls.Add(Me.AccountKeys)
@@ -1014,7 +1047,7 @@ Partial Class Form1
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "PoST Plotter Windows GUI"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.CommonOptions.ResumeLayout(False)
@@ -1124,4 +1157,8 @@ Partial Class Form1
     Friend WithEvents MaxMemText As TextBox
     Friend WithEvents DebugMaxMem As Label
     Friend WithEvents MaxMemLabel As Label
+    Friend WithEvents OpenConfigToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents OpenConfigLocationToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ClearConfigToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents PlotButton As Button
 End Class

@@ -1,7 +1,23 @@
 ﻿Imports System.IO
+Imports System.Net.WebRequestMethods
+Imports System.Text
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
+
+    Private Const configFileName As String = "config.app" 'Name of the config file
+    Private Shared configFilePath As String = Path.Combine(Application.StartupPath, configFileName) 'Full path to the config file
+    Private cliPrograms As New Dictionary(Of String, String) From {
+    {"chia_plot", "chia_plot.exe"},
+    {"chia_plot_k34", "chia_plot_k34.exe"},
+    {"cuda_plot_k26", "cuda_plot_k26.exe"},
+    {"cuda_plot_k29", "cuda_plot_k29.exe"},
+    {"cuda_plot_k30", "cuda_plot_k30.exe"},
+    {"cuda_plot_k31", "cuda_plot_k31.exe"},
+    {"cuda_plot_k32", "cuda_plot_k32.exe"},
+    {"cuda_plot_k33", "cuda_plot_k33.exe"},
+    {"cuda_plot_k34", "cuda_plot_k34.exe"}
+}
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DebugPM.Visible = False
@@ -33,6 +49,129 @@ Public Class Form1
         KValueCombo.Text = "32"
         CLCombo.Text = "1"
         NPlotsText.Text = "1"
+
+        If System.IO.File.Exists(configFilePath) Then
+            ' Read the config file
+            Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
+            ' Parse the config content into a dictionary
+            For Each line As String In configContent.Split(Environment.NewLine)
+                Dim parts As String() = line.Split("=")
+                If parts.Length = 2 Then
+                    cliPrograms(parts(0)) = parts(1)
+                End If
+            Next
+
+            ' Check if the file paths for each program are present and valid
+            For Each program In cliPrograms
+                Dim filePath As String = ""
+                If cliPrograms.TryGetValue(program.Key, filePath) Then
+                    If System.IO.File.Exists(filePath) Then
+                        ' The file path is valid, move on to the next program
+                        Continue For
+                    End If
+                End If
+
+                ' The file path is not present or invalid
+                ' Prompt the user to select the correct path using the Windows File Explorer dialog box
+                Dim openFileDialog As New OpenFileDialog With {
+                    .Filter = program.Value & "|" & program.Value,
+                    .Title = "Select " & program.Value
+                }
+                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                    ' Update the file path in the config file
+                    filePath = openFileDialog.FileName
+                    cliPrograms(program.Key) = filePath
+                End If
+            Next
+
+            ' Write the updated file paths to the config file
+            Dim configBuilder As New StringBuilder()
+            For Each argument In cliPrograms
+                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+            Next
+            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+        Else
+            ' The config file does not exist
+            ' Create a new config file and prompt the user to select the correct path for each program
+            For Each program In cliPrograms
+                Dim openFileDialog As New OpenFileDialog With {
+                    .Filter = program.Value & "|" & program.Value,
+                    .Title = "Select " & program.Value
+                }
+                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                    ' Update the file path in the dictionary
+                    Dim filePath As String = openFileDialog.FileName
+                    cliPrograms(program.Key) = filePath
+                End If
+            Next
+            ' Write the file paths to the new config file
+            Dim configBuilder As New StringBuilder()
+            For Each argument In cliPrograms
+                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+            Next
+            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+        End If
+        If System.IO.File.Exists(configFilePath) Then
+            ' Read the config file
+            Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
+            ' Parse the config content into a dictionary
+            For Each line As String In configContent.Split(Environment.NewLine)
+                Dim parts As String() = line.Split("=")
+                If parts.Length = 2 Then
+                    cliPrograms(parts(0)) = parts(1)
+                End If
+            Next
+
+            ' Check if the file paths for each program are present and valid
+            For Each program In cliPrograms
+                Dim filePath As String = ""
+                If cliPrograms.TryGetValue(program.Key, filePath) Then
+                    If System.IO.File.Exists(filePath) Then
+                        ' The file path is valid, move on to the next program
+                        Continue For
+                    End If
+                End If
+
+                ' The file path is not present or invalid
+                ' Prompt the user to select the correct path using the Windows File Explorer dialog box
+                Dim openFileDialog As New OpenFileDialog With {
+                    .Filter = program.Value & "|" & program.Value,
+                    .Title = "Select " & program.Value
+                }
+                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                    ' Update the file path in the config file
+                    filePath = openFileDialog.FileName
+                    cliPrograms(program.Key) = filePath
+                End If
+            Next
+
+            ' Write the updated file paths to the config file
+            Dim configBuilder As New StringBuilder()
+            For Each argument In cliPrograms
+                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+            Next
+            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+        Else
+            ' The config file does not exist
+            ' Create a new config file and prompt the user to select the correct path for each program
+            For Each program In cliPrograms
+                Dim openFileDialog As New OpenFileDialog With {
+                    .Filter = program.Value & "|" & program.Value,
+                    .Title = "Select " & program.Value
+                }
+                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                    ' Update the file path in the dictionary
+                    Dim filePath As String = openFileDialog.FileName
+                    cliPrograms(program.Key) = filePath
+                End If
+            Next
+            ' Write the file paths to the new config file
+            Dim configBuilder As New StringBuilder()
+            For Each argument In cliPrograms
+                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+            Next
+            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+        End If
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -500,7 +639,7 @@ Public Class Form1
             If CInt(StreamsText.Text) < 2 Then
                 StreamsText.Text = 2
             End If
-        arguments("-S") = StreamsText.Text.ToString()
+            arguments("-S") = StreamsText.Text.ToString()
         End If
         If arguments.ContainsKey("-S") Then
             DebugStreams.Text = "-S " & arguments("-S").ToString()
@@ -518,14 +657,14 @@ Public Class Form1
         If MaxMemText.Text = "" Then
             arguments("-M") = MaxMemText.Text.ToString()
         Else
-        Try
-            Dim mem As Integer = Integer.Parse(MaxMemText.Text)
-            If mem < 8 Then
-            End If
+            Try
+                Dim mem As Integer = Integer.Parse(MaxMemText.Text)
+                If mem < 8 Then
+                End If
                 arguments("-M") = MaxMemText.Text.ToString()
-        Catch ex As FormatException
-            MessageBox.Show("Invalid input. Please enter a valid integer.")
-        End Try
+            Catch ex As FormatException
+                MessageBox.Show("Invalid input. Please enter a valid integer.")
+            End Try
         End If
         If arguments.ContainsKey("-M") Then
             DebugMaxMem.Text = "-M " & arguments("-M").ToString()
@@ -539,4 +678,93 @@ Public Class Form1
 
     End Sub
 
+    Private Sub OpenConfigToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenConfigToolStripMenuItem.Click
+        Process.Start("notepad.exe", configFilePath)
+    End Sub
+
+    Private Sub OpenConfigLocationToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles OpenConfigLocationToolStripMenuItem.Click
+        Process.Start("explorer.exe", "/select," & configFilePath)
+    End Sub
+
+    Private Sub ClearConfigToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearConfigToolStripMenuItem.Click
+        Dim clearConfigDialog As New DialogResult
+        clearConfigDialog = MessageBox.Show("Are you sure you want to clear the contents of the config file? This action will restart the application and any unsaved changes will be lost. Do you wish to continue?", "Warning", MessageBoxButtons.YesNo)
+        If clearConfigDialog = DialogResult.Yes Then
+            System.IO.File.WriteAllText(configFilePath, String.Empty)
+            Application.Restart()
+        End If
+    End Sub
+
+    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+        Dim argumentsString As String
+
+        If PMGPURadio.Checked AndAlso arguments.ContainsKey("-PM") Then
+            Dim cliProgramName As String = ""
+            Select Case arguments("-k")
+                Case 26
+                    cliProgramName = cliPrograms("cuda_plot_k26")
+                Case 29
+                    cliProgramName = cliPrograms("cuda_plot_k29")
+                Case 30
+                    cliProgramName = cliPrograms("cuda_plot_k30")
+                Case 31
+                    cliProgramName = cliPrograms("cuda_plot_k31")
+                Case 32
+                    cliProgramName = cliPrograms("cuda_plot_k32")
+                Case 33
+                    cliProgramName = cliPrograms("cuda_plot_k33")
+                Case 34
+                    cliProgramName = cliPrograms("cuda_plot_k34")
+            End Select
+            If arguments.ContainsKey("-k") Then
+                argumentsString &= "-k" & arguments("-k")
+            End If
+            If arguments.ContainsKey("-C") Then
+                argumentsString &= "-C" & arguments("-C")
+            End If
+            If arguments.ContainsKey("-x") Then
+                argumentsString &= "-x" & arguments("-x")
+            End If
+            If arguments.ContainsKey("-n") Then
+                argumentsString &= "-n" & arguments("-n")
+            End If
+            If arguments.ContainsKey("-g") Then
+                argumentsString &= "-g" & arguments("-g")
+            End If
+            If arguments.ContainsKey("-r2") Then
+                argumentsString &= "-n" & arguments("-r2")
+            End If
+            If arguments.ContainsKey("-S") Then
+                argumentsString &= "-S" & arguments("-S")
+            End If
+            If arguments.ContainsKey("-M") Then
+                argumentsString &= "-M" & arguments("-M")
+            End If
+            If arguments.ContainsKey("-t") Then
+                argumentsString &= "-t" & arguments("-t")
+            End If
+            If arguments.ContainsKey("-2") Then
+                argumentsString &= "-2" & arguments("-2")
+            End If
+            If arguments.ContainsKey("-d") Then
+                argumentsString &= "-d" & arguments("-d")
+            End If
+            If arguments.ContainsKey("-p") Then
+                argumentsString &= "-p" & arguments("-p")
+            End If
+            If arguments.ContainsKey("-c") Then
+                argumentsString &= "-c" & arguments("-c")
+            End If
+            If arguments.ContainsKey("-f") Then
+                argumentsString &= "-f" & arguments("-f")
+            End If
+        End If
+
+        ' Use substring method to shorten the full file path for the cd portion of the command
+        Dim cliPath As String = cliPrograms("cuda_plots_" & arguments("-k"))
+                Dim cdPathSubstring As String = cliPath.Substring(0, cliPath.LastIndexOf("\"))
+        Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d ""{0}""" + Environment.NewLine + "{1} {2}", cdPathSubstring, cliPrograms, argumentsString)
+        Process.Start("cmd", "/c " & command)
+
+    End Sub
 End Class
