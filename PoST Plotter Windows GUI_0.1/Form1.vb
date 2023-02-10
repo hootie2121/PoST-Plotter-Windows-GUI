@@ -766,6 +766,102 @@ Public Class Form1
 
     Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
 
+        If PMGPURadio.Checked Then
+            If arguments.ContainsKey("-k") Then
+                argumentsString &= "-k " & arguments("-k")
+            End If
+            If arguments.ContainsKey("-C") Then
+                argumentsString &= " -C " & arguments("-C")
+            End If
+            If arguments.ContainsKey("-x") Then
+                argumentsString &= " -x " & arguments("-x")
+            End If
+            If arguments.ContainsKey("-n") Then
+                argumentsString &= " -n " & arguments("-n")
+            End If
+            If arguments.ContainsKey("-g") Then
+                argumentsString &= " -g " & arguments("-g")
+            End If
+            If arguments.ContainsKey("-r2") Then
+                argumentsString &= " -r " & arguments("-r2")
+            End If
+            If arguments.ContainsKey("-S") Then
+                argumentsString &= " -S " & arguments("-S")
+            End If
+            If arguments.ContainsKey("-M") Then
+                argumentsString &= " -M " & arguments("-M")
+            End If
+            If arguments.ContainsKey("-t") Then
+                argumentsString &= " -t " & arguments("-t")
+            End If
+            If arguments.ContainsKey("-2") Then
+                argumentsString &= " -2 " & arguments("-2")
+            End If
+            If arguments.ContainsKey("-d") Then
+                argumentsString &= " -d " & arguments("-d")
+            End If
+            If arguments.ContainsKey("-p") Then
+                argumentsString &= " -p " & arguments("-p")
+            End If
+            If arguments.ContainsKey("-c") Then
+                argumentsString &= " -c " & arguments("-c")
+            End If
+            If arguments.ContainsKey("-f") Then
+                argumentsString &= " -f " & arguments("-f")
+            End If
+            Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d {0}" + Environment.NewLine + "./{1} {2}", arguments("-plp").ToString(), arguments("-pl").ToString(), argumentsString)
+            Console.WriteLine("Command: " + command)
+            Process.Start("cmd", "/c " & command)
+
+            Debug.WriteLine("Command: " + command)
+            Process.Start("cmd", "/c " & command)
+        ElseIf PMCPURadio.Checked Then
+            If arguments.ContainsKey("-k") Then
+                argumentsString &= "-k " & arguments("-k")
+            End If
+            If arguments.ContainsKey("-C") Then
+                argumentsString &= " -C " & arguments("-C")
+            End If
+            If arguments.ContainsKey("-x") Then
+                argumentsString &= " -x " & arguments("-x")
+            End If
+            If arguments.ContainsKey("-n") Then
+                argumentsString &= " -n " & arguments("-n")
+            End If
+            If arguments.ContainsKey("-r") Then
+                argumentsString &= " -r " & arguments("-r")
+            End If
+            If arguments.ContainsKey("-u") Then
+                argumentsString &= " -u " & arguments("-u")
+            End If
+            If arguments.ContainsKey("-v") Then
+                argumentsString &= " -v " & arguments("-v")
+            End If
+            If arguments.ContainsKey("-t") Then
+                argumentsString &= " -t " & arguments("-t")
+            End If
+            If arguments.ContainsKey("-2") Then
+                argumentsString &= " -2 " & arguments("-2")
+            End If
+            If arguments.ContainsKey("-d") Then
+                argumentsString &= " -d " & arguments("-d")
+            End If
+            If arguments.ContainsKey("-p") Then
+                argumentsString &= " -p " & arguments("-p")
+            End If
+            If arguments.ContainsKey("-c") Then
+                argumentsString &= " -c " & arguments("-c")
+            End If
+            If arguments.ContainsKey("-f") Then
+                argumentsString &= " -f " & arguments("-f")
+            End If
+            Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d {0}" + Environment.NewLine + "./{1} {2}", arguments("-plp").ToString(), arguments("-pl").ToString(), argumentsString)
+            Console.WriteLine("Command: " + command)
+            Process.Start("cmd", "/c " & command)
+
+            Debug.WriteLine("Command: " + command)
+            Process.Start("cmd", "/c " & command)
+        End If
     End Sub
 
 End Class
