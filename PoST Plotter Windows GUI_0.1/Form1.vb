@@ -37,6 +37,8 @@ Public Class Form1
         DebugNumCuda.Visible = False
         DebugStreams.Visible = False
         DebugMaxMem.Visible = False
+        DebugPlotterPath.Visible = False
+        DebugPlotter.Visible = False
         For i As Integer = 1 To 9
             CLCombo.Items.Add(i.ToString())
         Next
@@ -193,6 +195,8 @@ Public Class Form1
         DebugNumCuda.Visible = DebugModeToolStripMenuItem.Checked
         DebugStreams.Visible = DebugModeToolStripMenuItem.Checked
         DebugMaxMem.Visible = DebugModeToolStripMenuItem.Checked
+        DebugPlotterPath.Visible = DebugModeToolStripMenuItem.Checked
+        DebugPlotter.Visible = DebugModeToolStripMenuItem.Checked
     End Sub
 
     Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
@@ -267,6 +271,63 @@ Public Class Form1
             DebugKValue.Text = "No K-Value selected"
         End If
         Debug.WriteLine("-k " & arguments("-k"))
+        If arguments.ContainsKey("-PM") AndAlso arguments.ContainsKey("-k") Then
+            If arguments("-PM").Equals("CPU") Then
+                If Integer.Parse(arguments("-k")) <= 32 Then
+                    Dim plotter As String = cliPrograms("chia_plot")
+                    Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                    arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                    arguments("-pl") = Path.GetFileName(plotter)
+                Else
+                    Dim plotter As String = cliPrograms("chia_plot_k34")
+                    Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                    arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                    arguments("-pl") = Path.GetFileName(plotter)
+                End If
+            ElseIf arguments("-PM").Equals("GPU") Then
+                Select Case Integer.Parse(arguments("-k"))
+                    Case 26
+                        Dim plotter As String = cliPrograms("cuda_plot_k26")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 29
+                        Dim plotter As String = cliPrograms("cuda_plot_k29")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 30
+                        Dim plotter As String = cliPrograms("cuda_plot_k30")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 31
+                        Dim plotter As String = cliPrograms("cuda_plot_k31")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 32
+                        Dim plotter As String = cliPrograms("cuda_plot_k32")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 33
+                        Dim plotter As String = cliPrograms("cuda_plot_k33")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                    Case 34
+                        Dim plotter As String = cliPrograms("cuda_plot_k34")
+                        Dim plotterPath As String = Path.Combine(Application.StartupPath, plotter)
+                        arguments("-plp") = Path.GetDirectoryName(plotterPath)
+                        arguments("-pl") = Path.GetFileName(plotter)
+                End Select
+            End If
+        End If
+        DebugPlotterPath.Text = arguments("-plp").ToString()
+        DebugPlotter.Text = arguments("-pl").ToString()
+        Debug.WriteLine($"{arguments("-plp")}")
+        Debug.WriteLine($"{arguments("-pl")}")
     End Sub
 
     Private Sub DebugKValue_Click(sender As Object, e As EventArgs) Handles DebugKValue.Click
@@ -695,76 +756,16 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
-        Dim argumentsString As String
-
-        If PMGPURadio.Checked AndAlso arguments.ContainsKey("-PM") Then
-            Dim cliProgramName As String = ""
-            Select Case arguments("-k")
-                Case 26
-                    cliProgramName = cliPrograms("cuda_plot_k26")
-                Case 29
-                    cliProgramName = cliPrograms("cuda_plot_k29")
-                Case 30
-                    cliProgramName = cliPrograms("cuda_plot_k30")
-                Case 31
-                    cliProgramName = cliPrograms("cuda_plot_k31")
-                Case 32
-                    cliProgramName = cliPrograms("cuda_plot_k32")
-                Case 33
-                    cliProgramName = cliPrograms("cuda_plot_k33")
-                Case 34
-                    cliProgramName = cliPrograms("cuda_plot_k34")
-            End Select
-            If arguments.ContainsKey("-k") Then
-                argumentsString &= "-k" & arguments("-k")
-            End If
-            If arguments.ContainsKey("-C") Then
-                argumentsString &= "-C" & arguments("-C")
-            End If
-            If arguments.ContainsKey("-x") Then
-                argumentsString &= "-x" & arguments("-x")
-            End If
-            If arguments.ContainsKey("-n") Then
-                argumentsString &= "-n" & arguments("-n")
-            End If
-            If arguments.ContainsKey("-g") Then
-                argumentsString &= "-g" & arguments("-g")
-            End If
-            If arguments.ContainsKey("-r2") Then
-                argumentsString &= "-n" & arguments("-r2")
-            End If
-            If arguments.ContainsKey("-S") Then
-                argumentsString &= "-S" & arguments("-S")
-            End If
-            If arguments.ContainsKey("-M") Then
-                argumentsString &= "-M" & arguments("-M")
-            End If
-            If arguments.ContainsKey("-t") Then
-                argumentsString &= "-t" & arguments("-t")
-            End If
-            If arguments.ContainsKey("-2") Then
-                argumentsString &= "-2" & arguments("-2")
-            End If
-            If arguments.ContainsKey("-d") Then
-                argumentsString &= "-d" & arguments("-d")
-            End If
-            If arguments.ContainsKey("-p") Then
-                argumentsString &= "-p" & arguments("-p")
-            End If
-            If arguments.ContainsKey("-c") Then
-                argumentsString &= "-c" & arguments("-c")
-            End If
-            If arguments.ContainsKey("-f") Then
-                argumentsString &= "-f" & arguments("-f")
-            End If
-        End If
-
-        ' Use substring method to shorten the full file path for the cd portion of the command
-        Dim cliPath As String = cliPrograms("cuda_plots_" & arguments("-k"))
-                Dim cdPathSubstring As String = cliPath.Substring(0, cliPath.LastIndexOf("\"))
-        Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d ""{0}""" + Environment.NewLine + "{1} {2}", cdPathSubstring, cliPrograms, argumentsString)
-        Process.Start("cmd", "/c " & command)
+    Private Sub DebugPlotterPath_Click(sender As Object, e As EventArgs) Handles DebugPlotterPath.Click
 
     End Sub
+
+    Private Sub DebugPlotter_Click(sender As Object, e As EventArgs) Handles DebugPlotter.Click
+
+    End Sub
+
+    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+
+    End Sub
+
 End Class
