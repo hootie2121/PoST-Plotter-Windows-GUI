@@ -121,6 +121,12 @@ Partial Class Form1
         Me.DebugCudaDevice = New System.Windows.Forms.Label()
         Me.CudaDeviceLabel = New System.Windows.Forms.Label()
         Me.PlotButton = New System.Windows.Forms.Button()
+        Me.DebugPlotterPath = New System.Windows.Forms.Label()
+        Me.DebugPlotter = New System.Windows.Forms.Label()
+        Me.DebugCPort = New System.Windows.Forms.Label()
+        Me.CPortCombo = New System.Windows.Forms.ComboBox()
+        Me.CPortLabel = New System.Windows.Forms.Label()
+        Me.CPortText = New System.Windows.Forms.TextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -134,7 +140,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1126, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1327, 28)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -349,6 +355,10 @@ Partial Class Form1
         '
         'CommonOptions
         '
+        Me.CommonOptions.Controls.Add(Me.CPortText)
+        Me.CommonOptions.Controls.Add(Me.DebugCPort)
+        Me.CommonOptions.Controls.Add(Me.CPortCombo)
+        Me.CommonOptions.Controls.Add(Me.CPortLabel)
         Me.CommonOptions.Controls.Add(Me.FinalDirCheck)
         Me.CommonOptions.Controls.Add(Me.DebugFinalDir)
         Me.CommonOptions.Controls.Add(Me.FinalDirButton)
@@ -381,7 +391,7 @@ Partial Class Form1
         Me.CommonOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.CommonOptions.Location = New System.Drawing.Point(8, 39)
         Me.CommonOptions.Name = "CommonOptions"
-        Me.CommonOptions.Size = New System.Drawing.Size(612, 325)
+        Me.CommonOptions.Size = New System.Drawing.Size(612, 382)
         Me.CommonOptions.TabIndex = 1
         Me.CommonOptions.TabStop = False
         Me.CommonOptions.Text = "Common Options:"
@@ -390,7 +400,7 @@ Partial Class Form1
         '
         Me.FinalDirCheck.AutoSize = True
         Me.FinalDirCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirCheck.Location = New System.Drawing.Point(526, 283)
+        Me.FinalDirCheck.Location = New System.Drawing.Point(526, 323)
         Me.FinalDirCheck.Name = "FinalDirCheck"
         Me.FinalDirCheck.Size = New System.Drawing.Size(79, 24)
         Me.FinalDirCheck.TabIndex = 28
@@ -401,7 +411,7 @@ Partial Class Form1
         '
         Me.DebugFinalDir.AutoSize = True
         Me.DebugFinalDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugFinalDir.Location = New System.Drawing.Point(6, 310)
+        Me.DebugFinalDir.Location = New System.Drawing.Point(6, 350)
         Me.DebugFinalDir.Name = "DebugFinalDir"
         Me.DebugFinalDir.Size = New System.Drawing.Size(0, 20)
         Me.DebugFinalDir.TabIndex = 27
@@ -409,7 +419,7 @@ Partial Class Form1
         'FinalDirButton
         '
         Me.FinalDirButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirButton.Location = New System.Drawing.Point(457, 280)
+        Me.FinalDirButton.Location = New System.Drawing.Point(457, 320)
         Me.FinalDirButton.Name = "FinalDirButton"
         Me.FinalDirButton.Size = New System.Drawing.Size(63, 29)
         Me.FinalDirButton.TabIndex = 26
@@ -419,7 +429,7 @@ Partial Class Form1
         'FinalDirText
         '
         Me.FinalDirText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirText.Location = New System.Drawing.Point(120, 282)
+        Me.FinalDirText.Location = New System.Drawing.Point(120, 322)
         Me.FinalDirText.Name = "FinalDirText"
         Me.FinalDirText.Size = New System.Drawing.Size(331, 27)
         Me.FinalDirText.TabIndex = 25
@@ -428,7 +438,7 @@ Partial Class Form1
         '
         Me.FinalDirLabel.AutoSize = True
         Me.FinalDirLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirLabel.Location = New System.Drawing.Point(6, 285)
+        Me.FinalDirLabel.Location = New System.Drawing.Point(6, 325)
         Me.FinalDirLabel.Name = "FinalDirLabel"
         Me.FinalDirLabel.Size = New System.Drawing.Size(108, 20)
         Me.FinalDirLabel.TabIndex = 24
@@ -438,7 +448,7 @@ Partial Class Form1
         '
         Me.TempDir2Check.AutoSize = True
         Me.TempDir2Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Check.Location = New System.Drawing.Point(526, 233)
+        Me.TempDir2Check.Location = New System.Drawing.Point(526, 273)
         Me.TempDir2Check.Name = "TempDir2Check"
         Me.TempDir2Check.Size = New System.Drawing.Size(79, 24)
         Me.TempDir2Check.TabIndex = 23
@@ -449,7 +459,7 @@ Partial Class Form1
         '
         Me.DebugTempDir2.AutoSize = True
         Me.DebugTempDir2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugTempDir2.Location = New System.Drawing.Point(6, 260)
+        Me.DebugTempDir2.Location = New System.Drawing.Point(6, 300)
         Me.DebugTempDir2.Name = "DebugTempDir2"
         Me.DebugTempDir2.Size = New System.Drawing.Size(0, 20)
         Me.DebugTempDir2.TabIndex = 22
@@ -457,7 +467,7 @@ Partial Class Form1
         'TempDir2Button
         '
         Me.TempDir2Button.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Button.Location = New System.Drawing.Point(457, 230)
+        Me.TempDir2Button.Location = New System.Drawing.Point(457, 270)
         Me.TempDir2Button.Name = "TempDir2Button"
         Me.TempDir2Button.Size = New System.Drawing.Size(63, 29)
         Me.TempDir2Button.TabIndex = 21
@@ -467,7 +477,7 @@ Partial Class Form1
         'TempDir2Text
         '
         Me.TempDir2Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Text.Location = New System.Drawing.Point(172, 232)
+        Me.TempDir2Text.Location = New System.Drawing.Point(172, 272)
         Me.TempDir2Text.Name = "TempDir2Text"
         Me.TempDir2Text.Size = New System.Drawing.Size(279, 27)
         Me.TempDir2Text.TabIndex = 20
@@ -476,7 +486,7 @@ Partial Class Form1
         '
         Me.TempDir2Label.AutoSize = True
         Me.TempDir2Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Label.Location = New System.Drawing.Point(6, 235)
+        Me.TempDir2Label.Location = New System.Drawing.Point(6, 275)
         Me.TempDir2Label.Name = "TempDir2Label"
         Me.TempDir2Label.Size = New System.Drawing.Size(160, 20)
         Me.TempDir2Label.TabIndex = 19
@@ -486,7 +496,7 @@ Partial Class Form1
         '
         Me.TempDir1Check.AutoSize = True
         Me.TempDir1Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Check.Location = New System.Drawing.Point(526, 183)
+        Me.TempDir1Check.Location = New System.Drawing.Point(526, 223)
         Me.TempDir1Check.Name = "TempDir1Check"
         Me.TempDir1Check.Size = New System.Drawing.Size(79, 24)
         Me.TempDir1Check.TabIndex = 18
@@ -497,7 +507,7 @@ Partial Class Form1
         '
         Me.DebugTempDir1.AutoSize = True
         Me.DebugTempDir1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugTempDir1.Location = New System.Drawing.Point(6, 210)
+        Me.DebugTempDir1.Location = New System.Drawing.Point(6, 250)
         Me.DebugTempDir1.Name = "DebugTempDir1"
         Me.DebugTempDir1.Size = New System.Drawing.Size(0, 20)
         Me.DebugTempDir1.TabIndex = 17
@@ -505,7 +515,7 @@ Partial Class Form1
         'TempDir1Button
         '
         Me.TempDir1Button.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Button.Location = New System.Drawing.Point(457, 180)
+        Me.TempDir1Button.Location = New System.Drawing.Point(457, 220)
         Me.TempDir1Button.Name = "TempDir1Button"
         Me.TempDir1Button.Size = New System.Drawing.Size(63, 29)
         Me.TempDir1Button.TabIndex = 16
@@ -515,7 +525,7 @@ Partial Class Form1
         'TempDir1Text
         '
         Me.TempDir1Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Text.Location = New System.Drawing.Point(172, 182)
+        Me.TempDir1Text.Location = New System.Drawing.Point(172, 222)
         Me.TempDir1Text.Name = "TempDir1Text"
         Me.TempDir1Text.Size = New System.Drawing.Size(279, 27)
         Me.TempDir1Text.TabIndex = 15
@@ -524,7 +534,7 @@ Partial Class Form1
         '
         Me.TempDir1.AutoSize = True
         Me.TempDir1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1.Location = New System.Drawing.Point(6, 185)
+        Me.TempDir1.Location = New System.Drawing.Point(6, 225)
         Me.TempDir1.Name = "TempDir1"
         Me.TempDir1.Size = New System.Drawing.Size(160, 20)
         Me.TempDir1.TabIndex = 14
@@ -534,7 +544,7 @@ Partial Class Form1
         '
         Me.DebugNPlots.AutoSize = True
         Me.DebugNPlots.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugNPlots.Location = New System.Drawing.Point(282, 145)
+        Me.DebugNPlots.Location = New System.Drawing.Point(282, 185)
         Me.DebugNPlots.Name = "DebugNPlots"
         Me.DebugNPlots.Size = New System.Drawing.Size(0, 20)
         Me.DebugNPlots.TabIndex = 13
@@ -543,7 +553,7 @@ Partial Class Form1
         '
         Me.NPlotsCheck.AutoSize = True
         Me.NPlotsCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlotsCheck.Location = New System.Drawing.Point(205, 144)
+        Me.NPlotsCheck.Location = New System.Drawing.Point(205, 184)
         Me.NPlotsCheck.Name = "NPlotsCheck"
         Me.NPlotsCheck.Size = New System.Drawing.Size(77, 24)
         Me.NPlotsCheck.TabIndex = 12
@@ -553,7 +563,7 @@ Partial Class Form1
         'NPlotsText
         '
         Me.NPlotsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlotsText.Location = New System.Drawing.Point(132, 142)
+        Me.NPlotsText.Location = New System.Drawing.Point(132, 182)
         Me.NPlotsText.Name = "NPlotsText"
         Me.NPlotsText.Size = New System.Drawing.Size(67, 27)
         Me.NPlotsText.TabIndex = 11
@@ -562,7 +572,7 @@ Partial Class Form1
         '
         Me.NPlots.AutoSize = True
         Me.NPlots.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlots.Location = New System.Drawing.Point(6, 145)
+        Me.NPlots.Location = New System.Drawing.Point(6, 185)
         Me.NPlots.Name = "NPlots"
         Me.NPlots.Size = New System.Drawing.Size(120, 20)
         Me.NPlots.TabIndex = 10
@@ -786,9 +796,9 @@ Partial Class Form1
         Me.AccountKeys.Controls.Add(Me.ContractKeyLabel)
         Me.AccountKeys.Controls.Add(Me.DebugContractKey)
         Me.AccountKeys.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.AccountKeys.Location = New System.Drawing.Point(8, 372)
+        Me.AccountKeys.Location = New System.Drawing.Point(8, 427)
         Me.AccountKeys.Name = "AccountKeys"
-        Me.AccountKeys.Size = New System.Drawing.Size(1073, 161)
+        Me.AccountKeys.Size = New System.Drawing.Size(1073, 183)
         Me.AccountKeys.TabIndex = 2
         Me.AccountKeys.TabStop = False
         Me.AccountKeys.Text = "Account Keys:"
@@ -909,7 +919,7 @@ Partial Class Form1
         Me.GPUOptions.Controls.Add(Me.DebugCudaDevice)
         Me.GPUOptions.Controls.Add(Me.CudaDeviceLabel)
         Me.GPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.GPUOptions.Location = New System.Drawing.Point(638, 214)
+        Me.GPUOptions.Location = New System.Drawing.Point(638, 271)
         Me.GPUOptions.Name = "GPUOptions"
         Me.GPUOptions.Size = New System.Drawing.Size(357, 150)
         Me.GPUOptions.TabIndex = 4
@@ -1027,18 +1037,72 @@ Partial Class Form1
         'PlotButton
         '
         Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PlotButton.Location = New System.Drawing.Point(489, 552)
+        Me.PlotButton.Location = New System.Drawing.Point(497, 629)
         Me.PlotButton.Name = "PlotButton"
         Me.PlotButton.Size = New System.Drawing.Size(150, 29)
         Me.PlotButton.TabIndex = 5
         Me.PlotButton.Text = "Ready. Set. Plot!"
         Me.PlotButton.UseVisualStyleBackColor = True
         '
+        'DebugPlotterPath
+        '
+        Me.DebugPlotterPath.AutoSize = True
+        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 613)
+        Me.DebugPlotterPath.Name = "DebugPlotterPath"
+        Me.DebugPlotterPath.Size = New System.Drawing.Size(0, 20)
+        Me.DebugPlotterPath.TabIndex = 6
+        '
+        'DebugPlotter
+        '
+        Me.DebugPlotter.AutoSize = True
+        Me.DebugPlotter.Location = New System.Drawing.Point(14, 638)
+        Me.DebugPlotter.Name = "DebugPlotter"
+        Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
+        Me.DebugPlotter.TabIndex = 7
+        '
+        'DebugCPort
+        '
+        Me.DebugCPort.AutoSize = True
+        Me.DebugCPort.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugCPort.Location = New System.Drawing.Point(259, 145)
+        Me.DebugCPort.Name = "DebugCPort"
+        Me.DebugCPort.Size = New System.Drawing.Size(0, 20)
+        Me.DebugCPort.TabIndex = 31
+        '
+        'CPortCombo
+        '
+        Me.CPortCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortCombo.FormattingEnabled = True
+        Me.CPortCombo.Location = New System.Drawing.Point(84, 142)
+        Me.CPortCombo.Name = "CPortCombo"
+        Me.CPortCombo.Size = New System.Drawing.Size(81, 28)
+        Me.CPortCombo.TabIndex = 30
+        '
+        'CPortLabel
+        '
+        Me.CPortLabel.AutoSize = True
+        Me.CPortLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortLabel.Location = New System.Drawing.Point(6, 145)
+        Me.CPortLabel.Name = "CPortLabel"
+        Me.CPortLabel.Size = New System.Drawing.Size(72, 20)
+        Me.CPortLabel.TabIndex = 29
+        Me.CPortLabel.Text = "Coin Port:"
+        '
+        'CPortText
+        '
+        Me.CPortText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortText.Location = New System.Drawing.Point(172, 142)
+        Me.CPortText.Name = "CPortText"
+        Me.CPortText.Size = New System.Drawing.Size(81, 27)
+        Me.CPortText.TabIndex = 32
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1126, 603)
+        Me.ClientSize = New System.Drawing.Size(1327, 795)
+        Me.Controls.Add(Me.DebugPlotter)
+        Me.Controls.Add(Me.DebugPlotterPath)
         Me.Controls.Add(Me.PlotButton)
         Me.Controls.Add(Me.GPUOptions)
         Me.Controls.Add(Me.CPUOptions)
@@ -1161,4 +1225,10 @@ Partial Class Form1
     Friend WithEvents OpenConfigLocationToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ClearConfigToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents PlotButton As Button
+    Friend WithEvents DebugPlotterPath As Label
+    Friend WithEvents DebugPlotter As Label
+    Friend WithEvents CPortText As TextBox
+    Friend WithEvents DebugCPort As Label
+    Friend WithEvents CPortCombo As ComboBox
+    Friend WithEvents CPortLabel As Label
 End Class

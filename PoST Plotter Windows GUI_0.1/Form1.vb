@@ -1,6 +1,7 @@
 ﻿Imports System.IO
 Imports System.Net.WebRequestMethods
 Imports System.Text
+Imports System.Threading
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
@@ -17,7 +18,14 @@ Public Class Form1
     {"cuda_plot_k32", "cuda_plot_k32.exe"},
     {"cuda_plot_k33", "cuda_plot_k33.exe"},
     {"cuda_plot_k34", "cuda_plot_k34.exe"}
-}
+    }
+    Private Const CHIA_VALUE As Integer = 8444
+    Private Const MMX_VALUE As Integer = 11337
+
+    Private ReadOnly portValues As New Dictionary(Of String, Integer)() From {
+    {"Chia", CHIA_VALUE},
+    {"MMX", MMX_VALUE}
+    }
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         DebugPM.Visible = False
@@ -39,6 +47,7 @@ Public Class Form1
         DebugMaxMem.Visible = False
         DebugPlotterPath.Visible = False
         DebugPlotter.Visible = False
+        DebugCPort.Visible = False
         For i As Integer = 1 To 9
             CLCombo.Items.Add(i.ToString())
         Next
@@ -48,9 +57,7 @@ Public Class Form1
         For i As Integer = 1 To numThreads - 1
             NumThreadsCombo.Items.Add(i)
         Next
-        KValueCombo.Text = "32"
-        CLCombo.Text = "1"
-        NPlotsText.Text = "1"
+        CPortCombo.Items.AddRange({"Chia", "MMX", "Other"})
 
         If System.IO.File.Exists(configFilePath) Then
             ' Read the config file
@@ -197,6 +204,7 @@ Public Class Form1
         DebugMaxMem.Visible = DebugModeToolStripMenuItem.Checked
         DebugPlotterPath.Visible = DebugModeToolStripMenuItem.Checked
         DebugPlotter.Visible = DebugModeToolStripMenuItem.Checked
+        DebugCPort.Visible = DebugModeToolStripMenuItem.Checked
     End Sub
 
     Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
@@ -765,6 +773,9 @@ Public Class Form1
     End Sub
 
     Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+        Dim argumentsString As String = ""
+        Dim plotFilePath As String = Path.Combine(arguments("-plp").ToString(), arguments("-pl").ToString())
+        Dim plotDirectory As String = Path.GetDirectoryName(plotFilePath)
 
         If PMGPURadio.Checked Then
             If arguments.ContainsKey("-k") Then
@@ -809,12 +820,6 @@ Public Class Form1
             If arguments.ContainsKey("-f") Then
                 argumentsString &= " -f " & arguments("-f")
             End If
-            Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d {0}" + Environment.NewLine + "./{1} {2}", arguments("-plp").ToString(), arguments("-pl").ToString(), argumentsString)
-            Console.WriteLine("Command: " + command)
-            Process.Start("cmd", "/c " & command)
-
-            Debug.WriteLine("Command: " + command)
-            Process.Start("cmd", "/c " & command)
         ElseIf PMCPURadio.Checked Then
             If arguments.ContainsKey("-k") Then
                 argumentsString &= "-k " & arguments("-k")
@@ -855,13 +860,56 @@ Public Class Form1
             If arguments.ContainsKey("-f") Then
                 argumentsString &= " -f " & arguments("-f")
             End If
-            Dim command As String = String.Format("@echo off" + Environment.NewLine + "cd /d {0}" + Environment.NewLine + "./{1} {2}", arguments("-plp").ToString(), arguments("-pl").ToString(), argumentsString)
-            Console.WriteLine("Command: " + command)
-            Process.Start("cmd", "/c " & command)
 
-            Debug.WriteLine("Command: " + command)
-            Process.Start("cmd", "/c " & command)
+            Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
+            processStartInfo.WorkingDirectory = plotDirectory
+
+            Dim cmdProcess As New Process()
+            cmdProcess.StartInfo = processStartInfo
+            cmdProcess.Start()
         End If
     End Sub
 
+    Private Sub cmdProcess_OutputDataReceived(sender As Object, e As DataReceivedEventArgs)
+        ' Display the line of output in the console
+        Console.WriteLine(e.Data)
+    End Sub
+
+    Private Sub CPortCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CPortCombo.SelectedIndexChanged
+        If CPortCombo.SelectedItem.ToString() = "Other" Then
+            CPortText.Enabled = True
+            If Not String.IsNullOrEmpty(CPortText.Text) Then
+                arguments("-x") = CPortText.Text
+            Else
+                Debug.WriteLine("No Other port value entered")
+            End If
+        Else
+            CPortText.Enabled = False
+            Dim selectedPort As String = CPortCombo.SelectedItem.ToString()
+            arguments("-x") = portValues(selectedPort).ToString()
+        End If
+        If arguments.ContainsKey("-x") Then
+            DebugCPort.Text = "-x " & arguments("-x")
+        Else
+            DebugCPort.Text = "No port selected"
+        End If
+        Debug.WriteLine(arguments("-x"))
+    End Sub
+
+    Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
+        If CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
+            portValues("Other") = CInt(CPortText.Text)
+            arguments("-x") = CInt(CPortText.Text)
+        End If
+        If arguments.ContainsKey("-x") Then
+            DebugCPort.Text = "-x " & arguments("-x")
+        Else
+            DebugCPort.Text = "No port selected"
+        End If
+        Debug.WriteLine(arguments("-x"))
+    End Sub
+
+    Private Sub DebugCPort_Click(sender As Object, e As EventArgs) Handles DebugCPort.Click
+
+    End Sub
 End Class
