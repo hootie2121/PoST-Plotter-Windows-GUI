@@ -138,7 +138,6 @@ Public Class Form1
         End If
     End Sub
 
-
     Private Sub SetDebugControlsVisibility(visible As Boolean)
         DebugPM.Visible = visible
         DebugKValue.Visible = visible

@@ -25,7 +25,6 @@ Curently, there are many known and unknown bugs due to the alpha nature of this 
 ### Known
 1. Most current Menu options have no function associated with them
 2. There is no current hard stops inplace preventing the start of plotting if necessary arguments are omitted or invalid
-3. Entering a value in place and then deleting it or moving it to another location leaves an empty string which will be passed along to the plotters causing an error (eg. If an "ADDRESS" is placed in the Contract Key and then moved to Pool Key, this will be passed to the plotters, "-p 'ADDRESS' -c  -f 'FARMING ADDRESS'" which results in an error)
 ### Unknown
 For any bugs not mentioned above, please check for the issue [HERE](https://github.com/hootie2121/PoST-Plotter-Windows-GUI/issues) in the GitHub repo. If you find the bug or a similar bug mentioned, please add a comment further explaing your situation to help identify the problem. If you do not find the bug or a similar bug, please enter a new issue. Along with provding a detailed description of the bug, please also tag the bug appropriately (Severe Bug, Moderate Bug, Minor Bug) so that addressing of bugs happen in a relevant order.
 
@@ -40,3 +39,4 @@ In no particular order:
 - Implement a status bar for n plots to be created
 - Implement automatic plot checking of completed plots
 - Integrate plot sink into PoSTPWG
+- Add program update functionality from application
