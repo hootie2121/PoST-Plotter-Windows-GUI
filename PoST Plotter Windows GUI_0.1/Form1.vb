@@ -846,98 +846,95 @@ Public Class Form1
         Dim plotDirectory As String = Path.GetDirectoryName(plotFilePath)
 
         If PMGPURadio.Checked Then
-            If arguments.ContainsKey("-k") Then
+            If arguments.ContainsKey("-k") AndAlso arguments("-k") <> "" Then
                 argumentsString &= "-k " & arguments("-k")
             End If
-            If arguments.ContainsKey("-C") Then
+            If arguments.ContainsKey("-C") AndAlso arguments("-C") <> "" Then
                 argumentsString &= " -C " & arguments("-C")
             End If
-            If arguments.ContainsKey("-x") Then
+            If arguments.ContainsKey("-x") AndAlso arguments("-x") <> "" Then
                 argumentsString &= " -x " & arguments("-x")
             End If
-            If arguments.ContainsKey("-n") Then
+            If arguments.ContainsKey("-n") AndAlso arguments("-n") <> "" Then
                 argumentsString &= " -n " & arguments("-n")
             End If
-            If arguments.ContainsKey("-g") Then
+            If arguments.ContainsKey("-g") AndAlso arguments("-g") <> "" Then
                 argumentsString &= " -g " & arguments("-g")
             End If
-            If arguments.ContainsKey("-r2") Then
+            If arguments.ContainsKey("-r2") AndAlso arguments("-r2") <> "" Then
                 argumentsString &= " -r " & arguments("-r2")
             End If
-            If arguments.ContainsKey("-S") Then
+            If arguments.ContainsKey("-S") AndAlso arguments("-S") <> "" Then
                 argumentsString &= " -S " & arguments("-S")
             End If
-            If arguments.ContainsKey("-M") Then
+            If arguments.ContainsKey("-M") AndAlso arguments("-M") <> "" Then
                 argumentsString &= " -M " & arguments("-M")
             End If
-            If arguments.ContainsKey("-t") Then
+            If arguments.ContainsKey("-t") AndAlso arguments("-t") <> "" Then
                 argumentsString &= " -t " & arguments("-t")
             End If
-            If arguments.ContainsKey("-2") Then
+            If arguments.ContainsKey("-2") AndAlso arguments("-2") <> "" Then
                 argumentsString &= " -2 " & arguments("-2")
             End If
-            If arguments.ContainsKey("-d") Then
+            If arguments.ContainsKey("-d") AndAlso arguments("-d") <> "" Then
                 argumentsString &= " -d " & arguments("-d")
             End If
-            If arguments.ContainsKey("-p") Then
+            If arguments.ContainsKey("-p") AndAlso arguments("-p") <> "" Then
                 argumentsString &= " -p " & arguments("-p")
             End If
-            If arguments.ContainsKey("-c") Then
+            If arguments.ContainsKey("-c") AndAlso arguments("-c") <> "" Then
                 argumentsString &= " -c " & arguments("-c")
             End If
-            If arguments.ContainsKey("-f") Then
+            If arguments.ContainsKey("-f") AndAlso arguments("-f") <> "" Then
                 argumentsString &= " -f " & arguments("-f")
             End If
             Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
             processStartInfo.WorkingDirectory = plotDirectory
-
             Dim cmdProcess As New Process()
             cmdProcess.StartInfo = processStartInfo
             cmdProcess.Start()
         ElseIf PMCPURadio.Checked Then
-            If arguments.ContainsKey("-k") Then
+            If arguments.ContainsKey("-k") AndAlso arguments("-k") <> "" Then
                 argumentsString &= "-k " & arguments("-k")
             End If
-            If arguments.ContainsKey("-C") Then
+            If arguments.ContainsKey("-C") AndAlso arguments("-C") <> "" Then
                 argumentsString &= " -C " & arguments("-C")
             End If
-            If arguments.ContainsKey("-x") Then
+            If arguments.ContainsKey("-x") AndAlso arguments("-x") <> "" Then
                 argumentsString &= " -x " & arguments("-x")
             End If
-            If arguments.ContainsKey("-n") Then
+            If arguments.ContainsKey("-n") AndAlso arguments("-n") <> "" Then
                 argumentsString &= " -n " & arguments("-n")
             End If
-            If arguments.ContainsKey("-r") Then
+            If arguments.ContainsKey("-r") AndAlso arguments("-r") <> "" Then
                 argumentsString &= " -r " & arguments("-r")
             End If
-            If arguments.ContainsKey("-u") Then
+            If arguments.ContainsKey("-u") AndAlso arguments("-u") <> "" Then
                 argumentsString &= " -u " & arguments("-u")
             End If
-            If arguments.ContainsKey("-v") Then
+            If arguments.ContainsKey("-v") AndAlso arguments("-v") <> "" Then
                 argumentsString &= " -v " & arguments("-v")
             End If
-            If arguments.ContainsKey("-t") Then
+            If arguments.ContainsKey("-t") AndAlso arguments("-t") <> "" Then
                 argumentsString &= " -t " & arguments("-t")
             End If
-            If arguments.ContainsKey("-2") Then
+            If arguments.ContainsKey("-2") AndAlso arguments("-2") <> "" Then
                 argumentsString &= " -2 " & arguments("-2")
             End If
-            If arguments.ContainsKey("-d") Then
+            If arguments.ContainsKey("-d") AndAlso arguments("-d") <> "" Then
                 argumentsString &= " -d " & arguments("-d")
             End If
-            If arguments.ContainsKey("-p") Then
+            If arguments.ContainsKey("-p") AndAlso arguments("-p") <> "" Then
                 argumentsString &= " -p " & arguments("-p")
             End If
-            If arguments.ContainsKey("-c") Then
+            If arguments.ContainsKey("-c") AndAlso arguments("-c") <> "" Then
                 argumentsString &= " -c " & arguments("-c")
             End If
-            If arguments.ContainsKey("-f") Then
+            If arguments.ContainsKey("-f") AndAlso arguments("-f") <> "" Then
                 argumentsString &= " -f " & arguments("-f")
             End If
-
             Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
             processStartInfo.WorkingDirectory = plotDirectory
-
             Dim cmdProcess As New Process()
             cmdProcess.StartInfo = processStartInfo
             cmdProcess.Start()
