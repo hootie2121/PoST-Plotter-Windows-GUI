@@ -473,8 +473,10 @@ Public Class Form1
         If checkbox.Checked Then
             TempDir1Text.Text = Path.GetTempPath()
             TempDir1Text.Enabled = False
+            TempDir1Button.Enabled = False
         Else
             TempDir1Text.Enabled = True
+            TempDir1Button.Enabled = True
         End If
     End Sub
 
@@ -520,8 +522,10 @@ Public Class Form1
         If checkbox.Checked Then
             TempDir2Text.Text = Path.GetTempPath()
             TempDir2Text.Enabled = False
+            TempDir2Button.Enabled = False
         Else
             TempDir2Text.Enabled = True
+            TempDir2Button.Enabled = True
         End If
     End Sub
 
@@ -567,8 +571,10 @@ Public Class Form1
         If checkbox.Checked Then
             FinalDirText.Text = Path.GetTempPath()
             FinalDirText.Enabled = False
+            FinalDirButton.Enabled = False
         Else
-            FinalDirText.Enabled = True
+            TempDir1Text.Enabled = True
+            FinalDirButton.Enabled = True
         End If
     End Sub
 
@@ -807,20 +813,15 @@ Public Class Form1
         Dim plotFilePath As String = Path.Combine(arguments("-plp").ToString(), arguments("-pl").ToString())
         Dim plotDirectory As String = Path.GetDirectoryName(plotFilePath)
 
+        Dim commonArguments() As String = {"-k", "-C", "-x", "-n", "-t", "-2", "-d", "-p", "-c", "-f"}
+
         If PMGPURadio.Checked Then
-            If arguments.ContainsKey("-k") Then
-                argumentsString &= "-k " & arguments("-k")
-            End If
-            If arguments.ContainsKey("-C") Then
-                argumentsString &= " -C " & arguments("-C")
-            End If
-            If arguments.ContainsKey("-x") Then
-                argumentsString &= " -x " & arguments("-x")
-            End If
-            If arguments.ContainsKey("-n") Then
-                argumentsString &= " -n " & arguments("-n")
-            End If
-            If arguments.ContainsKey("-g") Then
+            For Each arg In commonArguments
+                If arguments.ContainsKey(arg) AndAlso arguments(arg) <> "" Then
+                    argumentsString &= " " & arg & " " & arguments(arg)
+                End If
+            Next
+            If arguments.ContainsKey("-g") AndAlso arguments("-g") <> "" Then
                 argumentsString &= " -g " & arguments("-g")
             End If
             If arguments.ContainsKey("-r2") Then
@@ -832,38 +833,13 @@ Public Class Form1
             If arguments.ContainsKey("-M") Then
                 argumentsString &= " -M " & arguments("-M")
             End If
-            If arguments.ContainsKey("-t") Then
-                argumentsString &= " -t " & arguments("-t")
-            End If
-            If arguments.ContainsKey("-2") Then
-                argumentsString &= " -2 " & arguments("-2")
-            End If
-            If arguments.ContainsKey("-d") Then
-                argumentsString &= " -d " & arguments("-d")
-            End If
-            If arguments.ContainsKey("-p") Then
-                argumentsString &= " -p " & arguments("-p")
-            End If
-            If arguments.ContainsKey("-c") Then
-                argumentsString &= " -c " & arguments("-c")
-            End If
-            If arguments.ContainsKey("-f") Then
-                argumentsString &= " -f " & arguments("-f")
-            End If
         ElseIf PMCPURadio.Checked Then
-            If arguments.ContainsKey("-k") Then
-                argumentsString &= "-k " & arguments("-k")
-            End If
-            If arguments.ContainsKey("-C") Then
-                argumentsString &= " -C " & arguments("-C")
-            End If
-            If arguments.ContainsKey("-x") Then
-                argumentsString &= " -x " & arguments("-x")
-            End If
-            If arguments.ContainsKey("-n") Then
-                argumentsString &= " -n " & arguments("-n")
-            End If
-            If arguments.ContainsKey("-r") Then
+            For Each arg In commonArguments
+                If arguments.ContainsKey(arg) AndAlso arguments(arg) <> "" Then
+                    argumentsString &= " " & arg & " " & arguments(arg)
+                End If
+            Next
+            If arguments.ContainsKey("-r") AndAlso arguments("-r") <> "" Then
                 argumentsString &= " -r " & arguments("-r")
             End If
             If arguments.ContainsKey("-u") Then
@@ -872,33 +848,15 @@ Public Class Form1
             If arguments.ContainsKey("-v") Then
                 argumentsString &= " -v " & arguments("-v")
             End If
-            If arguments.ContainsKey("-t") Then
-                argumentsString &= " -t " & arguments("-t")
-            End If
-            If arguments.ContainsKey("-2") Then
-                argumentsString &= " -2 " & arguments("-2")
-            End If
-            If arguments.ContainsKey("-d") Then
-                argumentsString &= " -d " & arguments("-d")
-            End If
-            If arguments.ContainsKey("-p") Then
-                argumentsString &= " -p " & arguments("-p")
-            End If
-            If arguments.ContainsKey("-c") Then
-                argumentsString &= " -c " & arguments("-c")
-            End If
-            If arguments.ContainsKey("-f") Then
-                argumentsString &= " -f " & arguments("-f")
-            End If
-
-            Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
-            processStartInfo.WorkingDirectory = plotDirectory
-
-            Dim cmdProcess As New Process()
-            cmdProcess.StartInfo = processStartInfo
-            cmdProcess.Start()
         End If
+
+        Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
+        processStartInfo.WorkingDirectory = plotDirectory
+        Dim cmdProcess As New Process()
+        cmdProcess.StartInfo = processStartInfo
+        cmdProcess.Start()
     End Sub
+
 
     Private Sub cmdProcess_OutputDataReceived(sender As Object, e As DataReceivedEventArgs)
         ' Display the line of output in the console
