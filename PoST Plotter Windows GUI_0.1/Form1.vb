@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Drawing.Text
+Imports System.IO
 Imports System.Net.WebRequestMethods
 Imports System.Text
 Imports System.Threading
@@ -28,142 +29,126 @@ Public Class Form1
     }
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        DebugPM.Visible = False
-        DebugKValue.Visible = False
-        DebugCL.Visible = False
-        DebugNPlots.Visible = False
-        DebugTempDir1.Visible = False
-        DebugTempDir2.Visible = False
-        DebugFinalDir.Visible = False
-        DebugPoolKey.Visible = False
-        DebugContractKey.Visible = False
-        DebugFarmerKey.Visible = False
-        DebugNumThreads.Visible = False
-        DebugBuckets.Visible = False
-        DebugBucketsP23.Visible = False
-        DebugCudaDevice.Visible = False
-        DebugNumCuda.Visible = False
-        DebugStreams.Visible = False
-        DebugMaxMem.Visible = False
-        DebugPlotterPath.Visible = False
-        DebugPlotter.Visible = False
-        DebugCPort.Visible = False
+        SetDebugControlsVisibility(False)
+        PopulateCLCombo()
+        PopulateNumThreadsCombo()
+        PopulateCPortCombo()
+        ReadOrCreateConfigFile()
+        CorrectMissingConfigFileEntries()
+    End Sub
+
+    Private Sub SetDebugControlsVisibility(visible As Boolean)
+        DebugPM.Visible = visible
+        DebugKValue.Visible = visible
+        DebugCL.Visible = visible
+        DebugNPlots.Visible = visible
+        DebugTempDir1.Visible = visible
+        DebugTempDir2.Visible = visible
+        DebugFinalDir.Visible = visible
+        DebugPoolKey.Visible = visible
+        DebugContractKey.Visible = visible
+        DebugFarmerKey.Visible = visible
+        DebugNumThreads.Visible = visible
+        DebugBuckets.Visible = visible
+        DebugBucketsP23.Visible = visible
+        DebugCudaDevice.Visible = visible
+        DebugNumCuda.Visible = visible
+        DebugStreams.Visible = visible
+        DebugMaxMem.Visible = visible
+        DebugPlotterPath.Visible = visible
+        DebugPlotter.Visible = visible
+        DebugCPort.Visible = visible
+    End Sub
+
+    Private Sub PopulateCLCombo()
         For i As Integer = 1 To 9
             CLCombo.Items.Add(i.ToString())
         Next
         ContractKeyRadio.Checked = True
+    End Sub
+
+    Private Sub PopulateNumThreadsCombo()
         Dim numThreads As Integer = System.Environment.ProcessorCount
         NumThreadsCombo.Items.Clear()
         For i As Integer = 1 To numThreads - 1
             NumThreadsCombo.Items.Add(i)
         Next
+    End Sub
+
+    Private Sub PopulateCPortCombo()
         CPortCombo.Items.AddRange({"Chia", "MMX", "Other"})
+    End Sub
 
+    Private Sub ReadOrCreateConfigFile()
         If System.IO.File.Exists(configFilePath) Then
-            ' Read the config file
-            Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
-            ' Parse the config content into a dictionary
-            For Each line As String In configContent.Split(Environment.NewLine)
-                Dim parts As String() = line.Split("=")
-                If parts.Length = 2 Then
-                    cliPrograms(parts(0)) = parts(1)
-                End If
-            Next
+            ReadConfigFile()
+        Else
+            CreateConfigFile()
+        End If
+    End Sub
 
-            ' Check if the file paths for each program are present and valid
-            Dim allValid As Boolean = True
-            For Each program In cliPrograms
-                Dim filePath As String = ""
-                If cliPrograms.TryGetValue(program.Key, filePath) Then
-                    If System.IO.File.Exists(filePath) Then
-                        ' The file path is valid, move on to the next program
-                        Continue For
-                    End If
-                End If
-
-                ' Check the folder the program is run from for the program
-                Dim currentDirectory As String = System.IO.Directory.GetCurrentDirectory()
-                filePath = System.IO.Path.Combine(currentDirectory, program.Value)
+    Private Sub ReadConfigFile()
+        ' Read the config file
+        Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
+        ' Parse the config content into a dictionary
+        For Each line As String In configContent.Split(Environment.NewLine)
+            Dim parts As String() = line.Split("=")
+            If parts.Length = 2 Then
+                cliPrograms(parts(0)) = parts(1)
+            End If
+        Next
+        ' Check if the file paths for each program are present and valid
+        For Each program In cliPrograms
+            Dim filePath As String = ""
+            If cliPrograms.TryGetValue(program.Key, filePath) Then
                 If System.IO.File.Exists(filePath) Then
-                    ' The file path is valid, update the file path in the dictionary
-                    cliPrograms(program.Key) = filePath
+                    ' The file path is valid, move on to the next program
                     Continue For
                 End If
-
-                ' If the file path is not found or is invalid, set allValid to False
-                allValid = False
-            Next
-
-            If Not allValid Then
-                Try
-                    Dim result As DialogResult = MessageBox.Show("One or more paths to PoST Plotters has not been found or is invalid. Would you like to update the paths now?", "Error", MessageBoxButtons.YesNo)
-                    If result = DialogResult.No Then
-                        ' User does not want to update the paths, exit the config process
-                        Return
-                    End If
-                Catch ex As Exception
-                    ' Handle the exception here
-                End Try
             End If
 
-            ' Prompt the user to select the correct path for each program
-            For Each program In cliPrograms
-                Dim filePath As String = ""
-                If cliPrograms.TryGetValue(program.Key, filePath) Then
-                    If System.IO.File.Exists(filePath) Then
-                        ' The file path is already set, move on to the next program
-                        Continue For
-                    End If
-                End If
+            ' The file path is not present or invalid
+            ' Prompt the user to select the correct path using the Windows File Explorer dialog box
+            Dim openFileDialog As New OpenFileDialog With {
+            .Filter = program.Value & "|" & program.Value,
+            .Title = "Select " & program.Value
+        }
+            If openFileDialog.ShowDialog() = DialogResult.OK Then
+                ' Update the file path in the config file
+                filePath = openFileDialog.FileName
+                cliPrograms(program.Key) = filePath
+            End If
+        Next
 
-                Dim openFileDialog As New OpenFileDialog With {
-                    .Filter = program.Value & "|" & program.Value,
-                    .Title = "Select " & program.Value
-                }
-                If openFileDialog.ShowDialog() = DialogResult.OK Then
-                    ' Update the file path in the config file
-                    filePath = openFileDialog.FileName
-                    cliPrograms(program.Key) = filePath
-                End If
-            Next
-            ' Write the updated file paths to the config file
-            Dim configBuilder As New StringBuilder()
-            For Each argument In cliPrograms
-                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
-            Next
-            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
-        Else
-            ' The config file does not exist
-            ' Create a new config file and prompt the user to select the correct path for each program
-            For Each program In cliPrograms
-                Dim filePath As String = ""
-                ' Check the folder the program is run from for the program
-                Dim currentDirectory As String = System.IO.Directory.GetCurrentDirectory()
-                filePath = System.IO.Path.Combine(currentDirectory, program.Value)
-                If System.IO.File.Exists(filePath) Then
-                    ' The file path is valid, update the file path in the dictionary
-                    cliPrograms(program.Key) = filePath
-                    Continue For
-                End If
+        ' Write the updated file paths to the config file
+        Dim configBuilder As New StringBuilder()
+        For Each argument In cliPrograms
+            configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+        Next
+        System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+    End Sub
 
-                Dim openFileDialog As New OpenFileDialog With {
-                    .Filter = program.Value & "|" & program.Value,
-                    .Title = "Select " & program.Value
-                }
-                If openFileDialog.ShowDialog() = DialogResult.OK Then
-                    ' Update the file path in the dictionary
-                    filePath = openFileDialog.FileName
-                    cliPrograms(program.Key) = filePath
-                End If
-            Next
-            ' Write the file paths to the new config file
-            Dim configBuilder As New StringBuilder()
-            For Each argument In cliPrograms
-                configBuilder.AppendLine(argument.Key & "=" & argument.Value)
-            Next
-            System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
-        End If
+    Private Sub CreateConfigFile()
+        For Each program In cliPrograms
+            Dim openFileDialog As New OpenFileDialog With {
+                .Filter = program.Value & "|" & program.Value,
+                .Title = "Select " & program.Value
+            }
+            If openFileDialog.ShowDialog() = DialogResult.OK Then
+                ' Update the file path in the dictionary
+                Dim filePath As String = openFileDialog.FileName
+                cliPrograms(program.Key) = filePath
+            End If
+        Next
+        ' Write the file paths to the new config file
+        Dim configBuilder As New StringBuilder()
+        For Each argument In cliPrograms
+            configBuilder.AppendLine(argument.Key & "=" & argument.Value)
+        Next
+        System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
+    End Sub
 
+    Private Sub CorrectMissingConfigFileEntries()
         If System.IO.File.Exists(configFilePath) Then
             ' Read the config file
             Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
