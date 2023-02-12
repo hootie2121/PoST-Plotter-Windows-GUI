@@ -71,6 +71,7 @@ Public Class Form1
             Next
 
             ' Check if the file paths for each program are present and valid
+            Dim allValid As Boolean = True
             For Each program In cliPrograms
                 Dim filePath As String = ""
                 If cliPrograms.TryGetValue(program.Key, filePath) Then
@@ -79,20 +80,34 @@ Public Class Form1
                         Continue For
                     End If
                 End If
+                ' If the file path is not found or is invalid, set allValid to False
+                allValid = False
+            Next
 
-                ' The file path is not present or invalid
-                ' Prompt the user to select the correct path using the Windows File Explorer dialog box
+            If Not allValid Then
+                Try
+                    Dim result As DialogResult = MessageBox.Show("One or more paths to PoST Plotters has not been found or is invalid. Would you like to update the paths now?", "Error", MessageBoxButtons.YesNo)
+                    If result = DialogResult.No Then
+                        ' User does not want to update the paths, exit the config process
+                        Return
+                    End If
+                Catch ex As Exception
+                    ' Handle the exception here
+                End Try
+            End If
+
+            ' Prompt the user to select the correct path for each program
+            For Each program In cliPrograms
                 Dim openFileDialog As New OpenFileDialog With {
                     .Filter = program.Value & "|" & program.Value,
                     .Title = "Select " & program.Value
                 }
                 If openFileDialog.ShowDialog() = DialogResult.OK Then
                     ' Update the file path in the config file
-                    filePath = openFileDialog.FileName
+                    Dim filePath As String = openFileDialog.FileName
                     cliPrograms(program.Key) = filePath
                 End If
             Next
-
             ' Write the updated file paths to the config file
             Dim configBuilder As New StringBuilder()
             For Each argument In cliPrograms
@@ -120,6 +135,7 @@ Public Class Form1
             Next
             System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
         End If
+
         If System.IO.File.Exists(configFilePath) Then
             ' Read the config file
             Dim configContent As String = System.IO.File.ReadAllText(configFilePath)
