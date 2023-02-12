@@ -80,6 +80,16 @@ Public Class Form1
                         Continue For
                     End If
                 End If
+
+                ' Check the folder the program is run from for the program
+                Dim currentDirectory As String = System.IO.Directory.GetCurrentDirectory()
+                filePath = System.IO.Path.Combine(currentDirectory, program.Value)
+                If System.IO.File.Exists(filePath) Then
+                    ' The file path is valid, update the file path in the dictionary
+                    cliPrograms(program.Key) = filePath
+                    Continue For
+                End If
+
                 ' If the file path is not found or is invalid, set allValid to False
                 allValid = False
             Next
@@ -98,13 +108,21 @@ Public Class Form1
 
             ' Prompt the user to select the correct path for each program
             For Each program In cliPrograms
+                Dim filePath As String = ""
+                If cliPrograms.TryGetValue(program.Key, filePath) Then
+                    If System.IO.File.Exists(filePath) Then
+                        ' The file path is already set, move on to the next program
+                        Continue For
+                    End If
+                End If
+
                 Dim openFileDialog As New OpenFileDialog With {
                     .Filter = program.Value & "|" & program.Value,
                     .Title = "Select " & program.Value
                 }
                 If openFileDialog.ShowDialog() = DialogResult.OK Then
                     ' Update the file path in the config file
-                    Dim filePath As String = openFileDialog.FileName
+                    filePath = openFileDialog.FileName
                     cliPrograms(program.Key) = filePath
                 End If
             Next
@@ -118,13 +136,23 @@ Public Class Form1
             ' The config file does not exist
             ' Create a new config file and prompt the user to select the correct path for each program
             For Each program In cliPrograms
+                Dim filePath As String = ""
+                ' Check the folder the program is run from for the program
+                Dim currentDirectory As String = System.IO.Directory.GetCurrentDirectory()
+                filePath = System.IO.Path.Combine(currentDirectory, program.Value)
+                If System.IO.File.Exists(filePath) Then
+                    ' The file path is valid, update the file path in the dictionary
+                    cliPrograms(program.Key) = filePath
+                    Continue For
+                End If
+
                 Dim openFileDialog As New OpenFileDialog With {
                     .Filter = program.Value & "|" & program.Value,
                     .Title = "Select " & program.Value
                 }
                 If openFileDialog.ShowDialog() = DialogResult.OK Then
                     ' Update the file path in the dictionary
-                    Dim filePath As String = openFileDialog.FileName
+                    filePath = openFileDialog.FileName
                     cliPrograms(program.Key) = filePath
                 End If
             Next
