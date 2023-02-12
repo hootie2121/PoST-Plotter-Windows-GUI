@@ -56,6 +56,10 @@ Partial Class Form1
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonOptions = New System.Windows.Forms.GroupBox()
+        Me.CPortText = New System.Windows.Forms.TextBox()
+        Me.DebugCPort = New System.Windows.Forms.Label()
+        Me.CPortCombo = New System.Windows.Forms.ComboBox()
+        Me.CPortLabel = New System.Windows.Forms.Label()
         Me.FinalDirCheck = New System.Windows.Forms.CheckBox()
         Me.DebugFinalDir = New System.Windows.Forms.Label()
         Me.FinalDirButton = New System.Windows.Forms.Button()
@@ -123,10 +127,6 @@ Partial Class Form1
         Me.PlotButton = New System.Windows.Forms.Button()
         Me.DebugPlotterPath = New System.Windows.Forms.Label()
         Me.DebugPlotter = New System.Windows.Forms.Label()
-        Me.DebugCPort = New System.Windows.Forms.Label()
-        Me.CPortCombo = New System.Windows.Forms.ComboBox()
-        Me.CPortLabel = New System.Windows.Forms.Label()
-        Me.CPortText = New System.Windows.Forms.TextBox()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -140,7 +140,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1327, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1089, 28)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -395,6 +395,42 @@ Partial Class Form1
         Me.CommonOptions.TabIndex = 1
         Me.CommonOptions.TabStop = False
         Me.CommonOptions.Text = "Common Options:"
+        '
+        'CPortText
+        '
+        Me.CPortText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortText.Location = New System.Drawing.Point(172, 142)
+        Me.CPortText.Name = "CPortText"
+        Me.CPortText.Size = New System.Drawing.Size(81, 27)
+        Me.CPortText.TabIndex = 32
+        '
+        'DebugCPort
+        '
+        Me.DebugCPort.AutoSize = True
+        Me.DebugCPort.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugCPort.Location = New System.Drawing.Point(259, 145)
+        Me.DebugCPort.Name = "DebugCPort"
+        Me.DebugCPort.Size = New System.Drawing.Size(0, 20)
+        Me.DebugCPort.TabIndex = 31
+        '
+        'CPortCombo
+        '
+        Me.CPortCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortCombo.FormattingEnabled = True
+        Me.CPortCombo.Location = New System.Drawing.Point(84, 142)
+        Me.CPortCombo.Name = "CPortCombo"
+        Me.CPortCombo.Size = New System.Drawing.Size(81, 28)
+        Me.CPortCombo.TabIndex = 30
+        '
+        'CPortLabel
+        '
+        Me.CPortLabel.AutoSize = True
+        Me.CPortLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.CPortLabel.Location = New System.Drawing.Point(6, 145)
+        Me.CPortLabel.Name = "CPortLabel"
+        Me.CPortLabel.Size = New System.Drawing.Size(72, 20)
+        Me.CPortLabel.TabIndex = 29
+        Me.CPortLabel.Text = "Coin Port:"
         '
         'FinalDirCheck
         '
@@ -1037,7 +1073,7 @@ Partial Class Form1
         'PlotButton
         '
         Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PlotButton.Location = New System.Drawing.Point(497, 629)
+        Me.PlotButton.Location = New System.Drawing.Point(883, 629)
         Me.PlotButton.Name = "PlotButton"
         Me.PlotButton.Size = New System.Drawing.Size(150, 29)
         Me.PlotButton.TabIndex = 5
@@ -1060,47 +1096,11 @@ Partial Class Form1
         Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotter.TabIndex = 7
         '
-        'DebugCPort
-        '
-        Me.DebugCPort.AutoSize = True
-        Me.DebugCPort.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugCPort.Location = New System.Drawing.Point(259, 145)
-        Me.DebugCPort.Name = "DebugCPort"
-        Me.DebugCPort.Size = New System.Drawing.Size(0, 20)
-        Me.DebugCPort.TabIndex = 31
-        '
-        'CPortCombo
-        '
-        Me.CPortCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CPortCombo.FormattingEnabled = True
-        Me.CPortCombo.Location = New System.Drawing.Point(84, 142)
-        Me.CPortCombo.Name = "CPortCombo"
-        Me.CPortCombo.Size = New System.Drawing.Size(81, 28)
-        Me.CPortCombo.TabIndex = 30
-        '
-        'CPortLabel
-        '
-        Me.CPortLabel.AutoSize = True
-        Me.CPortLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CPortLabel.Location = New System.Drawing.Point(6, 145)
-        Me.CPortLabel.Name = "CPortLabel"
-        Me.CPortLabel.Size = New System.Drawing.Size(72, 20)
-        Me.CPortLabel.TabIndex = 29
-        Me.CPortLabel.Text = "Coin Port:"
-        '
-        'CPortText
-        '
-        Me.CPortText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CPortText.Location = New System.Drawing.Point(172, 142)
-        Me.CPortText.Name = "CPortText"
-        Me.CPortText.Size = New System.Drawing.Size(81, 27)
-        Me.CPortText.TabIndex = 32
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1327, 795)
+        Me.ClientSize = New System.Drawing.Size(1089, 676)
         Me.Controls.Add(Me.DebugPlotter)
         Me.Controls.Add(Me.DebugPlotterPath)
         Me.Controls.Add(Me.PlotButton)

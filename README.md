@@ -14,6 +14,4 @@
 # / ____/ /_/ /__/ // / / ____/| |/ |/ / /_/ /  
 #/_/    \____/____//_/ /_/     |__/|__/\____/ 
 
-# PoST Plotter Windows GUI
-                                               
-                                                                                                                                                                                                                                                    
+# PoST Plotter Windows GUI                                                                                                                                                                                                                                             
