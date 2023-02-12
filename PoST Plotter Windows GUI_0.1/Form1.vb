@@ -238,7 +238,19 @@ Public Class Form1
 
     Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
         If PMCPURadio.Checked Then
-            arguments("-PM") = "CPU"
+            UpdateProcessingMode("CPU")
+        End If
+    End Sub
+
+    Private Sub PMGPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMGPURadio.CheckedChanged
+        If PMGPURadio.Checked Then
+            UpdateProcessingMode("GPU")
+        End If
+    End Sub
+
+    Private Sub UpdateProcessingMode(mode As String)
+        arguments("-PM") = mode
+        If mode = "CPU" Then
             KValueCombo.Items.Clear()
             For i As Integer = 26 To 40
                 KValueCombo.Items.Add(i)
@@ -257,18 +269,7 @@ Public Class Form1
             BucketsP23Text.Text = BucketsText.Text
             CPUOptions.Enabled = True
             GPUOptions.Enabled = False
-        End If
-        If arguments.ContainsKey("-PM") Then
-            DebugPM.Text = "-PM " & arguments("-PM").ToString()
-        Else
-            DebugPM.Text = "No processing mode selected"
-        End If
-        Debug.WriteLine("-PM " & arguments("-PM"))
-    End Sub
-
-    Private Sub PMGPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMGPURadio.CheckedChanged
-        If PMGPURadio.Checked Then
-            arguments("-PM") = "GPU"
+        ElseIf mode = "GPU" Then
             KValueCombo.Items.Clear()
             For Each i In {26, 29, 30, 31, 32, 33, 34}
                 KValueCombo.Items.Add(i)
