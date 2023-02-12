@@ -390,6 +390,44 @@ Public Class Form1
 
     End Sub
 
+    Private Sub CPortCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CPortCombo.SelectedIndexChanged
+        If CPortCombo.SelectedItem.ToString() = "Other" Then
+            CPortText.Enabled = True
+            If Not String.IsNullOrEmpty(CPortText.Text) Then
+                arguments("-x") = CPortText.Text
+            Else
+                Debug.WriteLine("No Other port value entered")
+            End If
+        Else
+            CPortText.Enabled = False
+            Dim selectedPort As String = CPortCombo.SelectedItem.ToString()
+            arguments("-x") = portValues(selectedPort).ToString()
+        End If
+        If arguments.ContainsKey("-x") Then
+            DebugCPort.Text = "-x " & arguments("-x")
+        Else
+            DebugCPort.Text = "No port selected"
+        End If
+        Debug.WriteLine(arguments("-x"))
+    End Sub
+
+    Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
+        If CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
+            portValues("Other") = CInt(CPortText.Text)
+            arguments("-x") = CInt(CPortText.Text)
+        End If
+        If arguments.ContainsKey("-x") Then
+            DebugCPort.Text = "-x " & arguments("-x")
+        Else
+            DebugCPort.Text = "No port selected"
+        End If
+        Debug.WriteLine(arguments("-x"))
+    End Sub
+
+    Private Sub DebugCPort_Click(sender As Object, e As EventArgs) Handles DebugCPort.Click
+
+    End Sub
+
     Private Sub NPlotsText_TextChanged(sender As Object, e As EventArgs) Handles NPlotsText.TextChanged
         Dim nValue As Integer
         If NPlotsCheck.Checked Then
@@ -850,6 +888,12 @@ Public Class Form1
             If arguments.ContainsKey("-f") Then
                 argumentsString &= " -f " & arguments("-f")
             End If
+            Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
+            processStartInfo.WorkingDirectory = plotDirectory
+
+            Dim cmdProcess As New Process()
+            cmdProcess.StartInfo = processStartInfo
+            cmdProcess.Start()
         ElseIf PMCPURadio.Checked Then
             If arguments.ContainsKey("-k") Then
                 argumentsString &= "-k " & arguments("-k")
@@ -903,43 +947,5 @@ Public Class Form1
     Private Sub cmdProcess_OutputDataReceived(sender As Object, e As DataReceivedEventArgs)
         ' Display the line of output in the console
         Console.WriteLine(e.Data)
-    End Sub
-
-    Private Sub CPortCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CPortCombo.SelectedIndexChanged
-        If CPortCombo.SelectedItem.ToString() = "Other" Then
-            CPortText.Enabled = True
-            If Not String.IsNullOrEmpty(CPortText.Text) Then
-                arguments("-x") = CPortText.Text
-            Else
-                Debug.WriteLine("No Other port value entered")
-            End If
-        Else
-            CPortText.Enabled = False
-            Dim selectedPort As String = CPortCombo.SelectedItem.ToString()
-            arguments("-x") = portValues(selectedPort).ToString()
-        End If
-        If arguments.ContainsKey("-x") Then
-            DebugCPort.Text = "-x " & arguments("-x")
-        Else
-            DebugCPort.Text = "No port selected"
-        End If
-        Debug.WriteLine(arguments("-x"))
-    End Sub
-
-    Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
-        If CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
-            portValues("Other") = CInt(CPortText.Text)
-            arguments("-x") = CInt(CPortText.Text)
-        End If
-        If arguments.ContainsKey("-x") Then
-            DebugCPort.Text = "-x " & arguments("-x")
-        Else
-            DebugCPort.Text = "No port selected"
-        End If
-        Debug.WriteLine(arguments("-x"))
-    End Sub
-
-    Private Sub DebugCPort_Click(sender As Object, e As EventArgs) Handles DebugCPort.Click
-
     End Sub
 End Class
