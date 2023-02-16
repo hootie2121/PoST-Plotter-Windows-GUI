@@ -253,7 +253,7 @@ Public Class Form1
             CudaDeviceText.Text = "0"
             NumCudaText.Text = "1"
             StreamsText.Text = "4"
-            MaxMemText.Text = "8"
+            MaxMemText.Text = "0"
             GPUOptions.Enabled = True
             CPUOptions.Enabled = False
         End If
@@ -376,7 +376,6 @@ Public Class Form1
         Else
             DebugCPort.Text = "No port selected"
         End If
-        Debug.WriteLine(arguments("-x"))
     End Sub
 
     Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
@@ -473,17 +472,6 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub TempDir1Check_CheckedChanged(sender As Object, e As EventArgs) Handles TempDir1Check.CheckedChanged
-        Dim checkbox As CheckBox = DirectCast(sender, CheckBox)
-
-        If checkbox.Checked Then
-            TempDir1Text.Text = Path.GetTempPath()
-            TempDir1Text.Enabled = False
-        Else
-            TempDir1Text.Enabled = True
-        End If
-    End Sub
-
     Private Sub DebugTempDir1_Click(sender As Object, e As EventArgs) Handles DebugTempDir1.Click
 
     End Sub
@@ -524,11 +512,20 @@ Public Class Form1
         Dim checkbox As CheckBox = DirectCast(sender, CheckBox)
 
         If checkbox.Checked Then
-            TempDir2Text.Text = Path.GetTempPath()
+            TempDir2Text.Text = ""
+            arguments("-2") = ""
             TempDir2Text.Enabled = False
+            TempDir2Button.Enabled = False
         Else
             TempDir2Text.Enabled = True
+            TempDir2Button.Enabled = True
         End If
+        If arguments.ContainsKey("-2") Then
+            DebugTempDir2.Text = "-2 " & arguments("-2").ToString()
+        Else
+            DebugTempDir2.Text = "Invalid Path"
+        End If
+        Debug.WriteLine("-2 " & arguments("-2"))
     End Sub
 
     Private Sub DebugTempDir2_Click(sender As Object, e As EventArgs) Handles DebugTempDir2.Click
@@ -565,17 +562,6 @@ Public Class Form1
                 End If
             End If
         End Using
-    End Sub
-
-    Private Sub FinalDirCheck_CheckedChanged(sender As Object, e As EventArgs) Handles FinalDirCheck.CheckedChanged
-        Dim checkbox As CheckBox = DirectCast(sender, CheckBox)
-
-        If checkbox.Checked Then
-            FinalDirText.Text = Path.GetTempPath()
-            FinalDirText.Enabled = False
-        Else
-            FinalDirText.Enabled = True
-        End If
     End Sub
 
     Private Sub DebugFinalDir_Click(sender As Object, e As EventArgs) Handles DebugFinalDir.Click
@@ -662,7 +648,6 @@ Public Class Form1
         End If
         Debug.WriteLine("-r " & arguments("-r"))
     End Sub
-
 
     Private Sub DebugNumThreads_Click(sender As Object, e As EventArgs) Handles DebugNumThreads.Click
 
@@ -764,11 +749,11 @@ Public Class Form1
         Else
             Try
                 Dim mem As Integer = Integer.Parse(MaxMemText.Text)
-                If mem < 8 Then
+                If mem < 0 Then
                 End If
                 arguments("-M") = MaxMemText.Text.ToString()
             Catch ex As FormatException
-                MessageBox.Show("Invalid input. Please enter a valid integer.")
+                MessageBox.Show("Invalid input. Please enter a valid amount of memory.")
             End Try
         End If
         If arguments.ContainsKey("-M") Then
@@ -813,7 +798,7 @@ Public Class Form1
         Dim plotFilePath As String = Path.Combine(arguments("-plp").ToString(), arguments("-pl").ToString())
         Dim plotDirectory As String = Path.GetDirectoryName(plotFilePath)
 
-        Dim commonArguments() As String = {"-k", "-C", "-x", "-n", "-t", "-2", "-d", "-p", "-c", "-f"}
+        Dim commonArguments() As String = {"-C", "-x", "-n", "-t", "-2", "-d", "-p", "-c", "-f"}
 
         If PMGPURadio.Checked Then
             For Each arg In commonArguments
@@ -839,6 +824,9 @@ Public Class Form1
                     argumentsString &= " " & arg & " " & arguments(arg)
                 End If
             Next
+            If arguments.ContainsKey("-k") AndAlso arguments("-k") <> "" Then
+                argumentsString &= " -k " & arguments("-k")
+            End If
             If arguments.ContainsKey("-r") AndAlso arguments("-r") <> "" Then
                 argumentsString &= " -r " & arguments("-r")
             End If
@@ -857,4 +845,53 @@ Public Class Form1
         cmdProcess.Start()
     End Sub
 
+    Private Sub ClearFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearFormToolStripMenuItem.Click
+        PMCPURadio.Checked = True
+        PMGPURadio.Checked = False
+        arguments("-k") = ""
+        KValueCombo.Text = ""
+        DebugKValue.Text = ""
+        arguments("-C") = ""
+        CLCombo.Text = ""
+        DebugCL.Text = ""
+        arguments("-x") = ""
+        CPortCombo.Text = ""
+        CPortText.Text = ""
+        DebugCPort.Text = ""
+        arguments("-n") = ""
+        NPlotsCheck.Checked = False
+        DebugNPlots.Text = ""
+        arguments("-t") = ""
+        TempDir1Text.Text = ""
+        DebugTempDir1.Text = ""
+        arguments("-2") = ""
+        TempDir2Text.Text = ""
+        DebugTempDir2.Text = ""
+        TempDir2Check.Checked = False
+        arguments("-d") = ""
+        FinalDirText.Text = ""
+        DebugFinalDir.Text = ""
+        arguments("-p") = ""
+        PoolKeyText.Text = ""
+        PoolKeyRadio.Checked = False
+        DebugPoolKey.Text = ""
+        arguments("-c") = ""
+        ContractKeyText.Text = ""
+        ContractKeyRadio.Checked = True
+        DebugContractKey.Text = ""
+        arguments("-f") = ""
+        FarmerKeyText.Text = ""
+        DebugFarmerKey.Text = ""
+        arguments("-r") = NumThreadsCombo.SelectedItem.ToString()
+        NumThreadsCombo.Text = "4"
+        DebugNumThreads.Text = "-r " & arguments("-r").ToString()
+        arguments("-u") = BucketsText.Text.ToString()
+        BucketsText.Text = "256"
+        DebugBuckets.Text = "-u " & arguments("-u").ToString()
+        arguments("-v") = BucketsP23Text.Text.ToString()
+        BucketsP23Text.Text = BucketsText.Text
+        DebugBucketsP23.Text = "-v " & arguments("-v").ToString()
+        DebugPlotterPath.Text = ""
+        DebugPlotter.Text = ""
+    End Sub
 End Class
