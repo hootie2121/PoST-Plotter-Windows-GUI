@@ -1,6 +1,6 @@
 # PoST Plotter Windows GUI
 
-![PoSTPWG](C:\Users\David\source\repos\PoSTPWGOpening.png)
+![PoSTPWG]([C:\Users\David\source\repos\PoSTPWGOpening.png](https://github.com/hootie2121/PoST-Plotter-Windows-GUI/blob/master/PoST%20Plotter%20Windows%20GUI/Images/PoSTPWGOpening.png))
 
 ## Purpose
 PoSTPWG is a simple graphical user interface for Windows to be used with madMAx43v3r's Chia Gigahorse CPU and GPU plotters that may be obtained from [HERE](https://github.com/madMAx43v3r/chia-gigahorse). PoSTPWG has no affiliation with madMAx or his software. PoSTPWG was composed entirely by OpenAI's ChatGPT and compiled by someone with no programming skills whatsoever. Please keep that in mind as this program is an experiment to push the limits of the AI revolution while trying to fill a small, niche usecase.
