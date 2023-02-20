@@ -1,8 +1,13 @@
 ﻿Imports System.Drawing.Text
 Imports System.IO
+Imports System.IO.Compression
+Imports System.Net
 Imports System.Net.WebRequestMethods
 Imports System.Text
 Imports System.Threading
+Imports Newtonsoft.Json.Linq
+Imports System.Net.Http
+Imports System.Windows.Forms
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
@@ -34,14 +39,9 @@ Public Class Form1
 
     Private Const SW_HIDE As Integer = 0
     Private Const SW_SHOW As Integer = 5
-    Private Const FOREGROUND_BLUE As Short = &H1
-    Private Const BACKGROUND_BLUE As Short = &H10
 
     Private cmdProcess As Process
     Private consoleWindowHandle As IntPtr
-
-    Private Declare Function GenerateConsoleCtrlEvent Lib "kernel32.dll" (dwCtrlEvent As Integer, dwProcessGroupId As Integer) As Boolean
-    Private Const CTRL_C_EVENT As Integer = 0
 
     Private Declare Function OpenThread Lib "kernel32.dll" (dwDesiredAccess As Integer, bInheritHandle As Boolean, dwThreadId As Integer) As IntPtr
     Private Declare Function SuspendThread Lib "kernel32.dll" (hThread As IntPtr) As Integer
@@ -51,11 +51,18 @@ Public Class Form1
 
     Private Const THREAD_ALL_ACCESS As Integer = &H1F03FF
 
+    Private PlotProgress As Integer = 0
+
+    Dim currentDirectory As String = Environment.CurrentDirectory
+    Dim logFilePath As String = Path.Combine(currentDirectory, "output.log")
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetDebugControlsVisibility(False)
         PopulateCLCombo()
         PopulateNumThreadsCombo()
         PopulateCPortCombo()
+        TempDir2Check.Checked = True
+        TempDir3Check.Checked = True
         AdvancedOptionsCheck.Checked = False
         RemoteCopyPortLabel.Enabled = False
         arguments("-z") = ""
@@ -475,7 +482,7 @@ Public Class Form1
     End Sub
 
     Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
-        If CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
+        If CPortCombo.SelectedItem IsNot Nothing AndAlso CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
             Dim portValue As Integer
             If Integer.TryParse(CPortText.Text, portValue) Then
                 portValues("Other") = portValue
@@ -1031,6 +1038,10 @@ Public Class Form1
             End If
         End If
 
+        ' Reset the progress bar and the total progress variable
+        PlotProgress = 0
+        PlotProgressBar.Value = 0
+
         ' Start the process and redirect the output
         Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
         processStartInfo.WorkingDirectory = plotDirectory
@@ -1052,6 +1063,108 @@ Public Class Form1
         If Not String.IsNullOrEmpty(e.Data) Then
             ' Append the new console output to the TextBox on the UI thread
             ConsolePrintOutTextBox.Invoke(Sub() ConsolePrintOutTextBox.AppendText(e.Data & vbCrLf))
+
+            ' Check for progress phrases in the console output
+            If e.Data.Contains("Plot Name:") Then
+                PlotProgress = 0
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Setup took") Then
+                PlotProgress = 3
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 1") Then
+                PlotProgress = 6
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 2") Then
+                PlotProgress = 9
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 3") Then
+                PlotProgress = 13
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 4") Then
+                PlotProgress = 16
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 5") Then
+                PlotProgress = 19
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 6") Then
+                PlotProgress = 22
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P1] Table 7") Then
+                PlotProgress = 25
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("Phase 1 took") Then
+                PlotProgress = 28
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P2] Setup took") Then
+                PlotProgress = 31
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P2] Table 7") Then
+                PlotProgress = 34
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P2] Table 6") Then
+                PlotProgress = 38
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P2] Table 5") Then
+                PlotProgress = 41
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("Phase 2 took") Then
+                PlotProgress = 44
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Setup took") Then
+                PlotProgress = 47
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 4 LPSK") Then
+                PlotProgress = 50
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 4 NSK") Then
+                PlotProgress = 53
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 5 PDSK") Then
+                PlotProgress = 56
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 5 LPSK") Then
+                PlotProgress = 59
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 5 LPSK") Then
+                PlotProgress = 63
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 6 PDSK") Then
+                PlotProgress = 66
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 6 LPSK") Then
+                PlotProgress = 69
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 6 NSK") Then
+                PlotProgress = 72
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 7 PDSK") Then
+                PlotProgress = 75
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 7 LPSK") Then
+                PlotProgress = 78
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P3] Table 7 NSK") Then
+                PlotProgress = 81
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("Phase 3 took") Then
+                PlotProgress = 84
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P4] Setup took") Then
+                PlotProgress = 88
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P4] total_p7_parks") Then
+                PlotProgress = 91
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("[P4] total_c3_parks") Then
+                PlotProgress = 94
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("Phase 4 took") Then
+                PlotProgress = 97
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            ElseIf e.Data.Contains("Total plot creation time was") Then
+                PlotProgress = 100
+                PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+            End If
         End If
     End Sub
 
@@ -1062,171 +1175,95 @@ Public Class Form1
     Private Sub ClearFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearFormToolStripMenuItem.Click
         PMCPURadio.Checked = True
         PMGPURadio.Checked = False
-        arguments("-k") = ""
-        KValueCombo.Text = ""
-        DebugKValue.Text = ""
-        arguments("-C") = ""
-        CLCombo.Text = ""
-        DebugCL.Text = ""
-        arguments("-x") = ""
-        CPortCombo.Text = ""
-        CPortText.Text = ""
-        DebugCPort.Text = ""
-        arguments("-n") = ""
-        NPlotsCheck.Checked = False
-        DebugNPlots.Text = ""
-        arguments("-t") = ""
-        TempDir1Text.Text = ""
-        DebugTempDir1.Text = ""
-        arguments("-2") = ""
-        TempDir2Text.Text = ""
-        DebugTempDir2.Text = ""
-        TempDir2Check.Checked = False
-        arguments("-3") = ""
-        TempDir3Text.Text = ""
-        DebugTempDir3.Text = ""
-        TempDir3Check.Checked = False
-        arguments("-d") = ""
-        FinalDirText.Text = ""
-        DebugFinalDir.Text = ""
-        arguments("-p") = ""
-        PoolKeyText.Text = ""
-        PoolKeyRadio.Checked = False
-        DebugPoolKey.Text = ""
-        arguments("-c") = ""
-        ContractKeyText.Text = ""
-        ContractKeyRadio.Checked = True
-        DebugContractKey.Text = ""
-        arguments("-f") = ""
-        FarmerKeyText.Text = ""
-        DebugFarmerKey.Text = ""
-        arguments("-Q") = ""
-        MaxPlotsCacheTempDirText.Text = ""
-        DebugMaxPlotsCacheTempDir.Text = ""
-        arguments("-z") = ""
-        RemoteCopyPortText.Text = ""
-        DebugRemoteCopyPort.Text = ""
-        arguments("-w") = ""
-        WaitforCopyCheck.Checked = False
-        DebugWaitforCopy.Text = ""
-        arguments("-Z") = ""
-        UniquePlotCheck.Checked = False
-        DebugUniquePlot.Text = ""
-        arguments("-K") = ""
-        ThreadMultiplierP2Text.Text = ""
-        DebugThreadMultiplierP2.Text = ""
-        arguments("-s") = ""
-        StageDirectoryText.Text = ""
-        DebugStageDirectory.Text = ""
-        arguments("-D") = ""
-        DirectInFinalDirCheck.Checked = False
-        DebugDirectInFinalDir.Text = ""
-        arguments("-G") = ""
-        AlternateTempDirCheck.Checked = False
-        DebugAlternateTempDir.Text = ""
-        arguments("-W") = ""
-        MaxParallelCopiesCheck.Checked = False
-        DebugMaxParalleCopies.Text = ""
-        arguments("-r") = NumThreadsCombo.SelectedItem.ToString()
+        For Each arg As String In {"-k", "-C", "-x", "-n", "-t", "-2", "-3", "-d", "-p", "-c", "-f", "-Q", "-z", "-w", "-Z", "-K", "-s", "-D", "-G", "-W", "-r", "-u", "-v"}
+            arguments(arg) = ""
+        Next
+        For Each textControl As TextBox In {CPortText, TempDir1Text, TempDir2Text, TempDir3Text, FinalDirText, PoolKeyText, ContractKeyText, FarmerKeyText, MaxPlotsCacheTempDirText, RemoteCopyPortText, ThreadMultiplierP2Text, StageDirectoryText, BucketsText, BucketsP23Text}
+            textControl.Text = ""
+        Next
+        For Each checkControl As CheckBox In {NPlotsCheck, TempDir2Check, TempDir3Check, WaitforCopyCheck, UniquePlotCheck, DirectInFinalDirCheck, AlternateTempDirCheck, MaxParallelCopiesCheck}
+            checkControl.Checked = False
+        Next
+        KValueCombo.SelectedItem = ""
+        CLCombo.SelectedItem = ""
         NumThreadsCombo.Text = "4"
-        DebugNumThreads.Text = "-r " & arguments("-r").ToString()
-        arguments("-u") = BucketsText.Text.ToString()
         BucketsText.Text = "256"
-        DebugBuckets.Text = "-u " & arguments("-u").ToString()
-        arguments("-v") = BucketsP23Text.Text.ToString()
         BucketsP23Text.Text = BucketsText.Text
-        DebugBucketsP23.Text = "-v " & arguments("-v").ToString()
+        DebugKValue.Text = ""
+        DebugCL.Text = ""
+        DebugCPort.Text = ""
+        DebugNPlots.Text = ""
+        DebugTempDir1.Text = ""
+        DebugTempDir2.Text = ""
+        DebugTempDir3.Text = ""
+        DebugFinalDir.Text = ""
+        DebugPoolKey.Text = ""
+        PoolKeyRadio.Checked = False
+        DebugContractKey.Text = ""
+        ContractKeyRadio.Checked = True
+        DebugFarmerKey.Text = ""
+        DebugMaxPlotsCacheTempDir.Text = ""
+        DebugRemoteCopyPort.Text = ""
+        DebugWaitforCopy.Text = ""
+        DebugUniquePlot.Text = ""
+        DebugThreadMultiplierP2.Text = ""
+        DebugStageDirectory.Text = ""
+        DebugDirectInFinalDir.Text = ""
+        DebugAlternateTempDir.Text = ""
+        DebugMaxParalleCopies.Text = ""
+        DebugNumThreads.Text = "-r 4"
+        DebugBuckets.Text = "-u 256"
+        DebugBucketsP23.Text = "-v 256"
         DebugPlotterPath.Text = ""
         DebugPlotter.Text = ""
     End Sub
 
     Private Sub AdvancedOptionsCheck_CheckedChanged(sender As Object, e As EventArgs) Handles AdvancedOptionsCheck.CheckedChanged
-        If AdvancedOptionsCheck.Checked = True Then
-            RemoteCopyPortLabel.Enabled = True
-            RemoteCopyPortText.Enabled = True
-            DebugRemoteCopyPort.Enabled = True
-            WaitforCopyCheck.Enabled = True
-            DebugWaitforCopy.Enabled = True
-            UniquePlotCheck.Enabled = True
-            DebugUniquePlot.Enabled = True
-            ThreadMultiplierP2Label.Enabled = True
-            ThreadMultiplierP2Text.Enabled = True
-            DebugThreadMultiplierP2.Enabled = True
-            DirectInFinalDirCheck.Enabled = True
-            DebugDirectInFinalDir.Enabled = True
-            AlternateTempDirCheck.Enabled = True
-            DebugAlternateTempDir.Enabled = True
-            StageDirectoryLabel.Enabled = True
-            StageDirectoryText.Enabled = True
-            StageDirectoryButton.Enabled = True
-            DebugStageDirectory.Enabled = True
-            MaxPlotstoCacheinTempDirLabel.Enabled = True
-            MaxPlotsCacheTempDirText.Enabled = True
-            DebugMaxPlotsCacheTempDir.Enabled = True
-            MaxParallelCopiesCheck.Enabled = True
-            DebugMaxParalleCopies.Enabled = True
-        Else
-            RemoteCopyPortLabel.Enabled = False
+        Dim controls() As Control = {RemoteCopyPortLabel, RemoteCopyPortText, DebugRemoteCopyPort, WaitforCopyCheck, DebugWaitforCopy, UniquePlotCheck, DebugUniquePlot, ThreadMultiplierP2Label, ThreadMultiplierP2Text, DebugThreadMultiplierP2, DirectInFinalDirCheck, DebugDirectInFinalDir, AlternateTempDirCheck, DebugAlternateTempDir, StageDirectoryLabel, StageDirectoryText, StageDirectoryButton, DebugStageDirectory, MaxPlotstoCacheinTempDirLabel, MaxPlotsCacheTempDirText, DebugMaxPlotsCacheTempDir, MaxParallelCopiesCheck, DebugMaxParalleCopies}
+        For Each control As Control In controls
+            control.Enabled = AdvancedOptionsCheck.Checked
+            If Not AdvancedOptionsCheck.Checked Then
+                If TypeOf control Is CheckBox Then
+                    CType(control, CheckBox).Checked = False
+                ElseIf TypeOf control Is TextBox Then
+                    control.Text = ""
+                End If
+            End If
+        Next
+        If Not AdvancedOptionsCheck.Checked Then
             arguments("-z") = ""
-            RemoteCopyPortText.Text = ""
-            DebugRemoteCopyPort.Text = ""
-            RemoteCopyPortText.Enabled = False
-            DebugRemoteCopyPort.Enabled = False
             arguments("-w") = ""
-            WaitforCopyCheck.Checked = False
-            WaitforCopyCheck.Enabled = False
-            DebugWaitforCopy.Text = ""
-            DebugWaitforCopy.Enabled = False
             arguments("-Z") = ""
-            UniquePlotCheck.Checked = False
-            UniquePlotCheck.Enabled = False
-            DebugUniquePlot.Text = ""
-            DebugUniquePlot.Enabled = False
-            ThreadMultiplierP2Label.Enabled = False
             arguments("-K") = ""
-            ThreadMultiplierP2Text.Text = ""
-            ThreadMultiplierP2Text.Enabled = False
-            DebugThreadMultiplierP2.Text = ""
-            DebugThreadMultiplierP2.Enabled = False
             arguments("-D") = ""
-            DirectInFinalDirCheck.Checked = False
-            DirectInFinalDirCheck.Enabled = False
-            DebugDirectInFinalDir.Text = ""
-            DebugDirectInFinalDir.Enabled = False
             arguments("-G") = ""
-            AlternateTempDirCheck.Checked = False
-            AlternateTempDirCheck.Enabled = False
-            DebugAlternateTempDir.Text = ""
-            DebugAlternateTempDir.Enabled = False
-            StageDirectoryLabel.Enabled = False
             arguments("-s") = ""
-            StageDirectoryText.Text = ""
-            StageDirectoryText.Enabled = False
-            StageDirectoryButton.Enabled = False
-            DebugStageDirectory.Text = ""
-            DebugStageDirectory.Enabled = False
-            MaxPlotstoCacheinTempDirLabel.Enabled = False
             arguments("-Q") = ""
-            MaxPlotsCacheTempDirText.Text = ""
-            MaxPlotsCacheTempDirText.Enabled = False
-            DebugMaxPlotsCacheTempDir.Text = ""
-            DebugMaxPlotsCacheTempDir.Enabled = False
             arguments("-W") = ""
-            MaxParallelCopiesCheck.Checked = False
-            MaxParallelCopiesCheck.Enabled = False
-            DebugMaxParalleCopies.Text = ""
-            DebugMaxParalleCopies.Enabled = False
+            For Each debugControl As Control In {DebugRemoteCopyPort, DebugWaitforCopy, DebugUniquePlot, DebugThreadMultiplierP2, DebugDirectInFinalDir, DebugAlternateTempDir, DebugStageDirectory, DebugMaxPlotsCacheTempDir, DebugMaxParalleCopies}
+                debugControl.Enabled = False
+                debugControl.Text = ""
+            Next
         End If
     End Sub
 
     Private Sub RemoteCopyPortText_TextChanged(sender As Object, e As EventArgs) Handles RemoteCopyPortText.TextChanged
-        arguments("-z") = CInt(RemoteCopyPortText.Text)
-        If arguments.ContainsKey("-z") Then
-            DebugRemoteCopyPort.Text = "-z " & arguments("-z")
+        If Not String.IsNullOrEmpty(RemoteCopyPortText.Text) Then
+            Dim portValue As Integer
+            If Integer.TryParse(RemoteCopyPortText.Text, portValue) Then
+                arguments("-z") = portValue
+                DebugRemoteCopyPort.Text = "-z " & portValue.ToString()
+                Debug.WriteLine("-z " & portValue)
+            Else
+                RemoteCopyPortText.Text = ""
+                arguments.Remove("-z") ' Remove the "-z" key if non-integer values are entered
+                DebugRemoteCopyPort.Text = "No port selected"
+                Debug.WriteLine("Invalid port value")
+            End If
         Else
+            arguments.Remove("-z") ' Remove the "-z" key if the text box is empty
             DebugRemoteCopyPort.Text = "No port selected"
         End If
-        Debug.WriteLine(arguments("-z"))
     End Sub
 
     Private Sub DebugRemoteCopyPort_Click(sender As Object, e As EventArgs) Handles DebugRemoteCopyPort.Click
@@ -1238,7 +1275,7 @@ Public Class Form1
         If arguments.ContainsKey("-w") Then
             DebugWaitforCopy.Text = arguments("-w")
         Else
-            DebugWaitforCopy.Text = "No port selected"
+            DebugWaitforCopy.Text = "Error"
         End If
         Debug.WriteLine(arguments("-w"))
     End Sub
@@ -1246,11 +1283,15 @@ Public Class Form1
     Private Sub UniquePlotCheck_CheckedChanged(sender As Object, e As EventArgs) Handles UniquePlotCheck.CheckedChanged
         If WaitforCopyCheck.Checked = True Then arguments("-Z") = "-Z"
         If arguments.ContainsKey("-Z") Then
-            DebugWaitforCopy.Text = arguments("-Z")
+            DebugUniquePlot.Text = arguments("-Z")
         Else
-            DebugWaitforCopy.Text = "Error"
+            DebugUniquePlot.Text = "No port selected"
         End If
         Debug.WriteLine(arguments("-Z"))
+    End Sub
+
+    Private Sub DebugUniquePlot_Click(sender As Object, e As EventArgs) Handles DebugUniquePlot.Click
+
     End Sub
 
     Private Sub ThreadMultiplierP2Text_TextChanged(sender As Object, e As EventArgs) Handles ThreadMultiplierP2Text.TextChanged
@@ -1271,7 +1312,6 @@ Public Class Form1
             DebugThreadMultiplierP2.Text = "No multiplier"
         End If
     End Sub
-
 
     Private Sub DebugThreadMultiplierP2_Click(sender As Object, e As EventArgs) Handles DebugThreadMultiplierP2.Click
 
@@ -1328,7 +1368,7 @@ Public Class Form1
     End Sub
 
     Private Sub AlternateTempDirCheck_CheckedChanged(sender As Object, e As EventArgs) Handles AlternateTempDirCheck.CheckedChanged
-        If AlternateTempDirCheck.Checked = True Then arguments("-D") = "-D"
+        If AlternateTempDirCheck.Checked = True Then arguments("-G") = "-G"
         If arguments.ContainsKey("-G") Then
             DebugAlternateTempDir.Text = arguments("-G")
         Else
@@ -1359,7 +1399,6 @@ Public Class Form1
             DebugMaxPlotsCacheTempDir.Text = "Invalid Entry"
         End If
     End Sub
-
 
     Private Sub DebugMaxPlotsCacheTempDir_Click(sender As Object, e As EventArgs) Handles DebugMaxPlotsCacheTempDir.Click
 
@@ -1393,21 +1432,6 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SoftStopButton_Click(sender As Object, e As EventArgs) Handles SoftStopButton.Click
-        If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
-            ' Send the Ctrl+C signal to the process
-            GenerateConsoleCtrlEvent(CTRL_C_EVENT, cmdProcess.SessionId)
-
-            ' Wait for the process to exit
-            cmdProcess.WaitForExit()
-
-            ' Cleanup the process resources
-            cmdProcess.Close()
-            cmdProcess.Dispose()
-            cmdProcess = Nothing
-        End If
-    End Sub
-
     Private Sub HardStopButton_Click(sender As Object, e As EventArgs) Handles HardStopButton.Click
         If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
             ' Kill the process
@@ -1423,6 +1447,8 @@ Public Class Form1
 
             PauseButton.Enabled = True
             ResumeButton.Enabled = False
+            PlotProgress = 0
+            PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
         End If
     End Sub
 
@@ -1453,6 +1479,296 @@ Public Class Form1
 
             ' Cleanup the thread handle
             CloseHandle(hThread)
+        End If
+    End Sub
+
+    Private Sub PlotProgressBar_Click(sender As Object, e As EventArgs) Handles PlotProgressBar.Click
+
+    End Sub
+
+    Private Sub ReadMeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ReadMeToolStripMenuItem.Click
+        ' Define the URL
+        Dim url As String = "https://github.com/hootie2121/PoST-Plotter-Windows-GUI/blob/master/README.md"
+
+        ' Use the Process.Start method to open the default browser with the URL as an argument
+        Process.Start("cmd", "/c start " & url)
+    End Sub
+
+    Private Sub GitHubToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles GitHubToolStripMenuItem.Click
+        ' Define the URL
+        Dim url As String = "https://github.com/hootie2121/PoST-Plotter-Windows-GUI"
+
+        ' Use the Process.Start method to open the default browser with the URL as an argument
+        Process.Start("cmd", "/c start " & url)
+    End Sub
+
+    Private Sub UpdateCheckToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UpdateCheckToolStripMenuItem.Click
+        ' Define the URL of the latest release information
+        Dim url As String = "https://api.github.com/repos/hootie2121/PoST-Plotter-Windows-GUI/releases/latest"
+
+        ' Use HttpClient to download the latest release information as JSON
+        Dim client As New HttpClient()
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0")
+        Dim response As HttpResponseMessage = client.GetAsync(url).Result
+        Dim json As String = response.Content.ReadAsStringAsync().Result
+
+        ' Parse the JSON to get the latest version number and release URL
+        Dim latestRelease As JObject = JObject.Parse(json)
+        Dim latestVersion As String = latestRelease("tag_name").ToString()
+        Dim latestUrl As String = latestRelease("assets")(0)("browser_download_url").ToString()
+
+        ' Get the current version number from the VersioningToolStripMenuItem
+        Dim currentVersion As String = VersioningToolStripMenuItem.Text.Replace("Version ", "")
+
+        ' Compare the latest version to the current version
+        If latestVersion <> currentVersion Then
+            ' Check if the current version is newer than the latest version
+            If String.Compare(currentVersion, latestVersion) > 0 Then
+                ' Prompt the user to revert to the latest version
+                Dim result As DialogResult = MessageBox.Show("This version is newer than the latest released version. Would you like to revert to the latest version?", "Revert to Latest Version", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
+                    ' Prompt the user for confirmation to revert
+                    Dim confirmResult As DialogResult = MessageBox.Show("Are you sure you want to revert to the latest version?", "Confirm Revert", MessageBoxButtons.YesNo)
+                    If confirmResult = DialogResult.Yes Then
+                        ' Prompt the user with a warning before reverting
+                        Dim warningResult As DialogResult = MessageBox.Show("This cannot be undone! Are you sure you want to revert to the latest version?", "Warning", MessageBoxButtons.YesNo)
+                        If warningResult = DialogResult.Yes Then
+                            ' Close the program
+                            Me.Close()
+
+                            ' Download and unzip the latest release file
+                            Dim downloadClient As New HttpClient()
+                            Dim downloadResponse As HttpResponseMessage = downloadClient.GetAsync(latestUrl).Result
+                            Dim bytes As Byte() = downloadResponse.Content.ReadAsByteArrayAsync().Result
+                            System.IO.File.WriteAllBytes("latest.zip", bytes)
+
+                            Try
+                                ZipFile.ExtractToDirectory("latest.zip", ".")
+                            Catch ex As Exception
+                                MessageBox.Show("Error extracting ZIP file: " & ex.Message, "Error")
+                            End Try
+
+                            System.IO.File.Delete("latest.zip")
+
+                            Dim p As Process = Process.Start(Application.ExecutablePath)
+
+                            If p Is Nothing Then
+                                MessageBox.Show("Error starting updated program.", "Error")
+                            Else
+                                ' Display a message to the user
+                                MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                            End If
+
+                            ' Display a message to the user
+                            MessageBox.Show("The program has been reverted to the latest version. The program will now restart.", "Revert Complete")
+                        End If
+                    End If
+                End If
+            Else
+                ' Prompt the user to download the latest release
+                Dim result As DialogResult = MessageBox.Show("A new version of the program is available. Do you want to download it?", "Update Available", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
+                    ' Close the program
+                    Me.Close()
+
+                    ' Download and unzip the latest release file
+                    Dim downloadClient As New HttpClient()
+                    Dim downloadResponse As HttpResponseMessage = downloadClient.GetAsync(latestUrl).Result
+                    Dim bytes As Byte() = downloadResponse.Content.ReadAsByteArrayAsync().Result
+                    System.IO.File.WriteAllBytes("latest.zip", bytes)
+
+                    Try
+                        ZipFile.ExtractToDirectory("latest.zip", ".")
+                    Catch ex As Exception
+                        MessageBox.Show("Error extracting ZIP file: " & ex.Message, "Error")
+                    End Try
+
+                    System.IO.File.Delete("latest.zip")
+
+                    Dim p As Process = Process.Start(Application.ExecutablePath)
+
+                    If p Is Nothing Then
+                        MessageBox.Show("Error starting updated program.", "Error")
+                    Else
+                        ' Display a message to the user
+                        MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                    End If
+
+                    ' Display a message to the user
+                    MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                End If
+            End If
+        Else
+            ' Display a message to the user that the program is up to date
+            MessageBox.Show("The program is up to date.", "Up-to-Date")
+        End If
+    End Sub
+
+    Private Sub CutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CutToolStripMenuItem.Click
+        If CPortText.Focused Then
+            CPortText.Cut()
+        ElseIf NPlotsText.Focused Then
+            NPlotsText.Cut()
+        ElseIf TempDir1Text.Focused Then
+            TempDir1Text.Cut()
+        ElseIf TempDir2Text.Focused Then
+            TempDir2Text.Cut()
+        ElseIf TempDir3Text.Focused Then
+            TempDir3Text.Cut()
+        ElseIf FinalDirText.Focused Then
+            FinalDirText.Cut()
+        ElseIf PoolKeyText.Focused Then
+            PoolKeyText.Cut()
+        ElseIf ContractKeyText.Focused Then
+            ContractKeyText.Cut()
+        ElseIf FarmerKeyText.Focused Then
+            FarmerKeyText.Cut()
+        ElseIf BucketsText.Focused Then
+            BucketsText.Cut()
+        ElseIf BucketsP23Text.Focused Then
+            BucketsP23Text.Cut()
+        ElseIf CudaDeviceText.Focused Then
+            CudaDeviceText.Cut()
+        ElseIf NumCudaText.Focused Then
+            NumCudaText.Cut()
+        ElseIf StreamsText.Focused Then
+            StreamsText.Cut()
+        ElseIf MaxMemText.Focused Then
+            MaxMemText.Cut()
+        ElseIf RemoteCopyPortText.Focused Then
+            RemoteCopyPortText.Cut()
+        ElseIf ThreadMultiplierP2Text.Focused Then
+            ThreadMultiplierP2Text.Cut()
+        ElseIf StageDirectoryText.Focused Then
+            StageDirectoryText.Cut()
+        ElseIf MaxPlotsCacheTempDirText.Focused Then
+            MaxPlotsCacheTempDirText.Cut()
+        End If
+    End Sub
+
+    Private Sub CopyToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyToolStripMenuItem.Click
+        If CPortText.Focused Then
+            CPortText.Copy()
+        ElseIf NPlotsText.Focused Then
+            NPlotsText.Copy()
+        ElseIf TempDir1Text.Focused Then
+            TempDir1Text.Copy()
+        ElseIf TempDir2Text.Focused Then
+            TempDir2Text.Copy()
+        ElseIf TempDir3Text.Focused Then
+            TempDir3Text.Copy()
+        ElseIf FinalDirText.Focused Then
+            FinalDirText.Copy()
+        ElseIf PoolKeyText.Focused Then
+            PoolKeyText.Copy()
+        ElseIf ContractKeyText.Focused Then
+            ContractKeyText.Copy()
+        ElseIf FarmerKeyText.Focused Then
+            FarmerKeyText.Copy()
+        ElseIf BucketsText.Focused Then
+            BucketsText.Copy()
+        ElseIf BucketsP23Text.Focused Then
+            BucketsP23Text.Copy()
+        ElseIf CudaDeviceText.Focused Then
+            CudaDeviceText.Copy()
+        ElseIf NumCudaText.Focused Then
+            NumCudaText.Copy()
+        ElseIf StreamsText.Focused Then
+            StreamsText.Copy()
+        ElseIf MaxMemText.Focused Then
+            MaxMemText.Copy()
+        ElseIf RemoteCopyPortText.Focused Then
+            RemoteCopyPortText.Copy()
+        ElseIf ThreadMultiplierP2Text.Focused Then
+            ThreadMultiplierP2Text.Copy()
+        ElseIf StageDirectoryText.Focused Then
+            StageDirectoryText.Copy()
+        ElseIf MaxPlotsCacheTempDirText.Focused Then
+            MaxPlotsCacheTempDirText.Copy()
+        End If
+    End Sub
+
+    Private Sub PasteToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PasteToolStripMenuItem.Click
+        If CPortText.Focused Then
+            CPortText.Paste()
+        ElseIf NPlotsText.Focused Then
+            NPlotsText.Paste()
+        ElseIf TempDir1Text.Focused Then
+            TempDir1Text.Paste()
+        ElseIf TempDir2Text.Focused Then
+            TempDir2Text.Paste()
+        ElseIf TempDir3Text.Focused Then
+            TempDir3Text.Paste()
+        ElseIf FinalDirText.Focused Then
+            FinalDirText.Paste()
+        ElseIf PoolKeyText.Focused Then
+            PoolKeyText.Paste()
+        ElseIf ContractKeyText.Focused Then
+            ContractKeyText.Paste()
+        ElseIf FarmerKeyText.Focused Then
+            FarmerKeyText.Paste()
+        ElseIf BucketsText.Focused Then
+            BucketsText.Paste()
+        ElseIf BucketsP23Text.Focused Then
+            BucketsP23Text.Paste()
+        ElseIf CudaDeviceText.Focused Then
+            CudaDeviceText.Paste()
+        ElseIf NumCudaText.Focused Then
+            NumCudaText.Paste()
+        ElseIf StreamsText.Focused Then
+            StreamsText.Paste()
+        ElseIf MaxMemText.Focused Then
+            MaxMemText.Paste()
+        ElseIf RemoteCopyPortText.Focused Then
+            RemoteCopyPortText.Paste()
+        ElseIf ThreadMultiplierP2Text.Focused Then
+            ThreadMultiplierP2Text.Paste()
+        ElseIf StageDirectoryText.Focused Then
+            StageDirectoryText.Paste()
+        ElseIf MaxPlotsCacheTempDirText.Focused Then
+            MaxPlotsCacheTempDirText.Paste()
+        End If
+    End Sub
+
+    Private Sub SelectAllToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SelectAllToolStripMenuItem.Click
+        If CPortText.Focused Then
+            CPortText.SelectAll()
+        ElseIf NPlotsText.Focused Then
+            NPlotsText.SelectAll()
+        ElseIf TempDir1Text.Focused Then
+            TempDir1Text.SelectAll()
+        ElseIf TempDir2Text.Focused Then
+            TempDir2Text.SelectAll()
+        ElseIf TempDir3Text.Focused Then
+            TempDir3Text.SelectAll()
+        ElseIf FinalDirText.Focused Then
+            FinalDirText.SelectAll()
+        ElseIf PoolKeyText.Focused Then
+            PoolKeyText.SelectAll()
+        ElseIf ContractKeyText.Focused Then
+            ContractKeyText.SelectAll()
+        ElseIf FarmerKeyText.Focused Then
+            FarmerKeyText.SelectAll()
+        ElseIf BucketsText.Focused Then
+            BucketsText.SelectAll()
+        ElseIf BucketsP23Text.Focused Then
+            BucketsP23Text.SelectAll()
+        ElseIf CudaDeviceText.Focused Then
+            CudaDeviceText.SelectAll()
+        ElseIf NumCudaText.Focused Then
+            NumCudaText.SelectAll()
+        ElseIf StreamsText.Focused Then
+            StreamsText.SelectAll()
+        ElseIf MaxMemText.Focused Then
+            MaxMemText.SelectAll()
+        ElseIf RemoteCopyPortText.Focused Then
+            RemoteCopyPortText.SelectAll()
+        ElseIf ThreadMultiplierP2Text.Focused Then
+            ThreadMultiplierP2Text.SelectAll()
+        ElseIf StageDirectoryText.Focused Then
+            StageDirectoryText.SelectAll()
+        ElseIf MaxPlotsCacheTempDirText.Focused Then
+            MaxPlotsCacheTempDirText.SelectAll()
         End If
     End Sub
 End Class

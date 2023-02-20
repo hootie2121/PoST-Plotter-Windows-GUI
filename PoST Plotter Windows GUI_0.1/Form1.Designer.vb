@@ -50,11 +50,11 @@ Partial Class Form1
         Me.OpenConfigLocationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ContentsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.IndexToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SearchToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ReadMeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.GitHubToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UpdateCheckToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
-        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.VersioningToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonOptions = New System.Windows.Forms.GroupBox()
         Me.AdvancedOptionsCheck = New System.Windows.Forms.CheckBox()
         Me.UniquePlotCheck = New System.Windows.Forms.CheckBox()
@@ -156,10 +156,10 @@ Partial Class Form1
         Me.DebugPlotter = New System.Windows.Forms.Label()
         Me.Console = New System.Windows.Forms.GroupBox()
         Me.ConsolePrintOutTextBox = New System.Windows.Forms.RichTextBox()
-        Me.SoftStopButton = New System.Windows.Forms.Button()
         Me.HardStopButton = New System.Windows.Forms.Button()
         Me.PauseButton = New System.Windows.Forms.Button()
         Me.ResumeButton = New System.Windows.Forms.Button()
+        Me.PlotProgressBar = New System.Windows.Forms.ProgressBar()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -265,20 +265,20 @@ Partial Class Form1
         '
         Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
         Me.UndoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.UndoToolStripMenuItem.Text = "&Undo"
         '
         'RedoToolStripMenuItem
         '
         Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
         Me.RedoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.RedoToolStripMenuItem.Text = "&Redo"
         '
         'toolStripSeparator3
         '
         Me.toolStripSeparator3.Name = "toolStripSeparator3"
-        Me.toolStripSeparator3.Size = New System.Drawing.Size(176, 6)
+        Me.toolStripSeparator3.Size = New System.Drawing.Size(221, 6)
         '
         'CutToolStripMenuItem
         '
@@ -286,7 +286,7 @@ Partial Class Form1
         Me.CutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
         Me.CutToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CutToolStripMenuItem.Text = "Cu&t"
         '
         'CopyToolStripMenuItem
@@ -295,7 +295,7 @@ Partial Class Form1
         Me.CopyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
         Me.CopyToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CopyToolStripMenuItem.Text = "&Copy"
         '
         'PasteToolStripMenuItem
@@ -304,18 +304,19 @@ Partial Class Form1
         Me.PasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
         Me.PasteToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.PasteToolStripMenuItem.Text = "&Paste"
         '
         'toolStripSeparator4
         '
         Me.toolStripSeparator4.Name = "toolStripSeparator4"
-        Me.toolStripSeparator4.Size = New System.Drawing.Size(176, 6)
+        Me.toolStripSeparator4.Size = New System.Drawing.Size(221, 6)
         '
         'SelectAllToolStripMenuItem
         '
         Me.SelectAllToolStripMenuItem.Name = "SelectAllToolStripMenuItem"
-        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
+        Me.SelectAllToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
+        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.SelectAllToolStripMenuItem.Text = "Select &All"
         '
         'ToolsToolStripMenuItem
@@ -351,39 +352,39 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ContentsToolStripMenuItem, Me.IndexToolStripMenuItem, Me.SearchToolStripMenuItem, Me.toolStripSeparator5, Me.AboutToolStripMenuItem})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ReadMeToolStripMenuItem, Me.GitHubToolStripMenuItem, Me.UpdateCheckToolStripMenuItem, Me.toolStripSeparator5, Me.VersioningToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(55, 24)
         Me.HelpToolStripMenuItem.Text = "&Help"
         '
-        'ContentsToolStripMenuItem
+        'ReadMeToolStripMenuItem
         '
-        Me.ContentsToolStripMenuItem.Name = "ContentsToolStripMenuItem"
-        Me.ContentsToolStripMenuItem.Size = New System.Drawing.Size(150, 26)
-        Me.ContentsToolStripMenuItem.Text = "&Contents"
+        Me.ReadMeToolStripMenuItem.Name = "ReadMeToolStripMenuItem"
+        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.ReadMeToolStripMenuItem.Text = "README"
         '
-        'IndexToolStripMenuItem
+        'GitHubToolStripMenuItem
         '
-        Me.IndexToolStripMenuItem.Name = "IndexToolStripMenuItem"
-        Me.IndexToolStripMenuItem.Size = New System.Drawing.Size(150, 26)
-        Me.IndexToolStripMenuItem.Text = "&Index"
+        Me.GitHubToolStripMenuItem.Name = "GitHubToolStripMenuItem"
+        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.GitHubToolStripMenuItem.Text = "GitHub"
         '
-        'SearchToolStripMenuItem
+        'UpdateCheckToolStripMenuItem
         '
-        Me.SearchToolStripMenuItem.Name = "SearchToolStripMenuItem"
-        Me.SearchToolStripMenuItem.Size = New System.Drawing.Size(150, 26)
-        Me.SearchToolStripMenuItem.Text = "&Search"
+        Me.UpdateCheckToolStripMenuItem.Name = "UpdateCheckToolStripMenuItem"
+        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.UpdateCheckToolStripMenuItem.Text = "Check for Updates"
         '
         'toolStripSeparator5
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
-        Me.toolStripSeparator5.Size = New System.Drawing.Size(147, 6)
+        Me.toolStripSeparator5.Size = New System.Drawing.Size(210, 6)
         '
-        'AboutToolStripMenuItem
+        'VersioningToolStripMenuItem
         '
-        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(150, 26)
-        Me.AboutToolStripMenuItem.Text = "&About..."
+        Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
+        Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.VersioningToolStripMenuItem.Text = "Version 1.0.0"
         '
         'CommonOptions
         '
@@ -1443,20 +1444,10 @@ Partial Class Form1
         Me.ConsolePrintOutTextBox.TabIndex = 0
         Me.ConsolePrintOutTextBox.Text = ""
         '
-        'SoftStopButton
-        '
-        Me.SoftStopButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.SoftStopButton.Location = New System.Drawing.Point(20, 969)
-        Me.SoftStopButton.Name = "SoftStopButton"
-        Me.SoftStopButton.Size = New System.Drawing.Size(113, 29)
-        Me.SoftStopButton.TabIndex = 9
-        Me.SoftStopButton.Text = "Soft Stop Plot"
-        Me.SoftStopButton.UseVisualStyleBackColor = True
-        '
         'HardStopButton
         '
         Me.HardStopButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.HardStopButton.Location = New System.Drawing.Point(139, 969)
+        Me.HardStopButton.Location = New System.Drawing.Point(252, 963)
         Me.HardStopButton.Name = "HardStopButton"
         Me.HardStopButton.Size = New System.Drawing.Size(113, 29)
         Me.HardStopButton.TabIndex = 10
@@ -1466,7 +1457,7 @@ Partial Class Form1
         'PauseButton
         '
         Me.PauseButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PauseButton.Location = New System.Drawing.Point(748, 969)
+        Me.PauseButton.Location = New System.Drawing.Point(14, 963)
         Me.PauseButton.Name = "PauseButton"
         Me.PauseButton.Size = New System.Drawing.Size(113, 29)
         Me.PauseButton.TabIndex = 11
@@ -1476,22 +1467,29 @@ Partial Class Form1
         'ResumeButton
         '
         Me.ResumeButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.ResumeButton.Location = New System.Drawing.Point(867, 969)
+        Me.ResumeButton.Location = New System.Drawing.Point(133, 963)
         Me.ResumeButton.Name = "ResumeButton"
         Me.ResumeButton.Size = New System.Drawing.Size(113, 29)
         Me.ResumeButton.TabIndex = 12
         Me.ResumeButton.Text = "Resume Plot"
         Me.ResumeButton.UseVisualStyleBackColor = True
         '
+        'PlotProgressBar
+        '
+        Me.PlotProgressBar.Location = New System.Drawing.Point(20, 998)
+        Me.PlotProgressBar.Name = "PlotProgressBar"
+        Me.PlotProgressBar.Size = New System.Drawing.Size(1007, 29)
+        Me.PlotProgressBar.TabIndex = 13
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1684, 1010)
+        Me.ClientSize = New System.Drawing.Size(1684, 1038)
+        Me.Controls.Add(Me.PlotProgressBar)
         Me.Controls.Add(Me.ResumeButton)
         Me.Controls.Add(Me.PauseButton)
         Me.Controls.Add(Me.HardStopButton)
-        Me.Controls.Add(Me.SoftStopButton)
         Me.Controls.Add(Me.Console)
         Me.Controls.Add(Me.DebugPlotter)
         Me.Controls.Add(Me.DebugPlotterPath)
@@ -1543,11 +1541,11 @@ Partial Class Form1
     Friend WithEvents ToolsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents DebugModeToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ContentsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents IndexToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SearchToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ReadMeToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents GitHubToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UpdateCheckToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents toolStripSeparator5 As ToolStripSeparator
-    Friend WithEvents AboutToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents VersioningToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CommonOptions As GroupBox
     Friend WithEvents KValueCombo As ComboBox
     Friend WithEvents KVLabel As Label
@@ -1652,8 +1650,8 @@ Partial Class Form1
     Friend WithEvents MaxParallelCopiesCheck As CheckBox
     Friend WithEvents Console As GroupBox
     Friend WithEvents ConsolePrintOutTextBox As RichTextBox
-    Friend WithEvents SoftStopButton As Button
     Friend WithEvents HardStopButton As Button
     Friend WithEvents PauseButton As Button
     Friend WithEvents ResumeButton As Button
+    Friend WithEvents PlotProgressBar As ProgressBar
 End Class
