@@ -1391,7 +1391,7 @@ Partial Class Form1
         'PlotButton
         '
         Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PlotButton.Location = New System.Drawing.Point(867, 745)
+        Me.PlotButton.Location = New System.Drawing.Point(867, 485)
         Me.PlotButton.Name = "PlotButton"
         Me.PlotButton.Size = New System.Drawing.Size(150, 29)
         Me.PlotButton.TabIndex = 5
@@ -1401,7 +1401,7 @@ Partial Class Form1
         'DebugPlotterPath
         '
         Me.DebugPlotterPath.AutoSize = True
-        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 729)
+        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 469)
         Me.DebugPlotterPath.Name = "DebugPlotterPath"
         Me.DebugPlotterPath.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterPath.TabIndex = 6
@@ -1409,7 +1409,7 @@ Partial Class Form1
         'DebugPlotter
         '
         Me.DebugPlotter.AutoSize = True
-        Me.DebugPlotter.Location = New System.Drawing.Point(14, 754)
+        Me.DebugPlotter.Location = New System.Drawing.Point(14, 494)
         Me.DebugPlotter.Name = "DebugPlotter"
         Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotter.TabIndex = 7
@@ -1418,7 +1418,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1684, 793)
+        Me.ClientSize = New System.Drawing.Size(1684, 526)
         Me.Controls.Add(Me.DebugPlotter)
         Me.Controls.Add(Me.DebugPlotterPath)
         Me.Controls.Add(Me.PlotButton)
