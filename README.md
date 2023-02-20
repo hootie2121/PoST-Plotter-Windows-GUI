@@ -13,7 +13,7 @@ PoSTPWG is a simple graphical user interface for Windows to be used with madMAx4
 ## Running
 Enter the preferred variables into the given options. When ready, hit "Read. Set. Plot!" which will send the command to the appropriate plotting software. The typical CLI window should pop-up where you can follow the plots progress.
 
-![PoSTPWG Plotting]
+![PoSTPWG Plotting](https://raw.githubusercontent.com/hootie2121/PoST-Plotter-Windows-GUI/master/PoST%20Plotter%20Windows%20GUI/Images/PoSTPWGPlotting.png)
 
 ## Advanced Options
 ### Debugging
