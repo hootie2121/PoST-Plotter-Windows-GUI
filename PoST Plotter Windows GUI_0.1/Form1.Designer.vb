@@ -154,11 +154,18 @@ Partial Class Form1
         Me.PlotButton = New System.Windows.Forms.Button()
         Me.DebugPlotterPath = New System.Windows.Forms.Label()
         Me.DebugPlotter = New System.Windows.Forms.Label()
+        Me.Console = New System.Windows.Forms.GroupBox()
+        Me.ConsolePrintOutTextBox = New System.Windows.Forms.RichTextBox()
+        Me.SoftStopButton = New System.Windows.Forms.Button()
+        Me.HardStopButton = New System.Windows.Forms.Button()
+        Me.PauseButton = New System.Windows.Forms.Button()
+        Me.ResumeButton = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
         Me.CPUOptions.SuspendLayout()
         Me.GPUOptions.SuspendLayout()
+        Me.Console.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -1414,11 +1421,78 @@ Partial Class Form1
         Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotter.TabIndex = 7
         '
+        'Console
+        '
+        Me.Console.Controls.Add(Me.ConsolePrintOutTextBox)
+        Me.Console.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.Console.Location = New System.Drawing.Point(11, 517)
+        Me.Console.Name = "Console"
+        Me.Console.Size = New System.Drawing.Size(1027, 440)
+        Me.Console.TabIndex = 8
+        Me.Console.TabStop = False
+        Me.Console.Text = "Console:"
+        '
+        'ConsolePrintOutTextBox
+        '
+        Me.ConsolePrintOutTextBox.BackColor = System.Drawing.SystemColors.Desktop
+        Me.ConsolePrintOutTextBox.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ConsolePrintOutTextBox.ForeColor = System.Drawing.SystemColors.Window
+        Me.ConsolePrintOutTextBox.Location = New System.Drawing.Point(9, 26)
+        Me.ConsolePrintOutTextBox.Name = "ConsolePrintOutTextBox"
+        Me.ConsolePrintOutTextBox.Size = New System.Drawing.Size(1010, 395)
+        Me.ConsolePrintOutTextBox.TabIndex = 0
+        Me.ConsolePrintOutTextBox.Text = ""
+        '
+        'SoftStopButton
+        '
+        Me.SoftStopButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.SoftStopButton.Location = New System.Drawing.Point(20, 969)
+        Me.SoftStopButton.Name = "SoftStopButton"
+        Me.SoftStopButton.Size = New System.Drawing.Size(113, 29)
+        Me.SoftStopButton.TabIndex = 9
+        Me.SoftStopButton.Text = "Soft Stop Plot"
+        Me.SoftStopButton.UseVisualStyleBackColor = True
+        '
+        'HardStopButton
+        '
+        Me.HardStopButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.HardStopButton.Location = New System.Drawing.Point(139, 969)
+        Me.HardStopButton.Name = "HardStopButton"
+        Me.HardStopButton.Size = New System.Drawing.Size(113, 29)
+        Me.HardStopButton.TabIndex = 10
+        Me.HardStopButton.Text = "Hard Stop Plot"
+        Me.HardStopButton.UseVisualStyleBackColor = True
+        '
+        'PauseButton
+        '
+        Me.PauseButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.PauseButton.Location = New System.Drawing.Point(748, 969)
+        Me.PauseButton.Name = "PauseButton"
+        Me.PauseButton.Size = New System.Drawing.Size(113, 29)
+        Me.PauseButton.TabIndex = 11
+        Me.PauseButton.Text = "Pause Plot"
+        Me.PauseButton.UseVisualStyleBackColor = True
+        '
+        'ResumeButton
+        '
+        Me.ResumeButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
+        Me.ResumeButton.Location = New System.Drawing.Point(867, 969)
+        Me.ResumeButton.Name = "ResumeButton"
+        Me.ResumeButton.Size = New System.Drawing.Size(113, 29)
+        Me.ResumeButton.TabIndex = 12
+        Me.ResumeButton.Text = "Resume Plot"
+        Me.ResumeButton.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1684, 526)
+        Me.ClientSize = New System.Drawing.Size(1684, 1010)
+        Me.Controls.Add(Me.ResumeButton)
+        Me.Controls.Add(Me.PauseButton)
+        Me.Controls.Add(Me.HardStopButton)
+        Me.Controls.Add(Me.SoftStopButton)
+        Me.Controls.Add(Me.Console)
         Me.Controls.Add(Me.DebugPlotter)
         Me.Controls.Add(Me.DebugPlotterPath)
         Me.Controls.Add(Me.PlotButton)
@@ -1439,6 +1513,7 @@ Partial Class Form1
         Me.CPUOptions.PerformLayout()
         Me.GPUOptions.ResumeLayout(False)
         Me.GPUOptions.PerformLayout()
+        Me.Console.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1575,4 +1650,10 @@ Partial Class Form1
     Friend WithEvents MaxPlotstoCacheinTempDirLabel As Label
     Friend WithEvents DebugMaxParalleCopies As Label
     Friend WithEvents MaxParallelCopiesCheck As CheckBox
+    Friend WithEvents Console As GroupBox
+    Friend WithEvents ConsolePrintOutTextBox As RichTextBox
+    Friend WithEvents SoftStopButton As Button
+    Friend WithEvents HardStopButton As Button
+    Friend WithEvents PauseButton As Button
+    Friend WithEvents ResumeButton As Button
 End Class

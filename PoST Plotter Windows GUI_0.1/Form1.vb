@@ -28,6 +28,29 @@ Public Class Form1
     {"MMX", MMX_VALUE}
     }
 
+    Private Declare Function AllocConsole Lib "kernel32" () As Boolean
+    Private Declare Function FreeConsole Lib "kernel32" () As Boolean
+    Private Declare Function ShowWindow Lib "user32" (ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
+
+    Private Const SW_HIDE As Integer = 0
+    Private Const SW_SHOW As Integer = 5
+    Private Const FOREGROUND_BLUE As Short = &H1
+    Private Const BACKGROUND_BLUE As Short = &H10
+
+    Private cmdProcess As Process
+    Private consoleWindowHandle As IntPtr
+
+    Private Declare Function GenerateConsoleCtrlEvent Lib "kernel32.dll" (dwCtrlEvent As Integer, dwProcessGroupId As Integer) As Boolean
+    Private Const CTRL_C_EVENT As Integer = 0
+
+    Private Declare Function OpenThread Lib "kernel32.dll" (dwDesiredAccess As Integer, bInheritHandle As Boolean, dwThreadId As Integer) As IntPtr
+    Private Declare Function SuspendThread Lib "kernel32.dll" (hThread As IntPtr) As Integer
+    Private Declare Function ResumeThread Lib "kernel32.dll" (hThread As IntPtr) As Integer
+    Private Declare Function CloseHandle Lib "kernel32.dll" (hObject As IntPtr) As Boolean
+
+
+    Private Const THREAD_ALL_ACCESS As Integer = &H1F03FF
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetDebugControlsVisibility(False)
         PopulateCLCombo()
@@ -84,6 +107,7 @@ Public Class Form1
         MaxParallelCopiesCheck.Enabled = False
         DebugMaxParalleCopies.Text = ""
         DebugMaxParalleCopies.Enabled = False
+        ResumeButton.Enabled = False
 
         Dim allValid As Boolean = True
         For Each program In cliPrograms
@@ -929,7 +953,7 @@ Public Class Form1
 
     End Sub
 
-    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+    Private Sub StartPlotProcess()
         Dim argumentsString As String = ""
         Dim plotFilePath As String = Path.Combine(arguments("-plp").ToString(), arguments("-pl").ToString())
         Dim plotDirectory As String = Path.GetDirectoryName(plotFilePath)
@@ -1007,11 +1031,32 @@ Public Class Form1
             End If
         End If
 
+        ' Start the process and redirect the output
         Dim processStartInfo As New ProcessStartInfo(plotFilePath, argumentsString)
         processStartInfo.WorkingDirectory = plotDirectory
-        Dim cmdProcess As New Process()
+        processStartInfo.RedirectStandardOutput = True
+        processStartInfo.RedirectStandardError = True
+        processStartInfo.UseShellExecute = False
+        processStartInfo.CreateNoWindow = True ' suppress console window
+        cmdProcess = New Process()
         cmdProcess.StartInfo = processStartInfo
+        AddHandler cmdProcess.OutputDataReceived, AddressOf ConsoleOutputReceived
+        AddHandler cmdProcess.ErrorDataReceived, AddressOf ConsoleOutputReceived
         cmdProcess.Start()
+
+        cmdProcess.BeginOutputReadLine()
+        cmdProcess.BeginErrorReadLine()
+    End Sub
+
+    Private Sub ConsoleOutputReceived(ByVal sender As Object, ByVal e As DataReceivedEventArgs)
+        If Not String.IsNullOrEmpty(e.Data) Then
+            ' Append the new console output to the TextBox on the UI thread
+            ConsolePrintOutTextBox.Invoke(Sub() ConsolePrintOutTextBox.AppendText(e.Data & vbCrLf))
+        End If
+    End Sub
+
+    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+        StartPlotProcess()
     End Sub
 
     Private Sub ClearFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearFormToolStripMenuItem.Click
@@ -1332,5 +1377,82 @@ Public Class Form1
 
     Private Sub DebugMaxParalleCopies_Click(sender As Object, e As EventArgs) Handles DebugMaxParalleCopies.Click
 
+    End Sub
+
+    Private Sub ConsolePrintOutTextBox_TextChanged(sender As Object, e As EventArgs) Handles ConsolePrintOutTextBox.TextChanged
+        ' Scroll the TextBox control to the bottom to show the latest output
+        ConsolePrintOutTextBox.SelectionStart = ConsolePrintOutTextBox.Text.Length
+        ConsolePrintOutTextBox.ScrollToCaret()
+    End Sub
+
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        ' Cleanup the hidden window when the form is closing
+        FreeConsole()
+        If consoleWindowHandle <> IntPtr.Zero Then
+            ShowWindow(consoleWindowHandle, SW_SHOW)
+        End If
+    End Sub
+
+    Private Sub SoftStopButton_Click(sender As Object, e As EventArgs) Handles SoftStopButton.Click
+        If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
+            ' Send the Ctrl+C signal to the process
+            GenerateConsoleCtrlEvent(CTRL_C_EVENT, cmdProcess.SessionId)
+
+            ' Wait for the process to exit
+            cmdProcess.WaitForExit()
+
+            ' Cleanup the process resources
+            cmdProcess.Close()
+            cmdProcess.Dispose()
+            cmdProcess = Nothing
+        End If
+    End Sub
+
+    Private Sub HardStopButton_Click(sender As Object, e As EventArgs) Handles HardStopButton.Click
+        If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
+            ' Kill the process
+            cmdProcess.Kill()
+
+            ' Wait for the process to exit
+            cmdProcess.WaitForExit()
+
+            ' Cleanup the process resources
+            cmdProcess.Close()
+            cmdProcess.Dispose()
+            cmdProcess = Nothing
+
+            PauseButton.Enabled = True
+            ResumeButton.Enabled = False
+        End If
+    End Sub
+
+    Private Sub PauseButton_Click(sender As Object, e As EventArgs) Handles PauseButton.Click
+        If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
+            ' Suspend the main thread of the process
+            Dim hThread As IntPtr = OpenThread(THREAD_ALL_ACCESS, False, cmdProcess.Threads(0).Id)
+            SuspendThread(hThread)
+
+            ' Update the GUI to indicate that the process is paused
+            PauseButton.Enabled = False
+            ResumeButton.Enabled = True
+
+            ' Cleanup the thread handle
+            CloseHandle(hThread)
+        End If
+    End Sub
+
+    Private Sub ResumeButton_Click(sender As Object, e As EventArgs) Handles ResumeButton.Click
+        If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
+            ' Resume the main thread of the process
+            Dim hThread As IntPtr = OpenThread(THREAD_ALL_ACCESS, False, cmdProcess.Threads(0).Id)
+            ResumeThread(hThread)
+
+            ' Update the GUI to indicate that the process is resumed
+            PauseButton.Enabled = True
+            ResumeButton.Enabled = False
+
+            ' Cleanup the thread handle
+            CloseHandle(hThread)
+        End If
     End Sub
 End Class
