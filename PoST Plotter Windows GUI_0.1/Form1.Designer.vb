@@ -25,7 +25,7 @@ Partial Class Form1
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.NewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClearFormToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator = New System.Windows.Forms.ToolStripSeparator()
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -56,12 +56,31 @@ Partial Class Form1
         Me.toolStripSeparator5 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CommonOptions = New System.Windows.Forms.GroupBox()
+        Me.AdvancedOptionsCheck = New System.Windows.Forms.CheckBox()
+        Me.UniquePlotCheck = New System.Windows.Forms.CheckBox()
+        Me.DebugUniquePlot = New System.Windows.Forms.Label()
+        Me.AccountKeys = New System.Windows.Forms.GroupBox()
+        Me.ContractKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.ContractKeyText = New System.Windows.Forms.TextBox()
+        Me.PoolKeyRadio = New System.Windows.Forms.RadioButton()
+        Me.PoolKeyLabel = New System.Windows.Forms.Label()
+        Me.DebugFarmerKey = New System.Windows.Forms.Label()
+        Me.PoolKeyText = New System.Windows.Forms.TextBox()
+        Me.FarmerKeyText = New System.Windows.Forms.TextBox()
+        Me.DebugPoolKey = New System.Windows.Forms.Label()
+        Me.FarmerKeyLabel = New System.Windows.Forms.Label()
+        Me.ContractKeyLabel = New System.Windows.Forms.Label()
+        Me.DebugContractKey = New System.Windows.Forms.Label()
+        Me.WaitforCopyCheck = New System.Windows.Forms.CheckBox()
         Me.CPortText = New System.Windows.Forms.TextBox()
+        Me.DebugWaitforCopy = New System.Windows.Forms.Label()
+        Me.RemoteCopyPortText = New System.Windows.Forms.TextBox()
         Me.DebugCPort = New System.Windows.Forms.Label()
         Me.CPortCombo = New System.Windows.Forms.ComboBox()
         Me.CPortLabel = New System.Windows.Forms.Label()
-        Me.FinalDirCheck = New System.Windows.Forms.CheckBox()
+        Me.DebugRemoteCopyPort = New System.Windows.Forms.Label()
         Me.DebugFinalDir = New System.Windows.Forms.Label()
+        Me.RemoteCopyPortLabel = New System.Windows.Forms.Label()
         Me.FinalDirButton = New System.Windows.Forms.Button()
         Me.FinalDirText = New System.Windows.Forms.TextBox()
         Me.FinalDirLabel = New System.Windows.Forms.Label()
@@ -70,7 +89,6 @@ Partial Class Form1
         Me.TempDir2Button = New System.Windows.Forms.Button()
         Me.TempDir2Text = New System.Windows.Forms.TextBox()
         Me.TempDir2Label = New System.Windows.Forms.Label()
-        Me.TempDir1Check = New System.Windows.Forms.CheckBox()
         Me.DebugTempDir1 = New System.Windows.Forms.Label()
         Me.TempDir1Button = New System.Windows.Forms.Button()
         Me.TempDir1Text = New System.Windows.Forms.TextBox()
@@ -89,19 +107,23 @@ Partial Class Form1
         Me.PMGPURadio = New System.Windows.Forms.RadioButton()
         Me.PMCPURadio = New System.Windows.Forms.RadioButton()
         Me.PMLabel = New System.Windows.Forms.Label()
-        Me.ContractKeyRadio = New System.Windows.Forms.RadioButton()
-        Me.PoolKeyRadio = New System.Windows.Forms.RadioButton()
-        Me.DebugFarmerKey = New System.Windows.Forms.Label()
-        Me.FarmerKeyText = New System.Windows.Forms.TextBox()
-        Me.FarmerKeyLabel = New System.Windows.Forms.Label()
-        Me.DebugContractKey = New System.Windows.Forms.Label()
-        Me.ContractKeyText = New System.Windows.Forms.TextBox()
-        Me.ContractKeyLabel = New System.Windows.Forms.Label()
-        Me.DebugPoolKey = New System.Windows.Forms.Label()
-        Me.PoolKeyText = New System.Windows.Forms.TextBox()
-        Me.PoolKeyLabel = New System.Windows.Forms.Label()
-        Me.AccountKeys = New System.Windows.Forms.GroupBox()
+        Me.TempDir3Check = New System.Windows.Forms.CheckBox()
+        Me.DebugTempDir3 = New System.Windows.Forms.Label()
+        Me.TempDir3Button = New System.Windows.Forms.Button()
+        Me.TempDir3Text = New System.Windows.Forms.TextBox()
+        Me.TempDir3Label = New System.Windows.Forms.Label()
         Me.CPUOptions = New System.Windows.Forms.GroupBox()
+        Me.DebugAlternateTempDir = New System.Windows.Forms.Label()
+        Me.AlternateTempDirCheck = New System.Windows.Forms.CheckBox()
+        Me.DebugDirectInFinalDir = New System.Windows.Forms.Label()
+        Me.DirectInFinalDirCheck = New System.Windows.Forms.CheckBox()
+        Me.DebugStageDirectory = New System.Windows.Forms.Label()
+        Me.StageDirectoryButton = New System.Windows.Forms.Button()
+        Me.StageDirectoryText = New System.Windows.Forms.TextBox()
+        Me.StageDirectoryLabel = New System.Windows.Forms.Label()
+        Me.DebugThreadMultiplierP2 = New System.Windows.Forms.Label()
+        Me.ThreadMultiplierP2Text = New System.Windows.Forms.TextBox()
+        Me.ThreadMultiplierP2Label = New System.Windows.Forms.Label()
         Me.BucketsP23Text = New System.Windows.Forms.TextBox()
         Me.DebugBucketsP23 = New System.Windows.Forms.Label()
         Me.BucketsP23Label = New System.Windows.Forms.Label()
@@ -112,6 +134,11 @@ Partial Class Form1
         Me.NumThreadsCombo = New System.Windows.Forms.ComboBox()
         Me.NumThreadsLabel = New System.Windows.Forms.Label()
         Me.GPUOptions = New System.Windows.Forms.GroupBox()
+        Me.DebugMaxPlotsCacheTempDir = New System.Windows.Forms.Label()
+        Me.MaxPlotsCacheTempDirText = New System.Windows.Forms.TextBox()
+        Me.MaxParallelCopiesCheck = New System.Windows.Forms.CheckBox()
+        Me.DebugMaxParalleCopies = New System.Windows.Forms.Label()
+        Me.MaxPlotstoCacheinTempDirLabel = New System.Windows.Forms.Label()
         Me.MaxMemText = New System.Windows.Forms.TextBox()
         Me.DebugMaxMem = New System.Windows.Forms.Label()
         Me.MaxMemLabel = New System.Windows.Forms.Label()
@@ -140,25 +167,23 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.EditToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1089, 28)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1684, 28)
         Me.MenuStrip1.TabIndex = 0
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewToolStripMenuItem, Me.OpenToolStripMenuItem, Me.toolStripSeparator, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.toolStripSeparator1, Me.PrintToolStripMenuItem, Me.PrintPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClearFormToolStripMenuItem, Me.OpenToolStripMenuItem, Me.toolStripSeparator, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.toolStripSeparator1, Me.PrintToolStripMenuItem, Me.PrintPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(46, 24)
         Me.FileToolStripMenuItem.Text = "&File"
         '
-        'NewToolStripMenuItem
+        'ClearFormToolStripMenuItem
         '
-        Me.NewToolStripMenuItem.Image = CType(resources.GetObject("NewToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.NewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.NewToolStripMenuItem.Name = "NewToolStripMenuItem"
-        Me.NewToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
-        Me.NewToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
-        Me.NewToolStripMenuItem.Text = "&New"
+        Me.ClearFormToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ClearFormToolStripMenuItem.Name = "ClearFormToolStripMenuItem"
+        Me.ClearFormToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ClearFormToolStripMenuItem.Text = "Clear Form"
         '
         'OpenToolStripMenuItem
         '
@@ -355,12 +380,20 @@ Partial Class Form1
         '
         'CommonOptions
         '
+        Me.CommonOptions.Controls.Add(Me.AdvancedOptionsCheck)
+        Me.CommonOptions.Controls.Add(Me.UniquePlotCheck)
+        Me.CommonOptions.Controls.Add(Me.DebugUniquePlot)
+        Me.CommonOptions.Controls.Add(Me.AccountKeys)
+        Me.CommonOptions.Controls.Add(Me.WaitforCopyCheck)
         Me.CommonOptions.Controls.Add(Me.CPortText)
+        Me.CommonOptions.Controls.Add(Me.DebugWaitforCopy)
+        Me.CommonOptions.Controls.Add(Me.RemoteCopyPortText)
         Me.CommonOptions.Controls.Add(Me.DebugCPort)
         Me.CommonOptions.Controls.Add(Me.CPortCombo)
         Me.CommonOptions.Controls.Add(Me.CPortLabel)
-        Me.CommonOptions.Controls.Add(Me.FinalDirCheck)
+        Me.CommonOptions.Controls.Add(Me.DebugRemoteCopyPort)
         Me.CommonOptions.Controls.Add(Me.DebugFinalDir)
+        Me.CommonOptions.Controls.Add(Me.RemoteCopyPortLabel)
         Me.CommonOptions.Controls.Add(Me.FinalDirButton)
         Me.CommonOptions.Controls.Add(Me.FinalDirText)
         Me.CommonOptions.Controls.Add(Me.FinalDirLabel)
@@ -369,7 +402,6 @@ Partial Class Form1
         Me.CommonOptions.Controls.Add(Me.TempDir2Button)
         Me.CommonOptions.Controls.Add(Me.TempDir2Text)
         Me.CommonOptions.Controls.Add(Me.TempDir2Label)
-        Me.CommonOptions.Controls.Add(Me.TempDir1Check)
         Me.CommonOptions.Controls.Add(Me.DebugTempDir1)
         Me.CommonOptions.Controls.Add(Me.TempDir1Button)
         Me.CommonOptions.Controls.Add(Me.TempDir1Text)
@@ -391,33 +423,222 @@ Partial Class Form1
         Me.CommonOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.CommonOptions.Location = New System.Drawing.Point(8, 39)
         Me.CommonOptions.Name = "CommonOptions"
-        Me.CommonOptions.Size = New System.Drawing.Size(612, 382)
+        Me.CommonOptions.Size = New System.Drawing.Size(1030, 425)
         Me.CommonOptions.TabIndex = 1
         Me.CommonOptions.TabStop = False
         Me.CommonOptions.Text = "Common Options:"
         '
+        'AdvancedOptionsCheck
+        '
+        Me.AdvancedOptionsCheck.AutoSize = True
+        Me.AdvancedOptionsCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.AdvancedOptionsCheck.Location = New System.Drawing.Point(6, 200)
+        Me.AdvancedOptionsCheck.Name = "AdvancedOptionsCheck"
+        Me.AdvancedOptionsCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.AdvancedOptionsCheck.Size = New System.Drawing.Size(205, 24)
+        Me.AdvancedOptionsCheck.TabIndex = 39
+        Me.AdvancedOptionsCheck.Text = ":Enable Advanced Options"
+        Me.AdvancedOptionsCheck.UseVisualStyleBackColor = True
+        '
+        'UniquePlotCheck
+        '
+        Me.UniquePlotCheck.AutoSize = True
+        Me.UniquePlotCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.UniquePlotCheck.Location = New System.Drawing.Point(837, 174)
+        Me.UniquePlotCheck.Name = "UniquePlotCheck"
+        Me.UniquePlotCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.UniquePlotCheck.Size = New System.Drawing.Size(111, 24)
+        Me.UniquePlotCheck.TabIndex = 41
+        Me.UniquePlotCheck.Text = ":Unique Plot"
+        Me.UniquePlotCheck.UseVisualStyleBackColor = True
+        '
+        'DebugUniquePlot
+        '
+        Me.DebugUniquePlot.AutoSize = True
+        Me.DebugUniquePlot.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugUniquePlot.Location = New System.Drawing.Point(954, 173)
+        Me.DebugUniquePlot.Name = "DebugUniquePlot"
+        Me.DebugUniquePlot.Size = New System.Drawing.Size(0, 20)
+        Me.DebugUniquePlot.TabIndex = 15
+        '
+        'AccountKeys
+        '
+        Me.AccountKeys.Controls.Add(Me.ContractKeyRadio)
+        Me.AccountKeys.Controls.Add(Me.ContractKeyText)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyRadio)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.DebugFarmerKey)
+        Me.AccountKeys.Controls.Add(Me.PoolKeyText)
+        Me.AccountKeys.Controls.Add(Me.FarmerKeyText)
+        Me.AccountKeys.Controls.Add(Me.DebugPoolKey)
+        Me.AccountKeys.Controls.Add(Me.FarmerKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.ContractKeyLabel)
+        Me.AccountKeys.Controls.Add(Me.DebugContractKey)
+        Me.AccountKeys.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.AccountKeys.Location = New System.Drawing.Point(6, 235)
+        Me.AccountKeys.Name = "AccountKeys"
+        Me.AccountKeys.Size = New System.Drawing.Size(1016, 183)
+        Me.AccountKeys.TabIndex = 2
+        Me.AccountKeys.TabStop = False
+        Me.AccountKeys.Text = "Account Keys:"
+        '
+        'ContractKeyRadio
+        '
+        Me.ContractKeyRadio.AutoSize = True
+        Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyRadio.Location = New System.Drawing.Point(938, 73)
+        Me.ContractKeyRadio.Name = "ContractKeyRadio"
+        Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.ContractKeyRadio.TabIndex = 41
+        Me.ContractKeyRadio.TabStop = True
+        Me.ContractKeyRadio.Text = "Enable"
+        Me.ContractKeyRadio.UseVisualStyleBackColor = True
+        '
+        'ContractKeyText
+        '
+        Me.ContractKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyText.Location = New System.Drawing.Point(141, 72)
+        Me.ContractKeyText.Name = "ContractKeyText"
+        Me.ContractKeyText.Size = New System.Drawing.Size(791, 27)
+        Me.ContractKeyText.TabIndex = 34
+        '
+        'PoolKeyRadio
+        '
+        Me.PoolKeyRadio.AutoSize = True
+        Me.PoolKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyRadio.Location = New System.Drawing.Point(938, 23)
+        Me.PoolKeyRadio.Name = "PoolKeyRadio"
+        Me.PoolKeyRadio.Size = New System.Drawing.Size(75, 24)
+        Me.PoolKeyRadio.TabIndex = 40
+        Me.PoolKeyRadio.TabStop = True
+        Me.PoolKeyRadio.Text = "Enable"
+        Me.PoolKeyRadio.UseVisualStyleBackColor = True
+        '
+        'PoolKeyLabel
+        '
+        Me.PoolKeyLabel.AutoSize = True
+        Me.PoolKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyLabel.Location = New System.Drawing.Point(6, 25)
+        Me.PoolKeyLabel.Name = "PoolKeyLabel"
+        Me.PoolKeyLabel.Size = New System.Drawing.Size(113, 20)
+        Me.PoolKeyLabel.TabIndex = 29
+        Me.PoolKeyLabel.Text = "Pool Public Key:"
+        '
+        'DebugFarmerKey
+        '
+        Me.DebugFarmerKey.AutoSize = True
+        Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 150)
+        Me.DebugFarmerKey.Name = "DebugFarmerKey"
+        Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugFarmerKey.TabIndex = 39
+        '
+        'PoolKeyText
+        '
+        Me.PoolKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PoolKeyText.Location = New System.Drawing.Point(125, 22)
+        Me.PoolKeyText.Name = "PoolKeyText"
+        Me.PoolKeyText.Size = New System.Drawing.Size(807, 27)
+        Me.PoolKeyText.TabIndex = 30
+        '
+        'FarmerKeyText
+        '
+        Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 122)
+        Me.FarmerKeyText.Name = "FarmerKeyText"
+        Me.FarmerKeyText.Size = New System.Drawing.Size(791, 27)
+        Me.FarmerKeyText.TabIndex = 38
+        '
+        'DebugPoolKey
+        '
+        Me.DebugPoolKey.AutoSize = True
+        Me.DebugPoolKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 50)
+        Me.DebugPoolKey.Name = "DebugPoolKey"
+        Me.DebugPoolKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugPoolKey.TabIndex = 31
+        '
+        'FarmerKeyLabel
+        '
+        Me.FarmerKeyLabel.AutoSize = True
+        Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 125)
+        Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
+        Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
+        Me.FarmerKeyLabel.TabIndex = 37
+        Me.FarmerKeyLabel.Text = "Farmer Public Key:"
+        '
+        'ContractKeyLabel
+        '
+        Me.ContractKeyLabel.AutoSize = True
+        Me.ContractKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 75)
+        Me.ContractKeyLabel.Name = "ContractKeyLabel"
+        Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
+        Me.ContractKeyLabel.TabIndex = 33
+        Me.ContractKeyLabel.Text = "Pool Contract Key:"
+        '
+        'DebugContractKey
+        '
+        Me.DebugContractKey.AutoSize = True
+        Me.DebugContractKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugContractKey.Location = New System.Drawing.Point(6, 100)
+        Me.DebugContractKey.Name = "DebugContractKey"
+        Me.DebugContractKey.Size = New System.Drawing.Size(0, 20)
+        Me.DebugContractKey.TabIndex = 35
+        '
+        'WaitforCopyCheck
+        '
+        Me.WaitforCopyCheck.AutoSize = True
+        Me.WaitforCopyCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.WaitforCopyCheck.Location = New System.Drawing.Point(657, 174)
+        Me.WaitforCopyCheck.Name = "WaitforCopyCheck"
+        Me.WaitforCopyCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.WaitforCopyCheck.Size = New System.Drawing.Size(127, 24)
+        Me.WaitforCopyCheck.TabIndex = 40
+        Me.WaitforCopyCheck.Text = ":Wait For Copy"
+        Me.WaitforCopyCheck.UseVisualStyleBackColor = True
+        '
         'CPortText
         '
         Me.CPortText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CPortText.Location = New System.Drawing.Point(172, 142)
+        Me.CPortText.Location = New System.Drawing.Point(172, 127)
         Me.CPortText.Name = "CPortText"
         Me.CPortText.Size = New System.Drawing.Size(81, 27)
         Me.CPortText.TabIndex = 32
+        '
+        'DebugWaitforCopy
+        '
+        Me.DebugWaitforCopy.AutoSize = True
+        Me.DebugWaitforCopy.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugWaitforCopy.Location = New System.Drawing.Point(790, 175)
+        Me.DebugWaitforCopy.Name = "DebugWaitforCopy"
+        Me.DebugWaitforCopy.Size = New System.Drawing.Size(0, 20)
+        Me.DebugWaitforCopy.TabIndex = 12
+        '
+        'RemoteCopyPortText
+        '
+        Me.RemoteCopyPortText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.RemoteCopyPortText.Location = New System.Drawing.Point(477, 172)
+        Me.RemoteCopyPortText.Name = "RemoteCopyPortText"
+        Me.RemoteCopyPortText.Size = New System.Drawing.Size(78, 27)
+        Me.RemoteCopyPortText.TabIndex = 17
         '
         'DebugCPort
         '
         Me.DebugCPort.AutoSize = True
         Me.DebugCPort.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugCPort.Location = New System.Drawing.Point(259, 145)
+        Me.DebugCPort.Location = New System.Drawing.Point(259, 130)
         Me.DebugCPort.Name = "DebugCPort"
         Me.DebugCPort.Size = New System.Drawing.Size(0, 20)
         Me.DebugCPort.TabIndex = 31
         '
         'CPortCombo
         '
+        Me.CPortCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CPortCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.CPortCombo.FormattingEnabled = True
-        Me.CPortCombo.Location = New System.Drawing.Point(84, 142)
+        Me.CPortCombo.Location = New System.Drawing.Point(84, 127)
         Me.CPortCombo.Name = "CPortCombo"
         Me.CPortCombo.Size = New System.Drawing.Size(81, 28)
         Me.CPortCombo.TabIndex = 30
@@ -426,36 +647,44 @@ Partial Class Form1
         '
         Me.CPortLabel.AutoSize = True
         Me.CPortLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CPortLabel.Location = New System.Drawing.Point(6, 145)
+        Me.CPortLabel.Location = New System.Drawing.Point(6, 130)
         Me.CPortLabel.Name = "CPortLabel"
         Me.CPortLabel.Size = New System.Drawing.Size(72, 20)
         Me.CPortLabel.TabIndex = 29
         Me.CPortLabel.Text = "Coin Port:"
         '
-        'FinalDirCheck
+        'DebugRemoteCopyPort
         '
-        Me.FinalDirCheck.AutoSize = True
-        Me.FinalDirCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirCheck.Location = New System.Drawing.Point(526, 323)
-        Me.FinalDirCheck.Name = "FinalDirCheck"
-        Me.FinalDirCheck.Size = New System.Drawing.Size(79, 24)
-        Me.FinalDirCheck.TabIndex = 28
-        Me.FinalDirCheck.Text = "In RAM"
-        Me.FinalDirCheck.UseVisualStyleBackColor = True
+        Me.DebugRemoteCopyPort.AutoSize = True
+        Me.DebugRemoteCopyPort.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugRemoteCopyPort.Location = New System.Drawing.Point(561, 175)
+        Me.DebugRemoteCopyPort.Name = "DebugRemoteCopyPort"
+        Me.DebugRemoteCopyPort.Size = New System.Drawing.Size(0, 20)
+        Me.DebugRemoteCopyPort.TabIndex = 9
         '
         'DebugFinalDir
         '
         Me.DebugFinalDir.AutoSize = True
         Me.DebugFinalDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugFinalDir.Location = New System.Drawing.Point(6, 350)
+        Me.DebugFinalDir.Location = New System.Drawing.Point(339, 150)
         Me.DebugFinalDir.Name = "DebugFinalDir"
         Me.DebugFinalDir.Size = New System.Drawing.Size(0, 20)
         Me.DebugFinalDir.TabIndex = 27
         '
+        'RemoteCopyPortLabel
+        '
+        Me.RemoteCopyPortLabel.AutoSize = True
+        Me.RemoteCopyPortLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.RemoteCopyPortLabel.Location = New System.Drawing.Point(339, 175)
+        Me.RemoteCopyPortLabel.Name = "RemoteCopyPortLabel"
+        Me.RemoteCopyPortLabel.Size = New System.Drawing.Size(132, 20)
+        Me.RemoteCopyPortLabel.TabIndex = 7
+        Me.RemoteCopyPortLabel.Text = "Remote Copy Port:"
+        '
         'FinalDirButton
         '
         Me.FinalDirButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirButton.Location = New System.Drawing.Point(457, 320)
+        Me.FinalDirButton.Location = New System.Drawing.Point(790, 120)
         Me.FinalDirButton.Name = "FinalDirButton"
         Me.FinalDirButton.Size = New System.Drawing.Size(63, 29)
         Me.FinalDirButton.TabIndex = 26
@@ -465,7 +694,7 @@ Partial Class Form1
         'FinalDirText
         '
         Me.FinalDirText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirText.Location = New System.Drawing.Point(120, 322)
+        Me.FinalDirText.Location = New System.Drawing.Point(453, 122)
         Me.FinalDirText.Name = "FinalDirText"
         Me.FinalDirText.Size = New System.Drawing.Size(331, 27)
         Me.FinalDirText.TabIndex = 25
@@ -474,7 +703,7 @@ Partial Class Form1
         '
         Me.FinalDirLabel.AutoSize = True
         Me.FinalDirLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FinalDirLabel.Location = New System.Drawing.Point(6, 325)
+        Me.FinalDirLabel.Location = New System.Drawing.Point(339, 125)
         Me.FinalDirLabel.Name = "FinalDirLabel"
         Me.FinalDirLabel.Size = New System.Drawing.Size(108, 20)
         Me.FinalDirLabel.TabIndex = 24
@@ -484,7 +713,7 @@ Partial Class Form1
         '
         Me.TempDir2Check.AutoSize = True
         Me.TempDir2Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Check.Location = New System.Drawing.Point(526, 273)
+        Me.TempDir2Check.Location = New System.Drawing.Point(859, 73)
         Me.TempDir2Check.Name = "TempDir2Check"
         Me.TempDir2Check.Size = New System.Drawing.Size(79, 24)
         Me.TempDir2Check.TabIndex = 23
@@ -495,7 +724,7 @@ Partial Class Form1
         '
         Me.DebugTempDir2.AutoSize = True
         Me.DebugTempDir2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugTempDir2.Location = New System.Drawing.Point(6, 300)
+        Me.DebugTempDir2.Location = New System.Drawing.Point(339, 100)
         Me.DebugTempDir2.Name = "DebugTempDir2"
         Me.DebugTempDir2.Size = New System.Drawing.Size(0, 20)
         Me.DebugTempDir2.TabIndex = 22
@@ -503,7 +732,7 @@ Partial Class Form1
         'TempDir2Button
         '
         Me.TempDir2Button.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Button.Location = New System.Drawing.Point(457, 270)
+        Me.TempDir2Button.Location = New System.Drawing.Point(790, 70)
         Me.TempDir2Button.Name = "TempDir2Button"
         Me.TempDir2Button.Size = New System.Drawing.Size(63, 29)
         Me.TempDir2Button.TabIndex = 21
@@ -513,7 +742,7 @@ Partial Class Form1
         'TempDir2Text
         '
         Me.TempDir2Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Text.Location = New System.Drawing.Point(172, 272)
+        Me.TempDir2Text.Location = New System.Drawing.Point(505, 72)
         Me.TempDir2Text.Name = "TempDir2Text"
         Me.TempDir2Text.Size = New System.Drawing.Size(279, 27)
         Me.TempDir2Text.TabIndex = 20
@@ -522,28 +751,17 @@ Partial Class Form1
         '
         Me.TempDir2Label.AutoSize = True
         Me.TempDir2Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir2Label.Location = New System.Drawing.Point(6, 275)
+        Me.TempDir2Label.Location = New System.Drawing.Point(339, 75)
         Me.TempDir2Label.Name = "TempDir2Label"
         Me.TempDir2Label.Size = New System.Drawing.Size(160, 20)
         Me.TempDir2Label.TabIndex = 19
         Me.TempDir2Label.Text = "Temporary Directory 2:"
         '
-        'TempDir1Check
-        '
-        Me.TempDir1Check.AutoSize = True
-        Me.TempDir1Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Check.Location = New System.Drawing.Point(526, 223)
-        Me.TempDir1Check.Name = "TempDir1Check"
-        Me.TempDir1Check.Size = New System.Drawing.Size(79, 24)
-        Me.TempDir1Check.TabIndex = 18
-        Me.TempDir1Check.Text = "In RAM"
-        Me.TempDir1Check.UseVisualStyleBackColor = True
-        '
         'DebugTempDir1
         '
         Me.DebugTempDir1.AutoSize = True
         Me.DebugTempDir1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugTempDir1.Location = New System.Drawing.Point(6, 250)
+        Me.DebugTempDir1.Location = New System.Drawing.Point(339, 50)
         Me.DebugTempDir1.Name = "DebugTempDir1"
         Me.DebugTempDir1.Size = New System.Drawing.Size(0, 20)
         Me.DebugTempDir1.TabIndex = 17
@@ -551,7 +769,7 @@ Partial Class Form1
         'TempDir1Button
         '
         Me.TempDir1Button.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Button.Location = New System.Drawing.Point(457, 220)
+        Me.TempDir1Button.Location = New System.Drawing.Point(790, 20)
         Me.TempDir1Button.Name = "TempDir1Button"
         Me.TempDir1Button.Size = New System.Drawing.Size(63, 29)
         Me.TempDir1Button.TabIndex = 16
@@ -561,7 +779,7 @@ Partial Class Form1
         'TempDir1Text
         '
         Me.TempDir1Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1Text.Location = New System.Drawing.Point(172, 222)
+        Me.TempDir1Text.Location = New System.Drawing.Point(505, 22)
         Me.TempDir1Text.Name = "TempDir1Text"
         Me.TempDir1Text.Size = New System.Drawing.Size(279, 27)
         Me.TempDir1Text.TabIndex = 15
@@ -570,7 +788,7 @@ Partial Class Form1
         '
         Me.TempDir1.AutoSize = True
         Me.TempDir1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.TempDir1.Location = New System.Drawing.Point(6, 225)
+        Me.TempDir1.Location = New System.Drawing.Point(339, 25)
         Me.TempDir1.Name = "TempDir1"
         Me.TempDir1.Size = New System.Drawing.Size(160, 20)
         Me.TempDir1.TabIndex = 14
@@ -580,7 +798,7 @@ Partial Class Form1
         '
         Me.DebugNPlots.AutoSize = True
         Me.DebugNPlots.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugNPlots.Location = New System.Drawing.Point(282, 185)
+        Me.DebugNPlots.Location = New System.Drawing.Point(282, 165)
         Me.DebugNPlots.Name = "DebugNPlots"
         Me.DebugNPlots.Size = New System.Drawing.Size(0, 20)
         Me.DebugNPlots.TabIndex = 13
@@ -589,7 +807,7 @@ Partial Class Form1
         '
         Me.NPlotsCheck.AutoSize = True
         Me.NPlotsCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlotsCheck.Location = New System.Drawing.Point(205, 184)
+        Me.NPlotsCheck.Location = New System.Drawing.Point(205, 164)
         Me.NPlotsCheck.Name = "NPlotsCheck"
         Me.NPlotsCheck.Size = New System.Drawing.Size(77, 24)
         Me.NPlotsCheck.TabIndex = 12
@@ -599,7 +817,7 @@ Partial Class Form1
         'NPlotsText
         '
         Me.NPlotsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlotsText.Location = New System.Drawing.Point(132, 182)
+        Me.NPlotsText.Location = New System.Drawing.Point(132, 162)
         Me.NPlotsText.Name = "NPlotsText"
         Me.NPlotsText.Size = New System.Drawing.Size(67, 27)
         Me.NPlotsText.TabIndex = 11
@@ -608,7 +826,7 @@ Partial Class Form1
         '
         Me.NPlots.AutoSize = True
         Me.NPlots.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NPlots.Location = New System.Drawing.Point(6, 185)
+        Me.NPlots.Location = New System.Drawing.Point(6, 165)
         Me.NPlots.Name = "NPlots"
         Me.NPlots.Size = New System.Drawing.Size(120, 20)
         Me.NPlots.TabIndex = 10
@@ -618,16 +836,17 @@ Partial Class Form1
         '
         Me.DebugCL.AutoSize = True
         Me.DebugCL.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugCL.Location = New System.Drawing.Point(205, 105)
+        Me.DebugCL.Location = New System.Drawing.Point(205, 95)
         Me.DebugCL.Name = "DebugCL"
         Me.DebugCL.Size = New System.Drawing.Size(0, 20)
         Me.DebugCL.TabIndex = 9
         '
         'CLCombo
         '
+        Me.CLCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CLCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.CLCombo.FormattingEnabled = True
-        Me.CLCombo.Location = New System.Drawing.Point(148, 102)
+        Me.CLCombo.Location = New System.Drawing.Point(148, 92)
         Me.CLCombo.Name = "CLCombo"
         Me.CLCombo.Size = New System.Drawing.Size(51, 28)
         Me.CLCombo.TabIndex = 8
@@ -636,7 +855,7 @@ Partial Class Form1
         '
         Me.CompressionLabel.AutoSize = True
         Me.CompressionLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CompressionLabel.Location = New System.Drawing.Point(6, 105)
+        Me.CompressionLabel.Location = New System.Drawing.Point(6, 95)
         Me.CompressionLabel.Name = "CompressionLabel"
         Me.CompressionLabel.Size = New System.Drawing.Size(136, 20)
         Me.CompressionLabel.TabIndex = 7
@@ -646,16 +865,17 @@ Partial Class Form1
         '
         Me.DebugKValue.AutoSize = True
         Me.DebugKValue.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugKValue.Location = New System.Drawing.Point(132, 65)
+        Me.DebugKValue.Location = New System.Drawing.Point(132, 60)
         Me.DebugKValue.Name = "DebugKValue"
         Me.DebugKValue.Size = New System.Drawing.Size(0, 20)
         Me.DebugKValue.TabIndex = 6
         '
         'KValueCombo
         '
+        Me.KValueCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.KValueCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.KValueCombo.FormattingEnabled = True
-        Me.KValueCombo.Location = New System.Drawing.Point(75, 62)
+        Me.KValueCombo.Location = New System.Drawing.Point(75, 57)
         Me.KValueCombo.Name = "KValueCombo"
         Me.KValueCombo.Size = New System.Drawing.Size(51, 28)
         Me.KValueCombo.TabIndex = 5
@@ -664,7 +884,7 @@ Partial Class Form1
         '
         Me.KVLabel.AutoSize = True
         Me.KVLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.KVLabel.Location = New System.Drawing.Point(6, 65)
+        Me.KVLabel.Location = New System.Drawing.Point(6, 60)
         Me.KVLabel.Name = "KVLabel"
         Me.KVLabel.Size = New System.Drawing.Size(63, 20)
         Me.KVLabel.TabIndex = 4
@@ -713,134 +933,67 @@ Partial Class Form1
         Me.PMLabel.TabIndex = 0
         Me.PMLabel.Text = "Plotting Method:"
         '
-        'ContractKeyRadio
+        'TempDir3Check
         '
-        Me.ContractKeyRadio.AutoSize = True
-        Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyRadio.Location = New System.Drawing.Point(993, 73)
-        Me.ContractKeyRadio.Name = "ContractKeyRadio"
-        Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
-        Me.ContractKeyRadio.TabIndex = 41
-        Me.ContractKeyRadio.TabStop = True
-        Me.ContractKeyRadio.Text = "Enable"
-        Me.ContractKeyRadio.UseVisualStyleBackColor = True
+        Me.TempDir3Check.AutoSize = True
+        Me.TempDir3Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.TempDir3Check.Location = New System.Drawing.Point(526, 128)
+        Me.TempDir3Check.Name = "TempDir3Check"
+        Me.TempDir3Check.Size = New System.Drawing.Size(79, 24)
+        Me.TempDir3Check.TabIndex = 37
+        Me.TempDir3Check.Text = "In RAM"
+        Me.TempDir3Check.UseVisualStyleBackColor = True
         '
-        'PoolKeyRadio
+        'DebugTempDir3
         '
-        Me.PoolKeyRadio.AutoSize = True
-        Me.PoolKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyRadio.Location = New System.Drawing.Point(993, 23)
-        Me.PoolKeyRadio.Name = "PoolKeyRadio"
-        Me.PoolKeyRadio.Size = New System.Drawing.Size(75, 24)
-        Me.PoolKeyRadio.TabIndex = 40
-        Me.PoolKeyRadio.TabStop = True
-        Me.PoolKeyRadio.Text = "Enable"
-        Me.PoolKeyRadio.UseVisualStyleBackColor = True
+        Me.DebugTempDir3.AutoSize = True
+        Me.DebugTempDir3.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugTempDir3.Location = New System.Drawing.Point(6, 155)
+        Me.DebugTempDir3.Name = "DebugTempDir3"
+        Me.DebugTempDir3.Size = New System.Drawing.Size(0, 20)
+        Me.DebugTempDir3.TabIndex = 36
         '
-        'DebugFarmerKey
+        'TempDir3Button
         '
-        Me.DebugFarmerKey.AutoSize = True
-        Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 150)
-        Me.DebugFarmerKey.Name = "DebugFarmerKey"
-        Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugFarmerKey.TabIndex = 39
+        Me.TempDir3Button.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.TempDir3Button.Location = New System.Drawing.Point(457, 125)
+        Me.TempDir3Button.Name = "TempDir3Button"
+        Me.TempDir3Button.Size = New System.Drawing.Size(63, 29)
+        Me.TempDir3Button.TabIndex = 35
+        Me.TempDir3Button.Text = "Search"
+        Me.TempDir3Button.UseVisualStyleBackColor = True
         '
-        'FarmerKeyText
+        'TempDir3Text
         '
-        Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 122)
-        Me.FarmerKeyText.Name = "FarmerKeyText"
-        Me.FarmerKeyText.Size = New System.Drawing.Size(846, 27)
-        Me.FarmerKeyText.TabIndex = 38
+        Me.TempDir3Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.TempDir3Text.Location = New System.Drawing.Point(172, 127)
+        Me.TempDir3Text.Name = "TempDir3Text"
+        Me.TempDir3Text.Size = New System.Drawing.Size(279, 27)
+        Me.TempDir3Text.TabIndex = 34
         '
-        'FarmerKeyLabel
+        'TempDir3Label
         '
-        Me.FarmerKeyLabel.AutoSize = True
-        Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 125)
-        Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
-        Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
-        Me.FarmerKeyLabel.TabIndex = 37
-        Me.FarmerKeyLabel.Text = "Farmer Public Key:"
-        '
-        'DebugContractKey
-        '
-        Me.DebugContractKey.AutoSize = True
-        Me.DebugContractKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugContractKey.Location = New System.Drawing.Point(6, 100)
-        Me.DebugContractKey.Name = "DebugContractKey"
-        Me.DebugContractKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugContractKey.TabIndex = 35
-        '
-        'ContractKeyText
-        '
-        Me.ContractKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyText.Location = New System.Drawing.Point(141, 72)
-        Me.ContractKeyText.Name = "ContractKeyText"
-        Me.ContractKeyText.Size = New System.Drawing.Size(846, 27)
-        Me.ContractKeyText.TabIndex = 34
-        '
-        'ContractKeyLabel
-        '
-        Me.ContractKeyLabel.AutoSize = True
-        Me.ContractKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 75)
-        Me.ContractKeyLabel.Name = "ContractKeyLabel"
-        Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
-        Me.ContractKeyLabel.TabIndex = 33
-        Me.ContractKeyLabel.Text = "Pool Contract Key:"
-        '
-        'DebugPoolKey
-        '
-        Me.DebugPoolKey.AutoSize = True
-        Me.DebugPoolKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 50)
-        Me.DebugPoolKey.Name = "DebugPoolKey"
-        Me.DebugPoolKey.Size = New System.Drawing.Size(0, 20)
-        Me.DebugPoolKey.TabIndex = 31
-        '
-        'PoolKeyText
-        '
-        Me.PoolKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyText.Location = New System.Drawing.Point(125, 22)
-        Me.PoolKeyText.Name = "PoolKeyText"
-        Me.PoolKeyText.Size = New System.Drawing.Size(862, 27)
-        Me.PoolKeyText.TabIndex = 30
-        '
-        'PoolKeyLabel
-        '
-        Me.PoolKeyLabel.AutoSize = True
-        Me.PoolKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.PoolKeyLabel.Location = New System.Drawing.Point(6, 25)
-        Me.PoolKeyLabel.Name = "PoolKeyLabel"
-        Me.PoolKeyLabel.Size = New System.Drawing.Size(113, 20)
-        Me.PoolKeyLabel.TabIndex = 29
-        Me.PoolKeyLabel.Text = "Pool Public Key:"
-        '
-        'AccountKeys
-        '
-        Me.AccountKeys.Controls.Add(Me.ContractKeyRadio)
-        Me.AccountKeys.Controls.Add(Me.ContractKeyText)
-        Me.AccountKeys.Controls.Add(Me.PoolKeyRadio)
-        Me.AccountKeys.Controls.Add(Me.PoolKeyLabel)
-        Me.AccountKeys.Controls.Add(Me.DebugFarmerKey)
-        Me.AccountKeys.Controls.Add(Me.PoolKeyText)
-        Me.AccountKeys.Controls.Add(Me.FarmerKeyText)
-        Me.AccountKeys.Controls.Add(Me.DebugPoolKey)
-        Me.AccountKeys.Controls.Add(Me.FarmerKeyLabel)
-        Me.AccountKeys.Controls.Add(Me.ContractKeyLabel)
-        Me.AccountKeys.Controls.Add(Me.DebugContractKey)
-        Me.AccountKeys.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.AccountKeys.Location = New System.Drawing.Point(8, 427)
-        Me.AccountKeys.Name = "AccountKeys"
-        Me.AccountKeys.Size = New System.Drawing.Size(1073, 183)
-        Me.AccountKeys.TabIndex = 2
-        Me.AccountKeys.TabStop = False
-        Me.AccountKeys.Text = "Account Keys:"
+        Me.TempDir3Label.AutoSize = True
+        Me.TempDir3Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.TempDir3Label.Location = New System.Drawing.Point(6, 130)
+        Me.TempDir3Label.Name = "TempDir3Label"
+        Me.TempDir3Label.Size = New System.Drawing.Size(160, 20)
+        Me.TempDir3Label.TabIndex = 33
+        Me.TempDir3Label.Text = "Temporary Directory 3:"
         '
         'CPUOptions
         '
+        Me.CPUOptions.Controls.Add(Me.DebugAlternateTempDir)
+        Me.CPUOptions.Controls.Add(Me.AlternateTempDirCheck)
+        Me.CPUOptions.Controls.Add(Me.DebugDirectInFinalDir)
+        Me.CPUOptions.Controls.Add(Me.DirectInFinalDirCheck)
+        Me.CPUOptions.Controls.Add(Me.DebugStageDirectory)
+        Me.CPUOptions.Controls.Add(Me.StageDirectoryButton)
+        Me.CPUOptions.Controls.Add(Me.StageDirectoryText)
+        Me.CPUOptions.Controls.Add(Me.StageDirectoryLabel)
+        Me.CPUOptions.Controls.Add(Me.DebugThreadMultiplierP2)
+        Me.CPUOptions.Controls.Add(Me.ThreadMultiplierP2Text)
+        Me.CPUOptions.Controls.Add(Me.ThreadMultiplierP2Label)
         Me.CPUOptions.Controls.Add(Me.BucketsP23Text)
         Me.CPUOptions.Controls.Add(Me.DebugBucketsP23)
         Me.CPUOptions.Controls.Add(Me.BucketsP23Label)
@@ -851,17 +1004,123 @@ Partial Class Form1
         Me.CPUOptions.Controls.Add(Me.NumThreadsCombo)
         Me.CPUOptions.Controls.Add(Me.NumThreadsLabel)
         Me.CPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.CPUOptions.Location = New System.Drawing.Point(638, 39)
+        Me.CPUOptions.Location = New System.Drawing.Point(1050, 39)
         Me.CPUOptions.Name = "CPUOptions"
-        Me.CPUOptions.Size = New System.Drawing.Size(357, 150)
+        Me.CPUOptions.Size = New System.Drawing.Size(620, 185)
         Me.CPUOptions.TabIndex = 3
         Me.CPUOptions.TabStop = False
         Me.CPUOptions.Text = "CPU Options:"
         '
+        'DebugAlternateTempDir
+        '
+        Me.DebugAlternateTempDir.AutoSize = True
+        Me.DebugAlternateTempDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugAlternateTempDir.Location = New System.Drawing.Point(500, 96)
+        Me.DebugAlternateTempDir.Name = "DebugAlternateTempDir"
+        Me.DebugAlternateTempDir.Size = New System.Drawing.Size(0, 20)
+        Me.DebugAlternateTempDir.TabIndex = 45
+        '
+        'AlternateTempDirCheck
+        '
+        Me.AlternateTempDirCheck.AutoSize = True
+        Me.AlternateTempDirCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.AlternateTempDirCheck.Location = New System.Drawing.Point(279, 95)
+        Me.AlternateTempDirCheck.Name = "AlternateTempDirCheck"
+        Me.AlternateTempDirCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.AlternateTempDirCheck.Size = New System.Drawing.Size(215, 24)
+        Me.AlternateTempDirCheck.TabIndex = 44
+        Me.AlternateTempDirCheck.Text = ":Alternate Temp. Directories"
+        Me.AlternateTempDirCheck.UseVisualStyleBackColor = True
+        '
+        'DebugDirectInFinalDir
+        '
+        Me.DebugDirectInFinalDir.AutoSize = True
+        Me.DebugDirectInFinalDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugDirectInFinalDir.Location = New System.Drawing.Point(234, 96)
+        Me.DebugDirectInFinalDir.Name = "DebugDirectInFinalDir"
+        Me.DebugDirectInFinalDir.Size = New System.Drawing.Size(0, 20)
+        Me.DebugDirectInFinalDir.TabIndex = 43
+        '
+        'DirectInFinalDirCheck
+        '
+        Me.DirectInFinalDirCheck.AutoSize = True
+        Me.DirectInFinalDirCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DirectInFinalDirCheck.Location = New System.Drawing.Point(6, 95)
+        Me.DirectInFinalDirCheck.Name = "DirectInFinalDirCheck"
+        Me.DirectInFinalDirCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.DirectInFinalDirCheck.Size = New System.Drawing.Size(222, 24)
+        Me.DirectInFinalDirCheck.TabIndex = 42
+        Me.DirectInFinalDirCheck.Text = ":Plot Direct to Final Directory"
+        Me.DirectInFinalDirCheck.UseVisualStyleBackColor = True
+        '
+        'DebugStageDirectory
+        '
+        Me.DebugStageDirectory.AutoSize = True
+        Me.DebugStageDirectory.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugStageDirectory.Location = New System.Drawing.Point(6, 155)
+        Me.DebugStageDirectory.Name = "DebugStageDirectory"
+        Me.DebugStageDirectory.Size = New System.Drawing.Size(0, 20)
+        Me.DebugStageDirectory.TabIndex = 41
+        '
+        'StageDirectoryButton
+        '
+        Me.StageDirectoryButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StageDirectoryButton.Location = New System.Drawing.Point(412, 125)
+        Me.StageDirectoryButton.Name = "StageDirectoryButton"
+        Me.StageDirectoryButton.Size = New System.Drawing.Size(63, 29)
+        Me.StageDirectoryButton.TabIndex = 40
+        Me.StageDirectoryButton.Text = "Search"
+        Me.StageDirectoryButton.UseVisualStyleBackColor = True
+        '
+        'StageDirectoryText
+        '
+        Me.StageDirectoryText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StageDirectoryText.Location = New System.Drawing.Point(127, 127)
+        Me.StageDirectoryText.Name = "StageDirectoryText"
+        Me.StageDirectoryText.Size = New System.Drawing.Size(279, 27)
+        Me.StageDirectoryText.TabIndex = 39
+        '
+        'StageDirectoryLabel
+        '
+        Me.StageDirectoryLabel.AutoSize = True
+        Me.StageDirectoryLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StageDirectoryLabel.Location = New System.Drawing.Point(6, 130)
+        Me.StageDirectoryLabel.Name = "StageDirectoryLabel"
+        Me.StageDirectoryLabel.Size = New System.Drawing.Size(115, 20)
+        Me.StageDirectoryLabel.TabIndex = 38
+        Me.StageDirectoryLabel.Text = "Stage Directory:"
+        '
+        'DebugThreadMultiplierP2
+        '
+        Me.DebugThreadMultiplierP2.AutoSize = True
+        Me.DebugThreadMultiplierP2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugThreadMultiplierP2.Location = New System.Drawing.Point(511, 25)
+        Me.DebugThreadMultiplierP2.Name = "DebugThreadMultiplierP2"
+        Me.DebugThreadMultiplierP2.Size = New System.Drawing.Size(0, 20)
+        Me.DebugThreadMultiplierP2.TabIndex = 19
+        '
+        'ThreadMultiplierP2Text
+        '
+        Me.ThreadMultiplierP2Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ThreadMultiplierP2Text.Location = New System.Drawing.Point(454, 22)
+        Me.ThreadMultiplierP2Text.Name = "ThreadMultiplierP2Text"
+        Me.ThreadMultiplierP2Text.Size = New System.Drawing.Size(51, 27)
+        Me.ThreadMultiplierP2Text.TabIndex = 18
+        '
+        'ThreadMultiplierP2Label
+        '
+        Me.ThreadMultiplierP2Label.AutoSize = True
+        Me.ThreadMultiplierP2Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ThreadMultiplierP2Label.Location = New System.Drawing.Point(279, 25)
+        Me.ThreadMultiplierP2Label.Name = "ThreadMultiplierP2Label"
+        Me.ThreadMultiplierP2Label.Size = New System.Drawing.Size(169, 20)
+        Me.ThreadMultiplierP2Label.TabIndex = 17
+        Me.ThreadMultiplierP2Label.Text = "Thread Multiplier for P2:"
+        '
         'BucketsP23Text
         '
         Me.BucketsP23Text.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.BucketsP23Text.Location = New System.Drawing.Point(198, 102)
+        Me.BucketsP23Text.Location = New System.Drawing.Point(471, 61)
         Me.BucketsP23Text.Name = "BucketsP23Text"
         Me.BucketsP23Text.Size = New System.Drawing.Size(78, 27)
         Me.BucketsP23Text.TabIndex = 16
@@ -870,7 +1129,7 @@ Partial Class Form1
         '
         Me.DebugBucketsP23.AutoSize = True
         Me.DebugBucketsP23.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugBucketsP23.Location = New System.Drawing.Point(282, 105)
+        Me.DebugBucketsP23.Location = New System.Drawing.Point(555, 64)
         Me.DebugBucketsP23.Name = "DebugBucketsP23"
         Me.DebugBucketsP23.Size = New System.Drawing.Size(0, 20)
         Me.DebugBucketsP23.TabIndex = 15
@@ -879,7 +1138,7 @@ Partial Class Form1
         '
         Me.BucketsP23Label.AutoSize = True
         Me.BucketsP23Label.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.BucketsP23Label.Location = New System.Drawing.Point(6, 105)
+        Me.BucketsP23Label.Location = New System.Drawing.Point(279, 64)
         Me.BucketsP23Label.Name = "BucketsP23Label"
         Me.BucketsP23Label.Size = New System.Drawing.Size(186, 20)
         Me.BucketsP23Label.TabIndex = 14
@@ -888,7 +1147,7 @@ Partial Class Form1
         'BucketsText
         '
         Me.BucketsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.BucketsText.Location = New System.Drawing.Point(74, 62)
+        Me.BucketsText.Location = New System.Drawing.Point(74, 57)
         Me.BucketsText.Name = "BucketsText"
         Me.BucketsText.Size = New System.Drawing.Size(78, 27)
         Me.BucketsText.TabIndex = 13
@@ -897,7 +1156,7 @@ Partial Class Form1
         '
         Me.DebugBuckets.AutoSize = True
         Me.DebugBuckets.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugBuckets.Location = New System.Drawing.Point(158, 65)
+        Me.DebugBuckets.Location = New System.Drawing.Point(158, 60)
         Me.DebugBuckets.Name = "DebugBuckets"
         Me.DebugBuckets.Size = New System.Drawing.Size(0, 20)
         Me.DebugBuckets.TabIndex = 12
@@ -906,7 +1165,7 @@ Partial Class Form1
         '
         Me.BucketsLabel.AutoSize = True
         Me.BucketsLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.BucketsLabel.Location = New System.Drawing.Point(6, 65)
+        Me.BucketsLabel.Location = New System.Drawing.Point(6, 60)
         Me.BucketsLabel.Name = "BucketsLabel"
         Me.BucketsLabel.Size = New System.Drawing.Size(62, 20)
         Me.BucketsLabel.TabIndex = 10
@@ -923,6 +1182,7 @@ Partial Class Form1
         '
         'NumThreadsCombo
         '
+        Me.NumThreadsCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.NumThreadsCombo.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
         Me.NumThreadsCombo.FormattingEnabled = True
         Me.NumThreadsCombo.Location = New System.Drawing.Point(152, 22)
@@ -942,11 +1202,21 @@ Partial Class Form1
         '
         'GPUOptions
         '
+        Me.GPUOptions.Controls.Add(Me.DebugMaxPlotsCacheTempDir)
+        Me.GPUOptions.Controls.Add(Me.MaxPlotsCacheTempDirText)
+        Me.GPUOptions.Controls.Add(Me.MaxParallelCopiesCheck)
+        Me.GPUOptions.Controls.Add(Me.DebugMaxParalleCopies)
+        Me.GPUOptions.Controls.Add(Me.MaxPlotstoCacheinTempDirLabel)
         Me.GPUOptions.Controls.Add(Me.MaxMemText)
+        Me.GPUOptions.Controls.Add(Me.TempDir3Check)
         Me.GPUOptions.Controls.Add(Me.DebugMaxMem)
+        Me.GPUOptions.Controls.Add(Me.DebugTempDir3)
         Me.GPUOptions.Controls.Add(Me.MaxMemLabel)
+        Me.GPUOptions.Controls.Add(Me.TempDir3Button)
         Me.GPUOptions.Controls.Add(Me.NumCudaText)
+        Me.GPUOptions.Controls.Add(Me.TempDir3Text)
         Me.GPUOptions.Controls.Add(Me.StreamsText)
+        Me.GPUOptions.Controls.Add(Me.TempDir3Label)
         Me.GPUOptions.Controls.Add(Me.DebugStreams)
         Me.GPUOptions.Controls.Add(Me.NumStreamsLabel)
         Me.GPUOptions.Controls.Add(Me.CudaDeviceText)
@@ -955,17 +1225,65 @@ Partial Class Form1
         Me.GPUOptions.Controls.Add(Me.DebugCudaDevice)
         Me.GPUOptions.Controls.Add(Me.CudaDeviceLabel)
         Me.GPUOptions.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.GPUOptions.Location = New System.Drawing.Point(638, 271)
+        Me.GPUOptions.Location = New System.Drawing.Point(1050, 279)
         Me.GPUOptions.Name = "GPUOptions"
-        Me.GPUOptions.Size = New System.Drawing.Size(357, 150)
+        Me.GPUOptions.Size = New System.Drawing.Size(620, 185)
         Me.GPUOptions.TabIndex = 4
         Me.GPUOptions.TabStop = False
         Me.GPUOptions.Text = "GPU Options:"
         '
+        'DebugMaxPlotsCacheTempDir
+        '
+        Me.DebugMaxPlotsCacheTempDir.AutoSize = True
+        Me.DebugMaxPlotsCacheTempDir.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugMaxPlotsCacheTempDir.Location = New System.Drawing.Point(342, 94)
+        Me.DebugMaxPlotsCacheTempDir.Name = "DebugMaxPlotsCacheTempDir"
+        Me.DebugMaxPlotsCacheTempDir.Size = New System.Drawing.Size(0, 20)
+        Me.DebugMaxPlotsCacheTempDir.TabIndex = 52
+        '
+        'MaxPlotsCacheTempDirText
+        '
+        Me.MaxPlotsCacheTempDirText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxPlotsCacheTempDirText.Location = New System.Drawing.Point(275, 91)
+        Me.MaxPlotsCacheTempDirText.Name = "MaxPlotsCacheTempDirText"
+        Me.MaxPlotsCacheTempDirText.Size = New System.Drawing.Size(61, 27)
+        Me.MaxPlotsCacheTempDirText.TabIndex = 51
+        '
+        'MaxParallelCopiesCheck
+        '
+        Me.MaxParallelCopiesCheck.AutoSize = True
+        Me.MaxParallelCopiesCheck.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxParallelCopiesCheck.Location = New System.Drawing.Point(412, 93)
+        Me.MaxParallelCopiesCheck.Name = "MaxParallelCopiesCheck"
+        Me.MaxParallelCopiesCheck.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.MaxParallelCopiesCheck.Size = New System.Drawing.Size(163, 24)
+        Me.MaxParallelCopiesCheck.TabIndex = 48
+        Me.MaxParallelCopiesCheck.Text = ":Max Parallel Copies"
+        Me.MaxParallelCopiesCheck.UseVisualStyleBackColor = True
+        '
+        'DebugMaxParalleCopies
+        '
+        Me.DebugMaxParalleCopies.AutoSize = True
+        Me.DebugMaxParalleCopies.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugMaxParalleCopies.Location = New System.Drawing.Point(581, 94)
+        Me.DebugMaxParalleCopies.Name = "DebugMaxParalleCopies"
+        Me.DebugMaxParalleCopies.Size = New System.Drawing.Size(0, 20)
+        Me.DebugMaxParalleCopies.TabIndex = 49
+        '
+        'MaxPlotstoCacheinTempDirLabel
+        '
+        Me.MaxPlotstoCacheinTempDirLabel.AutoSize = True
+        Me.MaxPlotstoCacheinTempDirLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxPlotstoCacheinTempDirLabel.Location = New System.Drawing.Point(6, 95)
+        Me.MaxPlotstoCacheinTempDirLabel.Name = "MaxPlotstoCacheinTempDirLabel"
+        Me.MaxPlotstoCacheinTempDirLabel.Size = New System.Drawing.Size(263, 20)
+        Me.MaxPlotstoCacheinTempDirLabel.TabIndex = 50
+        Me.MaxPlotstoCacheinTempDirLabel.Text = "Max Plots to Cache in Temp. Directory:"
+        '
         'MaxMemText
         '
         Me.MaxMemText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.MaxMemText.Location = New System.Drawing.Point(190, 112)
+        Me.MaxMemText.Location = New System.Drawing.Point(469, 56)
         Me.MaxMemText.Name = "MaxMemText"
         Me.MaxMemText.Size = New System.Drawing.Size(47, 27)
         Me.MaxMemText.TabIndex = 20
@@ -974,7 +1292,7 @@ Partial Class Form1
         '
         Me.DebugMaxMem.AutoSize = True
         Me.DebugMaxMem.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugMaxMem.Location = New System.Drawing.Point(243, 115)
+        Me.DebugMaxMem.Location = New System.Drawing.Point(522, 59)
         Me.DebugMaxMem.Name = "DebugMaxMem"
         Me.DebugMaxMem.Size = New System.Drawing.Size(0, 20)
         Me.DebugMaxMem.TabIndex = 19
@@ -983,7 +1301,7 @@ Partial Class Form1
         '
         Me.MaxMemLabel.AutoSize = True
         Me.MaxMemLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.MaxMemLabel.Location = New System.Drawing.Point(6, 115)
+        Me.MaxMemLabel.Location = New System.Drawing.Point(285, 59)
         Me.MaxMemLabel.Name = "MaxMemLabel"
         Me.MaxMemLabel.Size = New System.Drawing.Size(178, 20)
         Me.MaxMemLabel.TabIndex = 18
@@ -992,7 +1310,7 @@ Partial Class Form1
         'NumCudaText
         '
         Me.NumCudaText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NumCudaText.Location = New System.Drawing.Point(189, 48)
+        Me.NumCudaText.Location = New System.Drawing.Point(189, 57)
         Me.NumCudaText.Name = "NumCudaText"
         Me.NumCudaText.Size = New System.Drawing.Size(34, 27)
         Me.NumCudaText.TabIndex = 17
@@ -1000,7 +1318,7 @@ Partial Class Form1
         'StreamsText
         '
         Me.StreamsText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.StreamsText.Location = New System.Drawing.Point(205, 78)
+        Me.StreamsText.Location = New System.Drawing.Point(484, 20)
         Me.StreamsText.Name = "StreamsText"
         Me.StreamsText.Size = New System.Drawing.Size(34, 27)
         Me.StreamsText.TabIndex = 16
@@ -1009,7 +1327,7 @@ Partial Class Form1
         '
         Me.DebugStreams.AutoSize = True
         Me.DebugStreams.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugStreams.Location = New System.Drawing.Point(245, 82)
+        Me.DebugStreams.Location = New System.Drawing.Point(526, 20)
         Me.DebugStreams.Name = "DebugStreams"
         Me.DebugStreams.Size = New System.Drawing.Size(0, 20)
         Me.DebugStreams.TabIndex = 15
@@ -1018,7 +1336,7 @@ Partial Class Form1
         '
         Me.NumStreamsLabel.AutoSize = True
         Me.NumStreamsLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NumStreamsLabel.Location = New System.Drawing.Point(6, 85)
+        Me.NumStreamsLabel.Location = New System.Drawing.Point(285, 24)
         Me.NumStreamsLabel.Name = "NumStreamsLabel"
         Me.NumStreamsLabel.Size = New System.Drawing.Size(193, 20)
         Me.NumStreamsLabel.TabIndex = 14
@@ -1036,7 +1354,7 @@ Partial Class Form1
         '
         Me.DebugNumCuda.AutoSize = True
         Me.DebugNumCuda.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugNumCuda.Location = New System.Drawing.Point(229, 55)
+        Me.DebugNumCuda.Location = New System.Drawing.Point(230, 60)
         Me.DebugNumCuda.Name = "DebugNumCuda"
         Me.DebugNumCuda.Size = New System.Drawing.Size(0, 20)
         Me.DebugNumCuda.TabIndex = 12
@@ -1045,7 +1363,7 @@ Partial Class Form1
         '
         Me.NumCudaLabel.AutoSize = True
         Me.NumCudaLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.NumCudaLabel.Location = New System.Drawing.Point(6, 55)
+        Me.NumCudaLabel.Location = New System.Drawing.Point(6, 60)
         Me.NumCudaLabel.Name = "NumCudaLabel"
         Me.NumCudaLabel.Size = New System.Drawing.Size(177, 20)
         Me.NumCudaLabel.TabIndex = 10
@@ -1073,7 +1391,7 @@ Partial Class Form1
         'PlotButton
         '
         Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PlotButton.Location = New System.Drawing.Point(883, 629)
+        Me.PlotButton.Location = New System.Drawing.Point(867, 745)
         Me.PlotButton.Name = "PlotButton"
         Me.PlotButton.Size = New System.Drawing.Size(150, 29)
         Me.PlotButton.TabIndex = 5
@@ -1083,7 +1401,7 @@ Partial Class Form1
         'DebugPlotterPath
         '
         Me.DebugPlotterPath.AutoSize = True
-        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 613)
+        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 729)
         Me.DebugPlotterPath.Name = "DebugPlotterPath"
         Me.DebugPlotterPath.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterPath.TabIndex = 6
@@ -1091,7 +1409,7 @@ Partial Class Form1
         'DebugPlotter
         '
         Me.DebugPlotter.AutoSize = True
-        Me.DebugPlotter.Location = New System.Drawing.Point(14, 638)
+        Me.DebugPlotter.Location = New System.Drawing.Point(14, 754)
         Me.DebugPlotter.Name = "DebugPlotter"
         Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotter.TabIndex = 7
@@ -1100,13 +1418,12 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1089, 676)
+        Me.ClientSize = New System.Drawing.Size(1684, 793)
         Me.Controls.Add(Me.DebugPlotter)
         Me.Controls.Add(Me.DebugPlotterPath)
         Me.Controls.Add(Me.PlotButton)
         Me.Controls.Add(Me.GPUOptions)
         Me.Controls.Add(Me.CPUOptions)
-        Me.Controls.Add(Me.AccountKeys)
         Me.Controls.Add(Me.CommonOptions)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -1129,7 +1446,7 @@ Partial Class Form1
 
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents NewToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ClearFormToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents OpenToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents toolStripSeparator As ToolStripSeparator
     Friend WithEvents SaveToolStripMenuItem As ToolStripMenuItem
@@ -1174,14 +1491,12 @@ Partial Class Form1
     Friend WithEvents TempDir1Button As Button
     Friend WithEvents TempDir1Text As TextBox
     Friend WithEvents TempDir1 As Label
-    Friend WithEvents TempDir1Check As CheckBox
     Friend WithEvents DebugTempDir1 As Label
     Friend WithEvents TempDir2Check As CheckBox
     Friend WithEvents DebugTempDir2 As Label
     Friend WithEvents TempDir2Button As Button
     Friend WithEvents TempDir2Text As TextBox
     Friend WithEvents TempDir2Label As Label
-    Friend WithEvents FinalDirCheck As CheckBox
     Friend WithEvents DebugFinalDir As Label
     Friend WithEvents FinalDirButton As Button
     Friend WithEvents FinalDirText As TextBox
@@ -1231,4 +1546,33 @@ Partial Class Form1
     Friend WithEvents DebugCPort As Label
     Friend WithEvents CPortCombo As ComboBox
     Friend WithEvents CPortLabel As Label
+    Friend WithEvents TempDir3Check As CheckBox
+    Friend WithEvents DebugTempDir3 As Label
+    Friend WithEvents TempDir3Button As Button
+    Friend WithEvents TempDir3Text As TextBox
+    Friend WithEvents TempDir3Label As Label
+    Friend WithEvents AdvancedOptionsCheck As CheckBox
+    Friend WithEvents RemoteCopyPortText As TextBox
+    Friend WithEvents DebugUniquePlot As Label
+    Friend WithEvents DebugWaitforCopy As Label
+    Friend WithEvents DebugRemoteCopyPort As Label
+    Friend WithEvents RemoteCopyPortLabel As Label
+    Friend WithEvents WaitforCopyCheck As CheckBox
+    Friend WithEvents UniquePlotCheck As CheckBox
+    Friend WithEvents DebugThreadMultiplierP2 As Label
+    Friend WithEvents ThreadMultiplierP2Text As TextBox
+    Friend WithEvents ThreadMultiplierP2Label As Label
+    Friend WithEvents DebugStageDirectory As Label
+    Friend WithEvents StageDirectoryButton As Button
+    Friend WithEvents StageDirectoryText As TextBox
+    Friend WithEvents StageDirectoryLabel As Label
+    Friend WithEvents DebugDirectInFinalDir As Label
+    Friend WithEvents DirectInFinalDirCheck As CheckBox
+    Friend WithEvents DebugAlternateTempDir As Label
+    Friend WithEvents AlternateTempDirCheck As CheckBox
+    Friend WithEvents DebugMaxPlotsCacheTempDir As Label
+    Friend WithEvents MaxPlotsCacheTempDirText As TextBox
+    Friend WithEvents MaxPlotstoCacheinTempDirLabel As Label
+    Friend WithEvents DebugMaxParalleCopies As Label
+    Friend WithEvents MaxParallelCopiesCheck As CheckBox
 End Class

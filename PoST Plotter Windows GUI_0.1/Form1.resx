@@ -61,15 +61,6 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="NewToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAACcSURBVEhL7dUxDoQgEIVhzkbNYWzptuEShMKOs9Ds7k1W
-        C2g1oxhtRnirnUzyR2MYvlJxnJTShBZj7PN6eWghhDA556ry3mMIHaZFKWV1xph65AgMv5HNWrucUUph
-        CAp83l8MQQF6h5B/AIpBunztPihAzy2t9fKNysArX7sPCnBdBrg2uAFsDSjWgGIPA650CiA/fa5T4K5W
-        QIgZ15ziURxSP0UAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="OpenToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
