@@ -1,5 +1,7 @@
 # PoST Plotter Windows GUI
 
+![PoSTPWG](C:\Users\David\source\repos\PoSTPWGOpening.png)
+
 ## Purpose
 PoSTPWG is a simple graphical user interface for Windows to be used with madMAx43v3r's Chia Gigahorse CPU and GPU plotters that may be obtained from [HERE](https://github.com/madMAx43v3r/chia-gigahorse). PoSTPWG has no affiliation with madMAx or his software. PoSTPWG was composed entirely by OpenAI's ChatGPT and compiled by someone with no programming skills whatsoever. Please keep that in mind as this program is an experiment to push the limits of the AI revolution while trying to fill a small, niche usecase.
 
@@ -10,6 +12,8 @@ PoSTPWG is a simple graphical user interface for Windows to be used with madMAx4
 
 ## Running
 Enter the preferred variables into the given options. When ready, hit "Read. Set. Plot!" which will send the command to the appropriate plotting software. The typical CLI window should pop-up where you can follow the plots progress.
+
+![PoSTPWG Plotting](C:\Users\David\source\repos\PoSTPWGPlotting.png)
 
 ## Advanced Options
 ### Debugging
