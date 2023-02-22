@@ -160,12 +160,22 @@ Partial Class Form1
         Me.PauseButton = New System.Windows.Forms.Button()
         Me.ResumeButton = New System.Windows.Forms.Button()
         Me.PlotProgressBar = New System.Windows.Forms.ProgressBar()
+        Me.SessionStats = New System.Windows.Forms.GroupBox()
+        Me.DebugNumPlotsCreated = New System.Windows.Forms.Label()
+        Me.NumPlotsCreatedLabel = New System.Windows.Forms.Label()
+        Me.DebugLongestPlotTime = New System.Windows.Forms.Label()
+        Me.LongestPlotTimeLabel = New System.Windows.Forms.Label()
+        Me.ShortestPlotTimeLabel = New System.Windows.Forms.Label()
+        Me.DebugShortestPlotTime = New System.Windows.Forms.Label()
+        Me.DebugAveragePlotTime = New System.Windows.Forms.Label()
+        Me.AveragePlotTimeLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
         Me.CPUOptions.SuspendLayout()
         Me.GPUOptions.SuspendLayout()
         Me.Console.SuspendLayout()
+        Me.SessionStats.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -265,20 +275,20 @@ Partial Class Form1
         '
         Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
         Me.UndoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.UndoToolStripMenuItem.Text = "&Undo"
         '
         'RedoToolStripMenuItem
         '
         Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
         Me.RedoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.RedoToolStripMenuItem.Text = "&Redo"
         '
         'toolStripSeparator3
         '
         Me.toolStripSeparator3.Name = "toolStripSeparator3"
-        Me.toolStripSeparator3.Size = New System.Drawing.Size(221, 6)
+        Me.toolStripSeparator3.Size = New System.Drawing.Size(203, 6)
         '
         'CutToolStripMenuItem
         '
@@ -286,7 +296,7 @@ Partial Class Form1
         Me.CutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
         Me.CutToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.CutToolStripMenuItem.Text = "Cu&t"
         '
         'CopyToolStripMenuItem
@@ -295,7 +305,7 @@ Partial Class Form1
         Me.CopyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
         Me.CopyToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.CopyToolStripMenuItem.Text = "&Copy"
         '
         'PasteToolStripMenuItem
@@ -304,19 +314,19 @@ Partial Class Form1
         Me.PasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
         Me.PasteToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.PasteToolStripMenuItem.Text = "&Paste"
         '
         'toolStripSeparator4
         '
         Me.toolStripSeparator4.Name = "toolStripSeparator4"
-        Me.toolStripSeparator4.Size = New System.Drawing.Size(221, 6)
+        Me.toolStripSeparator4.Size = New System.Drawing.Size(203, 6)
         '
         'SelectAllToolStripMenuItem
         '
         Me.SelectAllToolStripMenuItem.Name = "SelectAllToolStripMenuItem"
         Me.SelectAllToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
         Me.SelectAllToolStripMenuItem.Text = "Select &All"
         '
         'ToolsToolStripMenuItem
@@ -1353,7 +1363,7 @@ Partial Class Form1
         'CudaDeviceText
         '
         Me.CudaDeviceText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.CudaDeviceText.Location = New System.Drawing.Point(107, 18)
+        Me.CudaDeviceText.Location = New System.Drawing.Point(107, 22)
         Me.CudaDeviceText.Name = "CudaDeviceText"
         Me.CudaDeviceText.Size = New System.Drawing.Size(51, 27)
         Me.CudaDeviceText.TabIndex = 13
@@ -1481,11 +1491,106 @@ Partial Class Form1
         Me.PlotProgressBar.Size = New System.Drawing.Size(1007, 29)
         Me.PlotProgressBar.TabIndex = 13
         '
+        'SessionStats
+        '
+        Me.SessionStats.Controls.Add(Me.DebugAveragePlotTime)
+        Me.SessionStats.Controls.Add(Me.AveragePlotTimeLabel)
+        Me.SessionStats.Controls.Add(Me.DebugShortestPlotTime)
+        Me.SessionStats.Controls.Add(Me.ShortestPlotTimeLabel)
+        Me.SessionStats.Controls.Add(Me.DebugLongestPlotTime)
+        Me.SessionStats.Controls.Add(Me.LongestPlotTimeLabel)
+        Me.SessionStats.Controls.Add(Me.DebugNumPlotsCreated)
+        Me.SessionStats.Controls.Add(Me.NumPlotsCreatedLabel)
+        Me.SessionStats.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.SessionStats.Location = New System.Drawing.Point(1050, 470)
+        Me.SessionStats.Name = "SessionStats"
+        Me.SessionStats.Size = New System.Drawing.Size(620, 83)
+        Me.SessionStats.TabIndex = 14
+        Me.SessionStats.TabStop = False
+        Me.SessionStats.Text = "Session Statistics:"
+        '
+        'DebugNumPlotsCreated
+        '
+        Me.DebugNumPlotsCreated.AutoSize = True
+        Me.DebugNumPlotsCreated.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugNumPlotsCreated.Location = New System.Drawing.Point(188, 23)
+        Me.DebugNumPlotsCreated.Name = "DebugNumPlotsCreated"
+        Me.DebugNumPlotsCreated.Size = New System.Drawing.Size(0, 20)
+        Me.DebugNumPlotsCreated.TabIndex = 9
+        '
+        'NumPlotsCreatedLabel
+        '
+        Me.NumPlotsCreatedLabel.AutoSize = True
+        Me.NumPlotsCreatedLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.NumPlotsCreatedLabel.Location = New System.Drawing.Point(6, 23)
+        Me.NumPlotsCreatedLabel.Name = "NumPlotsCreatedLabel"
+        Me.NumPlotsCreatedLabel.Size = New System.Drawing.Size(176, 20)
+        Me.NumPlotsCreatedLabel.TabIndex = 8
+        Me.NumPlotsCreatedLabel.Text = "Number of Plots Created:"
+        '
+        'DebugLongestPlotTime
+        '
+        Me.DebugLongestPlotTime.AutoSize = True
+        Me.DebugLongestPlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugLongestPlotTime.Location = New System.Drawing.Point(430, 48)
+        Me.DebugLongestPlotTime.Name = "DebugLongestPlotTime"
+        Me.DebugLongestPlotTime.Size = New System.Drawing.Size(0, 20)
+        Me.DebugLongestPlotTime.TabIndex = 11
+        '
+        'LongestPlotTimeLabel
+        '
+        Me.LongestPlotTimeLabel.AutoSize = True
+        Me.LongestPlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.LongestPlotTimeLabel.Location = New System.Drawing.Point(293, 48)
+        Me.LongestPlotTimeLabel.Name = "LongestPlotTimeLabel"
+        Me.LongestPlotTimeLabel.Size = New System.Drawing.Size(131, 20)
+        Me.LongestPlotTimeLabel.TabIndex = 10
+        Me.LongestPlotTimeLabel.Text = "Longest Plot Time:"
+        '
+        'ShortestPlotTimeLabel
+        '
+        Me.ShortestPlotTimeLabel.AutoSize = True
+        Me.ShortestPlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ShortestPlotTimeLabel.Location = New System.Drawing.Point(291, 23)
+        Me.ShortestPlotTimeLabel.Name = "ShortestPlotTimeLabel"
+        Me.ShortestPlotTimeLabel.Size = New System.Drawing.Size(133, 20)
+        Me.ShortestPlotTimeLabel.TabIndex = 12
+        Me.ShortestPlotTimeLabel.Text = "Shortest Plot Time:"
+        '
+        'DebugShortestPlotTime
+        '
+        Me.DebugShortestPlotTime.AutoSize = True
+        Me.DebugShortestPlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugShortestPlotTime.Location = New System.Drawing.Point(430, 23)
+        Me.DebugShortestPlotTime.Name = "DebugShortestPlotTime"
+        Me.DebugShortestPlotTime.Size = New System.Drawing.Size(0, 20)
+        Me.DebugShortestPlotTime.TabIndex = 13
+        '
+        'DebugAveragePlotTime
+        '
+        Me.DebugAveragePlotTime.AutoSize = True
+        Me.DebugAveragePlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugAveragePlotTime.Location = New System.Drawing.Point(143, 48)
+        Me.DebugAveragePlotTime.Name = "DebugAveragePlotTime"
+        Me.DebugAveragePlotTime.Size = New System.Drawing.Size(0, 20)
+        Me.DebugAveragePlotTime.TabIndex = 15
+        '
+        'AveragePlotTimeLabel
+        '
+        Me.AveragePlotTimeLabel.AutoSize = True
+        Me.AveragePlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.AveragePlotTimeLabel.Location = New System.Drawing.Point(6, 48)
+        Me.AveragePlotTimeLabel.Name = "AveragePlotTimeLabel"
+        Me.AveragePlotTimeLabel.Size = New System.Drawing.Size(134, 20)
+        Me.AveragePlotTimeLabel.TabIndex = 14
+        Me.AveragePlotTimeLabel.Text = "Average Plot Time:"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1684, 1038)
+        Me.Controls.Add(Me.SessionStats)
         Me.Controls.Add(Me.PlotProgressBar)
         Me.Controls.Add(Me.ResumeButton)
         Me.Controls.Add(Me.PauseButton)
@@ -1512,6 +1617,8 @@ Partial Class Form1
         Me.GPUOptions.ResumeLayout(False)
         Me.GPUOptions.PerformLayout()
         Me.Console.ResumeLayout(False)
+        Me.SessionStats.ResumeLayout(False)
+        Me.SessionStats.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1654,4 +1761,13 @@ Partial Class Form1
     Friend WithEvents PauseButton As Button
     Friend WithEvents ResumeButton As Button
     Friend WithEvents PlotProgressBar As ProgressBar
+    Friend WithEvents SessionStats As GroupBox
+    Friend WithEvents DebugNumPlotsCreated As Label
+    Friend WithEvents NumPlotsCreatedLabel As Label
+    Friend WithEvents DebugLongestPlotTime As Label
+    Friend WithEvents LongestPlotTimeLabel As Label
+    Friend WithEvents DebugShortestPlotTime As Label
+    Friend WithEvents ShortestPlotTimeLabel As Label
+    Friend WithEvents DebugAveragePlotTime As Label
+    Friend WithEvents AveragePlotTimeLabel As Label
 End Class

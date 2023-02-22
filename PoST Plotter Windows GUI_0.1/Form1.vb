@@ -1,13 +1,8 @@
-﻿Imports System.Drawing.Text
-Imports System.IO
+﻿Imports System.IO
 Imports System.IO.Compression
-Imports System.Net
-Imports System.Net.WebRequestMethods
-Imports System.Text
-Imports System.Threading
-Imports Newtonsoft.Json.Linq
 Imports System.Net.Http
-Imports System.Windows.Forms
+Imports System.Text
+Imports Newtonsoft.Json.Linq
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
@@ -54,7 +49,10 @@ Public Class Form1
     Private PlotProgress As Integer = 0
 
     Dim currentDirectory As String = Environment.CurrentDirectory
-    Dim logFilePath As String = Path.Combine(currentDirectory, "output.log")
+    Private longestPlotTime As Double = 0.0
+    Private shortestPlotTime As Double = Double.PositiveInfinity
+    Private totalPlotTime As Double = 0.0
+    Private plotTimeCount As Integer = 0
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetDebugControlsVisibility(False)
@@ -1165,6 +1163,46 @@ Public Class Form1
                 PlotProgress = 100
                 PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
             End If
+            ' Check for progress phrases in the console output
+            If e.Data.Contains("Crafting plot") Then
+                ' Extract the plot number from the line
+                Dim plotNum As Integer = Integer.Parse(e.Data.Split(" "c)(2))
+                ' Add the unit "Plot" or "Plots" based on whether the plot number is singular or plural
+                Dim unit As String = If(plotNum = 1, "Plot", "Plots")
+                ' Update the DebugNumPlotsCreated label with the extracted plot number and unit
+                DebugNumPlotsCreated.Invoke(Sub() DebugNumPlotsCreated.Text = plotNum.ToString() & " " & unit)
+            End If
+            If e.Data.Contains("Total plot creation time was") Then
+                ' Extract the time value from the line
+                Dim timeStr As String = e.Data.Split("("c)(1).Split(" "c)(0)
+                Dim time As Double = Double.Parse(timeStr)
+                ' Update the longestPlotTime variable if the new time value is higher
+                longestPlotTime = Math.Max(longestPlotTime, time)
+                ' Update the DebugLongestPlotTime label with the highest time value seen so far
+                DebugLongestPlotTime.Invoke(Sub() DebugLongestPlotTime.Text = longestPlotTime.ToString() & " Minutes")
+            End If
+            ' Check for progress phrases in the console output
+            If e.Data.Contains("Total plot creation time was") Then
+                ' Extract the time value from the line
+                Dim timeStr As String = e.Data.Split("("c)(1).Split(" "c)(0)
+                Dim time As Double = Double.Parse(timeStr)
+                ' Update the shortestPlotTime variable if the new time value is shorter
+                shortestPlotTime = Math.Min(shortestPlotTime, time)
+                ' Update the DebugShortestPlotTime label with the shortest time value seen so far
+                DebugShortestPlotTime.Invoke(Sub() DebugShortestPlotTime.Text = shortestPlotTime.ToString() & " Minutes")
+            End If
+            ' Check for progress phrases in the console output
+            If e.Data.Contains("Total plot creation time was") Then
+                ' Extract the time value from the line
+                Dim timeStr As String = e.Data.Split("("c)(1).Split(" "c)(0)
+                Dim time As Double = Double.Parse(timeStr)
+                ' Update the totalPlotTime and plotTimeCount variables
+                totalPlotTime += time
+                plotTimeCount += 1
+                ' Calculate the average plot time and update the DebugAveragePlotTime label
+                Dim averagePlotTime As Double = totalPlotTime / plotTimeCount
+                DebugAveragePlotTime.Invoke(Sub() DebugAveragePlotTime.Text = averagePlotTime.ToString() & " Minutes")
+            End If
         End If
     End Sub
 
@@ -1770,5 +1808,21 @@ Public Class Form1
         ElseIf MaxPlotsCacheTempDirText.Focused Then
             MaxPlotsCacheTempDirText.SelectAll()
         End If
+    End Sub
+
+    Private Sub DebugNumPlotsCreated_Click(sender As Object, e As EventArgs) Handles DebugNumPlotsCreated.Click
+
+    End Sub
+
+    Private Sub DebugLongestPlotTime_Click(sender As Object, e As EventArgs) Handles DebugLongestPlotTime.Click
+
+    End Sub
+
+    Private Sub DebugShortestPlotTime_Click(sender As Object, e As EventArgs) Handles DebugShortestPlotTime.Click
+
+    End Sub
+
+    Private Sub DebugAveragePlotTime_Click(sender As Object, e As EventArgs) Handles DebugAveragePlotTime.Click
+
     End Sub
 End Class
