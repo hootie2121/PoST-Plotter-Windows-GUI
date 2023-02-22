@@ -217,6 +217,9 @@ Public Class Form1
             System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
         End If
 
+        ' Get the current version number from the VersioningToolStripMenuItem
+        Dim currentVersion As String = VersioningToolStripMenuItem.Text.Replace("Version ", "")
+
         ' Define the URL of the latest release information
         Dim url As String = "https://api.github.com/repos/hootie2121/PoST-Plotter-Windows-GUI/releases/latest"
 
@@ -231,13 +234,6 @@ Public Class Form1
         Dim latestVersion As String = latestRelease("tag_name").ToString()
         Dim latestUrl As String = latestRelease("assets")(0)("browser_download_url").ToString()
 
-        ' Set the VersioningToolStripMenuItem text to the current version number
-        VersioningToolStripMenuItem.Text = "Version " & My.Application.Info.Version.ToString()
-
-        ' Get the latest version from the server
-        latestVersion = GetLatestVersion()
-
-        ' Check if the latest version is in the correct format
         Dim latestVersionValid As Boolean = Version.TryParse(latestVersion, Nothing)
 
         If Not latestVersionValid Then
@@ -246,27 +242,28 @@ Public Class Form1
             DebugPlotterGUIUpdater.ForeColor = Color.Red
             DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
             DebugPlotterGUIUpdater.Cursor = Cursors.Default
-        ElseIf latestVersion <> My.Application.Info.Version.ToString() Then
-            If String.Compare(latestVersion, My.Application.Info.Version.ToString()) > 0 Then
-                ' Display a message to the user that a beta build is available
-                DebugPlotterGUIUpdater.Text = "Beta-Build"
-                DebugPlotterGUIUpdater.ForeColor = Color.Orange
-                DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
-                DebugPlotterGUIUpdater.Cursor = Cursors.Default
-            Else
-                ' Display a message to the user that an update is available
-                DebugPlotterGUIUpdater.Text = "Update Available"
-                DebugPlotterGUIUpdater.ForeColor = Color.Blue
-                DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Underline)
-                DebugPlotterGUIUpdater.Cursor = Cursors.Hand
-            End If
-        Else
+        ElseIf String.Compare(currentVersion, latestVersion) < 0 Then ' Check if latest version is greater than the current version
+            ' Display a message to the user that an update is available
+            DebugPlotterGUIUpdater.Text = "Update Available"
+            DebugPlotterGUIUpdater.ForeColor = Color.Blue
+            DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Underline)
+            DebugPlotterGUIUpdater.Cursor = Cursors.Hand
+        ElseIf String.Compare(currentVersion, latestVersion) = 0 Then ' Check if latest version is the same as the current version
             ' Display a message to the user that the program is up to date
             DebugPlotterGUIUpdater.Text = "Up-to-Date"
             DebugPlotterGUIUpdater.ForeColor = Color.Black
             DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
             DebugPlotterGUIUpdater.Cursor = Cursors.Default
+        Else
+            ' Display a message to the user that a beta build is available
+            DebugPlotterGUIUpdater.Text = "Beta-Build"
+            DebugPlotterGUIUpdater.ForeColor = Color.Orange
+            DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
+            DebugPlotterGUIUpdater.Cursor = Cursors.Default
         End If
+
+        Debug.WriteLine("currentversion: " & currentVersion)
+        Debug.WriteLine("latestVersion: " & latestVersion)
 
         ' Set up a timer to check for updates once per day
         Dim updateTimer As New Timer()
@@ -291,7 +288,6 @@ Public Class Form1
 
         Return latestVersion
     End Function
-
 
     Private Sub SetDebugControlsVisibility(visible As Boolean)
         DebugPM.Visible = visible
@@ -1922,4 +1918,7 @@ Public Class Form1
         UpdateCheckToolStripMenuItem_Click(sender, e)
     End Sub
 
+    Private Sub VersioningToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VersioningToolStripMenuItem.Click
+
+    End Sub
 End Class

@@ -13,6 +13,17 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageProjectUrl>https://github.com/hootie2121/PoST-Plotter-Windows-GUI.git</PackageProjectUrl>
     <Title>PoST Plotter Windows GUI: PoSTPWG</Title>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix)</FileVersion>
+    <Version>$(VersionPrefix)</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

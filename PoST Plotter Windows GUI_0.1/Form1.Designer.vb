@@ -1589,8 +1589,7 @@ Partial Class Form1
         'DebugPlotterGUIUpdater
         '
         Me.DebugPlotterGUIUpdater.AutoSize = True
-        Me.DebugPlotterGUIUpdater.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugPlotterGUIUpdater.Location = New System.Drawing.Point(1550, 1009)
+        Me.DebugPlotterGUIUpdater.Location = New System.Drawing.Point(1515, 1007)
         Me.DebugPlotterGUIUpdater.Name = "DebugPlotterGUIUpdater"
         Me.DebugPlotterGUIUpdater.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterGUIUpdater.TabIndex = 15
