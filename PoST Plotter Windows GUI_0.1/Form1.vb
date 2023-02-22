@@ -43,7 +43,6 @@ Public Class Form1
     Private Declare Function ResumeThread Lib "kernel32.dll" (hThread As IntPtr) As Integer
     Private Declare Function CloseHandle Lib "kernel32.dll" (hObject As IntPtr) As Boolean
 
-
     Private Const THREAD_ALL_ACCESS As Integer = &H1F03FF
 
     Private PlotProgress As Integer = 0

@@ -393,8 +393,8 @@ Partial Class Form1
         'VersioningToolStripMenuItem
         '
         Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
-        Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
-        Me.VersioningToolStripMenuItem.Text = "Version 1.0.0"
+        Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.VersioningToolStripMenuItem.Text = "Version 1.0.1"
         '
         'CommonOptions
         '
