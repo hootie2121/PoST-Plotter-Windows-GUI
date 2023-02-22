@@ -216,7 +216,82 @@ Public Class Form1
             Next
             System.IO.File.WriteAllText(configFilePath, configBuilder.ToString())
         End If
+
+        ' Define the URL of the latest release information
+        Dim url As String = "https://api.github.com/repos/hootie2121/PoST-Plotter-Windows-GUI/releases/latest"
+
+        ' Use HttpClient to download the latest release information as JSON
+        Dim client As New HttpClient()
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0")
+        Dim response As HttpResponseMessage = client.GetAsync(url).Result
+        Dim json As String = response.Content.ReadAsStringAsync().Result
+
+        ' Parse the JSON to get the latest version number and release URL
+        Dim latestRelease As JObject = JObject.Parse(json)
+        Dim latestVersion As String = latestRelease("tag_name").ToString()
+        Dim latestUrl As String = latestRelease("assets")(0)("browser_download_url").ToString()
+
+        ' Set the VersioningToolStripMenuItem text to the current version number
+        VersioningToolStripMenuItem.Text = "Version " & My.Application.Info.Version.ToString()
+
+        ' Get the latest version from the server
+        latestVersion = GetLatestVersion()
+
+        ' Check if the latest version is in the correct format
+        Dim latestVersionValid As Boolean = Version.TryParse(latestVersion, Nothing)
+
+        If Not latestVersionValid Then
+            ' Handle error: latest version is not in the correct format
+            DebugPlotterGUIUpdater.Text = "Error"
+            DebugPlotterGUIUpdater.ForeColor = Color.Red
+            DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
+            DebugPlotterGUIUpdater.Cursor = Cursors.Default
+        ElseIf latestVersion <> My.Application.Info.Version.ToString() Then
+            If String.Compare(latestVersion, My.Application.Info.Version.ToString()) > 0 Then
+                ' Display a message to the user that a beta build is available
+                DebugPlotterGUIUpdater.Text = "Beta-Build"
+                DebugPlotterGUIUpdater.ForeColor = Color.Orange
+                DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
+                DebugPlotterGUIUpdater.Cursor = Cursors.Default
+            Else
+                ' Display a message to the user that an update is available
+                DebugPlotterGUIUpdater.Text = "Update Available"
+                DebugPlotterGUIUpdater.ForeColor = Color.Blue
+                DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Underline)
+                DebugPlotterGUIUpdater.Cursor = Cursors.Hand
+            End If
+        Else
+            ' Display a message to the user that the program is up to date
+            DebugPlotterGUIUpdater.Text = "Up-to-Date"
+            DebugPlotterGUIUpdater.ForeColor = Color.Black
+            DebugPlotterGUIUpdater.Font = New Font(DebugPlotterGUIUpdater.Font, FontStyle.Regular)
+            DebugPlotterGUIUpdater.Cursor = Cursors.Default
+        End If
+
+        ' Set up a timer to check for updates once per day
+        Dim updateTimer As New Timer()
+        AddHandler updateTimer.Tick, AddressOf UpdateTimer_Tick
+        updateTimer.Interval = 86400000 ' One day in milliseconds
+        updateTimer.Start()
     End Sub
+
+    Private Function GetLatestVersion() As String
+        ' Define the URL of the latest release information
+        Dim url As String = "https://api.github.com/repos/hootie2121/PoST-Plotter-Windows-GUI/releases/latest"
+
+        ' Use HttpClient to download the latest release information as JSON
+        Dim client As New HttpClient()
+        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0")
+        Dim response As HttpResponseMessage = client.GetAsync(url).Result
+        Dim json As String = response.Content.ReadAsStringAsync().Result
+
+        ' Parse the JSON to get the latest version number and release URL
+        Dim latestRelease As JObject = JObject.Parse(json)
+        Dim latestVersion As String = latestRelease("tag_name").ToString()
+
+        Return latestVersion
+    End Function
+
 
     Private Sub SetDebugControlsVisibility(visible As Boolean)
         DebugPM.Visible = visible
@@ -1198,9 +1273,9 @@ Public Class Form1
                 ' Update the totalPlotTime and plotTimeCount variables
                 totalPlotTime += time
                 plotTimeCount += 1
-                ' Calculate the average plot time and update the DebugAveragePlotTime label
+                ' Calculate the average plot time with 5 decimal places and update the DebugAveragePlotTime label
                 Dim averagePlotTime As Double = totalPlotTime / plotTimeCount
-                DebugAveragePlotTime.Invoke(Sub() DebugAveragePlotTime.Text = averagePlotTime.ToString() & " Minutes")
+                DebugAveragePlotTime.Invoke(Sub() DebugAveragePlotTime.Text = averagePlotTime.ToString("F5") & " Minutes")
             End If
         End If
     End Sub
@@ -1566,6 +1641,7 @@ Public Class Form1
                 If result = DialogResult.Yes Then
                     ' Prompt the user for confirmation to revert
                     Dim confirmResult As DialogResult = MessageBox.Show("Are you sure you want to revert to the latest version?", "Confirm Revert", MessageBoxButtons.YesNo)
+
                     If confirmResult = DialogResult.Yes Then
                         ' Prompt the user with a warning before reverting
                         Dim warningResult As DialogResult = MessageBox.Show("This cannot be undone! Are you sure you want to revert to the latest version?", "Warning", MessageBoxButtons.YesNo)
@@ -1587,6 +1663,14 @@ Public Class Form1
 
                             System.IO.File.Delete("latest.zip")
 
+                            ' Move the updated application from the unzipped folder to the directory where the program is running from
+                            Dim appDir As String = Path.GetDirectoryName(Application.ExecutablePath)
+                            Dim updateDir As String = Path.Combine(appDir, "PoSTPWG")
+                            For Each updateFile As String In Directory.GetFiles(updateDir, "*", SearchOption.AllDirectories)
+                                Dim destFile As String = Path.Combine(appDir, Path.GetFileName(updateFile))
+                                File.Move(updateFile, destFile)
+                            Next
+
                             Dim p As Process = Process.Start(Application.ExecutablePath)
 
                             If p Is Nothing Then
@@ -1607,7 +1691,6 @@ Public Class Form1
                 If result = DialogResult.Yes Then
                     ' Close the program
                     Me.Close()
-
                     ' Download and unzip the latest release file
                     Dim downloadClient As New HttpClient()
                     Dim downloadResponse As HttpResponseMessage = downloadClient.GetAsync(latestUrl).Result
@@ -1622,23 +1705,33 @@ Public Class Form1
 
                     System.IO.File.Delete("latest.zip")
 
-                    Dim p As Process = Process.Start(Application.ExecutablePath)
+                    ' Move the updated application from the unzipped folder to the directory where the program is running from
+                    Dim appDir As String = Path.GetDirectoryName(Application.ExecutablePath)
+                        Dim updateDir As String = Path.Combine(appDir, "PoSTPWG")
+                        For Each updateFile As String In Directory.GetFiles(updateDir, "*", SearchOption.AllDirectories)
+                            Dim destFile As String = Path.Combine(appDir, Path.GetFileName(updateFile))
+                            File.Move(updateFile, destFile)
+                        Next
 
-                    If p Is Nothing Then
-                        MessageBox.Show("Error starting updated program.", "Error")
+                        Dim p As Process = Process.Start(Application.ExecutablePath)
+
+                        If p Is Nothing Then
+                            MessageBox.Show("Error starting updated program.", "Error")
+                        Else
+                            ' Display a message to the user
+                            MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                        End If
                     Else
-                        ' Display a message to the user
-                        MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
-                    End If
-
-                    ' Display a message to the user
-                    MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                    ' Display a message to the user that the program is up to date
+                    MessageBox.Show("The program is up to date.", "Up-to-Date")
                 End If
             End If
-        Else
-            ' Display a message to the user that the program is up to date
-            MessageBox.Show("The program is up to date.", "Up-to-Date")
         End If
+    End Sub
+
+    Private Sub UpdateTimer_Tick(sender As Object, e As EventArgs)
+        ' Check for updates
+        UpdateCheckToolStripMenuItem_Click(sender, e)
     End Sub
 
     Private Sub CutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CutToolStripMenuItem.Click
@@ -1824,4 +1917,9 @@ Public Class Form1
     Private Sub DebugAveragePlotTime_Click(sender As Object, e As EventArgs) Handles DebugAveragePlotTime.Click
 
     End Sub
+
+    Private Sub DebugPlotterGUIUpdater_Click(sender As Object, e As EventArgs) Handles DebugPlotterGUIUpdater.Click
+        UpdateCheckToolStripMenuItem_Click(sender, e)
+    End Sub
+
 End Class
