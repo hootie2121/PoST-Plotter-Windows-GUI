@@ -170,6 +170,10 @@ Partial Class Form1
         Me.DebugNumPlotsCreated = New System.Windows.Forms.Label()
         Me.NumPlotsCreatedLabel = New System.Windows.Forms.Label()
         Me.DebugPlotterGUIUpdater = New System.Windows.Forms.Label()
+        Me.EstPlotsPerHour = New System.Windows.Forms.Label()
+        Me.DebugEstPlotsPerHour = New System.Windows.Forms.Label()
+        Me.DebugEstPlotsPerDay = New System.Windows.Forms.Label()
+        Me.EstPlotsPerDayLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -371,30 +375,30 @@ Partial Class Form1
         'ReadMeToolStripMenuItem
         '
         Me.ReadMeToolStripMenuItem.Name = "ReadMeToolStripMenuItem"
-        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
         Me.ReadMeToolStripMenuItem.Text = "README"
         '
         'GitHubToolStripMenuItem
         '
         Me.GitHubToolStripMenuItem.Name = "GitHubToolStripMenuItem"
-        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
         Me.GitHubToolStripMenuItem.Text = "GitHub"
         '
         'UpdateCheckToolStripMenuItem
         '
         Me.UpdateCheckToolStripMenuItem.Name = "UpdateCheckToolStripMenuItem"
-        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
         Me.UpdateCheckToolStripMenuItem.Text = "Check for Updates"
         '
         'toolStripSeparator5
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
-        Me.toolStripSeparator5.Size = New System.Drawing.Size(221, 6)
+        Me.toolStripSeparator5.Size = New System.Drawing.Size(210, 6)
         '
         'VersioningToolStripMenuItem
         '
         Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
-        Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
+        Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
         Me.VersioningToolStripMenuItem.Text = "Version 1.1.0"
         '
         'CommonOptions
@@ -1494,6 +1498,10 @@ Partial Class Form1
         '
         'SessionStats
         '
+        Me.SessionStats.Controls.Add(Me.DebugEstPlotsPerDay)
+        Me.SessionStats.Controls.Add(Me.EstPlotsPerDayLabel)
+        Me.SessionStats.Controls.Add(Me.DebugEstPlotsPerHour)
+        Me.SessionStats.Controls.Add(Me.EstPlotsPerHour)
         Me.SessionStats.Controls.Add(Me.DebugAveragePlotTime)
         Me.SessionStats.Controls.Add(Me.AveragePlotTimeLabel)
         Me.SessionStats.Controls.Add(Me.DebugShortestPlotTime)
@@ -1505,7 +1513,7 @@ Partial Class Form1
         Me.SessionStats.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.SessionStats.Location = New System.Drawing.Point(1050, 470)
         Me.SessionStats.Name = "SessionStats"
-        Me.SessionStats.Size = New System.Drawing.Size(620, 83)
+        Me.SessionStats.Size = New System.Drawing.Size(620, 111)
         Me.SessionStats.TabIndex = 14
         Me.SessionStats.TabStop = False
         Me.SessionStats.Text = "Session Statistics:"
@@ -1552,7 +1560,7 @@ Partial Class Form1
         '
         Me.DebugLongestPlotTime.AutoSize = True
         Me.DebugLongestPlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugLongestPlotTime.Location = New System.Drawing.Point(430, 48)
+        Me.DebugLongestPlotTime.Location = New System.Drawing.Point(428, 48)
         Me.DebugLongestPlotTime.Name = "DebugLongestPlotTime"
         Me.DebugLongestPlotTime.Size = New System.Drawing.Size(0, 20)
         Me.DebugLongestPlotTime.TabIndex = 11
@@ -1561,7 +1569,7 @@ Partial Class Form1
         '
         Me.LongestPlotTimeLabel.AutoSize = True
         Me.LongestPlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.LongestPlotTimeLabel.Location = New System.Drawing.Point(293, 48)
+        Me.LongestPlotTimeLabel.Location = New System.Drawing.Point(291, 48)
         Me.LongestPlotTimeLabel.Name = "LongestPlotTimeLabel"
         Me.LongestPlotTimeLabel.Size = New System.Drawing.Size(131, 20)
         Me.LongestPlotTimeLabel.TabIndex = 10
@@ -1593,6 +1601,44 @@ Partial Class Form1
         Me.DebugPlotterGUIUpdater.Name = "DebugPlotterGUIUpdater"
         Me.DebugPlotterGUIUpdater.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterGUIUpdater.TabIndex = 15
+        '
+        'EstPlotsPerHour
+        '
+        Me.EstPlotsPerHour.AutoSize = True
+        Me.EstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.EstPlotsPerHour.Location = New System.Drawing.Point(6, 73)
+        Me.EstPlotsPerHour.Name = "EstPlotsPerHour"
+        Me.EstPlotsPerHour.Size = New System.Drawing.Size(177, 20)
+        Me.EstPlotsPerHour.TabIndex = 16
+        Me.EstPlotsPerHour.Text = "Estimated Plots per Hour:"
+        '
+        'DebugEstPlotsPerHour
+        '
+        Me.DebugEstPlotsPerHour.AutoSize = True
+        Me.DebugEstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugEstPlotsPerHour.Location = New System.Drawing.Point(189, 73)
+        Me.DebugEstPlotsPerHour.Name = "DebugEstPlotsPerHour"
+        Me.DebugEstPlotsPerHour.Size = New System.Drawing.Size(0, 20)
+        Me.DebugEstPlotsPerHour.TabIndex = 17
+        '
+        'DebugEstPlotsPerDay
+        '
+        Me.DebugEstPlotsPerDay.AutoSize = True
+        Me.DebugEstPlotsPerDay.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugEstPlotsPerDay.Location = New System.Drawing.Point(467, 73)
+        Me.DebugEstPlotsPerDay.Name = "DebugEstPlotsPerDay"
+        Me.DebugEstPlotsPerDay.Size = New System.Drawing.Size(0, 20)
+        Me.DebugEstPlotsPerDay.TabIndex = 19
+        '
+        'EstPlotsPerDayLabel
+        '
+        Me.EstPlotsPerDayLabel.AutoSize = True
+        Me.EstPlotsPerDayLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.EstPlotsPerDayLabel.Location = New System.Drawing.Point(291, 73)
+        Me.EstPlotsPerDayLabel.Name = "EstPlotsPerDayLabel"
+        Me.EstPlotsPerDayLabel.Size = New System.Drawing.Size(170, 20)
+        Me.EstPlotsPerDayLabel.TabIndex = 18
+        Me.EstPlotsPerDayLabel.Text = "Estimated Plots per Day:"
         '
         'Form1
         '
@@ -1781,4 +1827,8 @@ Partial Class Form1
     Friend WithEvents DebugAveragePlotTime As Label
     Friend WithEvents AveragePlotTimeLabel As Label
     Friend WithEvents DebugPlotterGUIUpdater As Label
+    Friend WithEvents DebugEstPlotsPerHour As Label
+    Friend WithEvents EstPlotsPerHour As Label
+    Friend WithEvents DebugEstPlotsPerDay As Label
+    Friend WithEvents EstPlotsPerDayLabel As Label
 End Class

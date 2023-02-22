@@ -1271,7 +1271,36 @@ Public Class Form1
                 plotTimeCount += 1
                 ' Calculate the average plot time with 5 decimal places and update the DebugAveragePlotTime label
                 Dim averagePlotTime As Double = totalPlotTime / plotTimeCount
-                DebugAveragePlotTime.Invoke(Sub() DebugAveragePlotTime.Text = averagePlotTime.ToString("F5") & " Minutes")
+                DebugAveragePlotTime.Invoke(Sub()
+                                                DebugAveragePlotTime.Text = averagePlotTime.ToString("F5") & " Minutes"
+                                                ' Calculate the plots per hour
+                                                Dim plotsPerHour As Integer = Math.Floor(60 / averagePlotTime)
+                                                If plotsPerHour < 1 Then
+                                                    plotsPerHour = 0
+                                                End If
+                                                ' Determine the correct unit based on the result
+                                                Dim unit As String
+                                                If plotsPerHour = 1 Then
+                                                    unit = "Plot/Hour"
+                                                Else
+                                                    unit = "Plots/Hour"
+                                                End If
+                                                ' Update the label with the plots per hour
+                                                DebugEstPlotsPerHour.Text = plotsPerHour.ToString() & " " & unit
+                                                ' Calculate the plots per day
+                                                Dim plotsPerDay As Integer = Math.Floor(1440 / averagePlotTime)
+                                                If plotsPerDay < 1 Then
+                                                    plotsPerDay = 0
+                                                End If
+                                                ' Determine the correct unit based on the result
+                                                If plotsPerDay = 1 Then
+                                                    unit = "Plot/Day"
+                                                Else
+                                                    unit = "Plots/Day"
+                                                End If
+                                                ' Update the label with the plots per day
+                                                DebugEstPlotsPerDay.Text = plotsPerDay.ToString() & " " & unit
+                                            End Sub)
             End If
         End If
     End Sub
@@ -1919,6 +1948,10 @@ Public Class Form1
     End Sub
 
     Private Sub VersioningToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles VersioningToolStripMenuItem.Click
+
+    End Sub
+
+    Private Sub DebugEstPlotsPerHour_Click(sender As Object, e As EventArgs) Handles DebugEstPlotsPerHour.Click
 
     End Sub
 End Class
