@@ -31,8 +31,6 @@ Partial Class Form1
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveAsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.PrintToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PrintPreviewToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -46,6 +44,7 @@ Partial Class Form1
         Me.SelectAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DebugModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PrivacyModeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenConfigLocationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ClearConfigToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -161,6 +160,10 @@ Partial Class Form1
         Me.ResumeButton = New System.Windows.Forms.Button()
         Me.PlotProgressBar = New System.Windows.Forms.ProgressBar()
         Me.SessionStats = New System.Windows.Forms.GroupBox()
+        Me.DebugEstPlotsPerDay = New System.Windows.Forms.Label()
+        Me.EstPlotsPerDayLabel = New System.Windows.Forms.Label()
+        Me.DebugEstPlotsPerHour = New System.Windows.Forms.Label()
+        Me.EstPlotsPerHour = New System.Windows.Forms.Label()
         Me.DebugAveragePlotTime = New System.Windows.Forms.Label()
         Me.AveragePlotTimeLabel = New System.Windows.Forms.Label()
         Me.DebugShortestPlotTime = New System.Windows.Forms.Label()
@@ -170,10 +173,6 @@ Partial Class Form1
         Me.DebugNumPlotsCreated = New System.Windows.Forms.Label()
         Me.NumPlotsCreatedLabel = New System.Windows.Forms.Label()
         Me.DebugPlotterGUIUpdater = New System.Windows.Forms.Label()
-        Me.EstPlotsPerHour = New System.Windows.Forms.Label()
-        Me.DebugEstPlotsPerHour = New System.Windows.Forms.Label()
-        Me.DebugEstPlotsPerDay = New System.Windows.Forms.Label()
-        Me.EstPlotsPerDayLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -195,7 +194,7 @@ Partial Class Form1
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClearFormToolStripMenuItem, Me.OpenToolStripMenuItem, Me.toolStripSeparator, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.toolStripSeparator1, Me.PrintToolStripMenuItem, Me.PrintPreviewToolStripMenuItem, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ClearFormToolStripMenuItem, Me.OpenToolStripMenuItem, Me.toolStripSeparator, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.toolStripSeparator1, Me.toolStripSeparator2, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(46, 24)
         Me.FileToolStripMenuItem.Text = "&File"
@@ -204,7 +203,7 @@ Partial Class Form1
         '
         Me.ClearFormToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.ClearFormToolStripMenuItem.Name = "ClearFormToolStripMenuItem"
-        Me.ClearFormToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ClearFormToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.ClearFormToolStripMenuItem.Text = "Clear Form"
         '
         'OpenToolStripMenuItem
@@ -213,13 +212,13 @@ Partial Class Form1
         Me.OpenToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem"
         Me.OpenToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.O), System.Windows.Forms.Keys)
-        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.OpenToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.OpenToolStripMenuItem.Text = "&Open"
         '
         'toolStripSeparator
         '
         Me.toolStripSeparator.Name = "toolStripSeparator"
-        Me.toolStripSeparator.Size = New System.Drawing.Size(178, 6)
+        Me.toolStripSeparator.Size = New System.Drawing.Size(221, 6)
         '
         'SaveToolStripMenuItem
         '
@@ -227,46 +226,29 @@ Partial Class Form1
         Me.SaveToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.SaveToolStripMenuItem.Name = "SaveToolStripMenuItem"
         Me.SaveToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.SaveToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.SaveToolStripMenuItem.Text = "&Save"
         '
         'SaveAsToolStripMenuItem
         '
         Me.SaveAsToolStripMenuItem.Name = "SaveAsToolStripMenuItem"
-        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.SaveAsToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.SaveAsToolStripMenuItem.Text = "Save &As"
         '
         'toolStripSeparator1
         '
         Me.toolStripSeparator1.Name = "toolStripSeparator1"
-        Me.toolStripSeparator1.Size = New System.Drawing.Size(178, 6)
-        '
-        'PrintToolStripMenuItem
-        '
-        Me.PrintToolStripMenuItem.Image = CType(resources.GetObject("PrintToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.PrintToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.PrintToolStripMenuItem.Name = "PrintToolStripMenuItem"
-        Me.PrintToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
-        Me.PrintToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
-        Me.PrintToolStripMenuItem.Text = "&Print"
-        '
-        'PrintPreviewToolStripMenuItem
-        '
-        Me.PrintPreviewToolStripMenuItem.Image = CType(resources.GetObject("PrintPreviewToolStripMenuItem.Image"), System.Drawing.Image)
-        Me.PrintPreviewToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.PrintPreviewToolStripMenuItem.Name = "PrintPreviewToolStripMenuItem"
-        Me.PrintPreviewToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
-        Me.PrintPreviewToolStripMenuItem.Text = "Print Pre&view"
+        Me.toolStripSeparator1.Size = New System.Drawing.Size(221, 6)
         '
         'toolStripSeparator2
         '
         Me.toolStripSeparator2.Name = "toolStripSeparator2"
-        Me.toolStripSeparator2.Size = New System.Drawing.Size(178, 6)
+        Me.toolStripSeparator2.Size = New System.Drawing.Size(221, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.ExitToolStripMenuItem.Text = "E&xit"
         '
         'EditToolStripMenuItem
@@ -280,20 +262,20 @@ Partial Class Form1
         '
         Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
         Me.UndoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.UndoToolStripMenuItem.Text = "&Undo"
         '
         'RedoToolStripMenuItem
         '
         Me.RedoToolStripMenuItem.Name = "RedoToolStripMenuItem"
         Me.RedoToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Y), System.Windows.Forms.Keys)
-        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.RedoToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.RedoToolStripMenuItem.Text = "&Redo"
         '
         'toolStripSeparator3
         '
         Me.toolStripSeparator3.Name = "toolStripSeparator3"
-        Me.toolStripSeparator3.Size = New System.Drawing.Size(203, 6)
+        Me.toolStripSeparator3.Size = New System.Drawing.Size(221, 6)
         '
         'CutToolStripMenuItem
         '
@@ -301,7 +283,7 @@ Partial Class Form1
         Me.CutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CutToolStripMenuItem.Name = "CutToolStripMenuItem"
         Me.CutToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.CutToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CutToolStripMenuItem.Text = "Cu&t"
         '
         'CopyToolStripMenuItem
@@ -310,7 +292,7 @@ Partial Class Form1
         Me.CopyToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.CopyToolStripMenuItem.Name = "CopyToolStripMenuItem"
         Me.CopyToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.C), System.Windows.Forms.Keys)
-        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.CopyToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CopyToolStripMenuItem.Text = "&Copy"
         '
         'PasteToolStripMenuItem
@@ -319,24 +301,24 @@ Partial Class Form1
         Me.PasteToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.PasteToolStripMenuItem.Name = "PasteToolStripMenuItem"
         Me.PasteToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.PasteToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.PasteToolStripMenuItem.Text = "&Paste"
         '
         'toolStripSeparator4
         '
         Me.toolStripSeparator4.Name = "toolStripSeparator4"
-        Me.toolStripSeparator4.Size = New System.Drawing.Size(203, 6)
+        Me.toolStripSeparator4.Size = New System.Drawing.Size(221, 6)
         '
         'SelectAllToolStripMenuItem
         '
         Me.SelectAllToolStripMenuItem.Name = "SelectAllToolStripMenuItem"
         Me.SelectAllToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.A), System.Windows.Forms.Keys)
-        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(206, 26)
+        Me.SelectAllToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.SelectAllToolStripMenuItem.Text = "Select &All"
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DebugModeToolStripMenuItem, Me.OpenConfigToolStripMenuItem, Me.OpenConfigLocationToolStripMenuItem, Me.ClearConfigToolStripMenuItem})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DebugModeToolStripMenuItem, Me.PrivacyModeToolStripMenuItem, Me.OpenConfigToolStripMenuItem, Me.OpenConfigLocationToolStripMenuItem, Me.ClearConfigToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(58, 24)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -344,8 +326,16 @@ Partial Class Form1
         'DebugModeToolStripMenuItem
         '
         Me.DebugModeToolStripMenuItem.Name = "DebugModeToolStripMenuItem"
+        Me.DebugModeToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.D), System.Windows.Forms.Keys)
         Me.DebugModeToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
         Me.DebugModeToolStripMenuItem.Text = "Debug Mode"
+        '
+        'PrivacyModeToolStripMenuItem
+        '
+        Me.PrivacyModeToolStripMenuItem.Name = "PrivacyModeToolStripMenuItem"
+        Me.PrivacyModeToolStripMenuItem.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
+        Me.PrivacyModeToolStripMenuItem.Size = New System.Drawing.Size(237, 26)
+        Me.PrivacyModeToolStripMenuItem.Text = "Privacy Mode"
         '
         'OpenConfigToolStripMenuItem
         '
@@ -498,9 +488,9 @@ Partial Class Form1
         Me.AccountKeys.Controls.Add(Me.ContractKeyLabel)
         Me.AccountKeys.Controls.Add(Me.DebugContractKey)
         Me.AccountKeys.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.AccountKeys.Location = New System.Drawing.Point(6, 235)
+        Me.AccountKeys.Location = New System.Drawing.Point(6, 224)
         Me.AccountKeys.Name = "AccountKeys"
-        Me.AccountKeys.Size = New System.Drawing.Size(1016, 183)
+        Me.AccountKeys.Size = New System.Drawing.Size(1016, 191)
         Me.AccountKeys.TabIndex = 2
         Me.AccountKeys.TabStop = False
         Me.AccountKeys.Text = "Account Keys:"
@@ -509,7 +499,7 @@ Partial Class Form1
         '
         Me.ContractKeyRadio.AutoSize = True
         Me.ContractKeyRadio.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyRadio.Location = New System.Drawing.Point(938, 73)
+        Me.ContractKeyRadio.Location = New System.Drawing.Point(938, 78)
         Me.ContractKeyRadio.Name = "ContractKeyRadio"
         Me.ContractKeyRadio.Size = New System.Drawing.Size(75, 24)
         Me.ContractKeyRadio.TabIndex = 41
@@ -520,7 +510,7 @@ Partial Class Form1
         'ContractKeyText
         '
         Me.ContractKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyText.Location = New System.Drawing.Point(141, 72)
+        Me.ContractKeyText.Location = New System.Drawing.Point(141, 77)
         Me.ContractKeyText.Name = "ContractKeyText"
         Me.ContractKeyText.Size = New System.Drawing.Size(791, 27)
         Me.ContractKeyText.TabIndex = 34
@@ -551,7 +541,7 @@ Partial Class Form1
         '
         Me.DebugFarmerKey.AutoSize = True
         Me.DebugFarmerKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 150)
+        Me.DebugFarmerKey.Location = New System.Drawing.Point(6, 165)
         Me.DebugFarmerKey.Name = "DebugFarmerKey"
         Me.DebugFarmerKey.Size = New System.Drawing.Size(0, 20)
         Me.DebugFarmerKey.TabIndex = 39
@@ -567,7 +557,7 @@ Partial Class Form1
         'FarmerKeyText
         '
         Me.FarmerKeyText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 122)
+        Me.FarmerKeyText.Location = New System.Drawing.Point(141, 132)
         Me.FarmerKeyText.Name = "FarmerKeyText"
         Me.FarmerKeyText.Size = New System.Drawing.Size(791, 27)
         Me.FarmerKeyText.TabIndex = 38
@@ -576,7 +566,7 @@ Partial Class Form1
         '
         Me.DebugPoolKey.AutoSize = True
         Me.DebugPoolKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 50)
+        Me.DebugPoolKey.Location = New System.Drawing.Point(6, 55)
         Me.DebugPoolKey.Name = "DebugPoolKey"
         Me.DebugPoolKey.Size = New System.Drawing.Size(0, 20)
         Me.DebugPoolKey.TabIndex = 31
@@ -585,7 +575,7 @@ Partial Class Form1
         '
         Me.FarmerKeyLabel.AutoSize = True
         Me.FarmerKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 125)
+        Me.FarmerKeyLabel.Location = New System.Drawing.Point(6, 135)
         Me.FarmerKeyLabel.Name = "FarmerKeyLabel"
         Me.FarmerKeyLabel.Size = New System.Drawing.Size(129, 20)
         Me.FarmerKeyLabel.TabIndex = 37
@@ -595,7 +585,7 @@ Partial Class Form1
         '
         Me.ContractKeyLabel.AutoSize = True
         Me.ContractKeyLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 75)
+        Me.ContractKeyLabel.Location = New System.Drawing.Point(6, 80)
         Me.ContractKeyLabel.Name = "ContractKeyLabel"
         Me.ContractKeyLabel.Size = New System.Drawing.Size(129, 20)
         Me.ContractKeyLabel.TabIndex = 33
@@ -605,7 +595,7 @@ Partial Class Form1
         '
         Me.DebugContractKey.AutoSize = True
         Me.DebugContractKey.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugContractKey.Location = New System.Drawing.Point(6, 100)
+        Me.DebugContractKey.Location = New System.Drawing.Point(6, 110)
         Me.DebugContractKey.Name = "DebugContractKey"
         Me.DebugContractKey.Size = New System.Drawing.Size(0, 20)
         Me.DebugContractKey.TabIndex = 35
@@ -1414,7 +1404,7 @@ Partial Class Form1
         'PlotButton
         '
         Me.PlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PlotButton.Location = New System.Drawing.Point(867, 485)
+        Me.PlotButton.Location = New System.Drawing.Point(882, 938)
         Me.PlotButton.Name = "PlotButton"
         Me.PlotButton.Size = New System.Drawing.Size(150, 29)
         Me.PlotButton.TabIndex = 5
@@ -1424,7 +1414,7 @@ Partial Class Form1
         'DebugPlotterPath
         '
         Me.DebugPlotterPath.AutoSize = True
-        Me.DebugPlotterPath.Location = New System.Drawing.Point(14, 469)
+        Me.DebugPlotterPath.Location = New System.Drawing.Point(8, 913)
         Me.DebugPlotterPath.Name = "DebugPlotterPath"
         Me.DebugPlotterPath.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterPath.TabIndex = 6
@@ -1432,7 +1422,7 @@ Partial Class Form1
         'DebugPlotter
         '
         Me.DebugPlotter.AutoSize = True
-        Me.DebugPlotter.Location = New System.Drawing.Point(14, 494)
+        Me.DebugPlotter.Location = New System.Drawing.Point(767, 913)
         Me.DebugPlotter.Name = "DebugPlotter"
         Me.DebugPlotter.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotter.TabIndex = 7
@@ -1441,9 +1431,9 @@ Partial Class Form1
         '
         Me.Console.Controls.Add(Me.ConsolePrintOutTextBox)
         Me.Console.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.Console.Location = New System.Drawing.Point(11, 517)
+        Me.Console.Location = New System.Drawing.Point(8, 470)
         Me.Console.Name = "Console"
-        Me.Console.Size = New System.Drawing.Size(1027, 440)
+        Me.Console.Size = New System.Drawing.Size(1030, 440)
         Me.Console.TabIndex = 8
         Me.Console.TabStop = False
         Me.Console.Text = "Console:"
@@ -1455,14 +1445,14 @@ Partial Class Form1
         Me.ConsolePrintOutTextBox.ForeColor = System.Drawing.SystemColors.Window
         Me.ConsolePrintOutTextBox.Location = New System.Drawing.Point(9, 26)
         Me.ConsolePrintOutTextBox.Name = "ConsolePrintOutTextBox"
-        Me.ConsolePrintOutTextBox.Size = New System.Drawing.Size(1010, 395)
+        Me.ConsolePrintOutTextBox.Size = New System.Drawing.Size(1013, 395)
         Me.ConsolePrintOutTextBox.TabIndex = 0
         Me.ConsolePrintOutTextBox.Text = ""
         '
         'HardStopButton
         '
         Me.HardStopButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.HardStopButton.Location = New System.Drawing.Point(252, 963)
+        Me.HardStopButton.Location = New System.Drawing.Point(246, 938)
         Me.HardStopButton.Name = "HardStopButton"
         Me.HardStopButton.Size = New System.Drawing.Size(113, 29)
         Me.HardStopButton.TabIndex = 10
@@ -1472,7 +1462,7 @@ Partial Class Form1
         'PauseButton
         '
         Me.PauseButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.PauseButton.Location = New System.Drawing.Point(14, 963)
+        Me.PauseButton.Location = New System.Drawing.Point(8, 938)
         Me.PauseButton.Name = "PauseButton"
         Me.PauseButton.Size = New System.Drawing.Size(113, 29)
         Me.PauseButton.TabIndex = 11
@@ -1482,7 +1472,7 @@ Partial Class Form1
         'ResumeButton
         '
         Me.ResumeButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point)
-        Me.ResumeButton.Location = New System.Drawing.Point(133, 963)
+        Me.ResumeButton.Location = New System.Drawing.Point(127, 938)
         Me.ResumeButton.Name = "ResumeButton"
         Me.ResumeButton.Size = New System.Drawing.Size(113, 29)
         Me.ResumeButton.TabIndex = 12
@@ -1491,7 +1481,7 @@ Partial Class Form1
         '
         'PlotProgressBar
         '
-        Me.PlotProgressBar.Location = New System.Drawing.Point(20, 998)
+        Me.PlotProgressBar.Location = New System.Drawing.Point(14, 973)
         Me.PlotProgressBar.Name = "PlotProgressBar"
         Me.PlotProgressBar.Size = New System.Drawing.Size(1007, 29)
         Me.PlotProgressBar.TabIndex = 13
@@ -1513,10 +1503,48 @@ Partial Class Form1
         Me.SessionStats.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.SessionStats.Location = New System.Drawing.Point(1050, 470)
         Me.SessionStats.Name = "SessionStats"
-        Me.SessionStats.Size = New System.Drawing.Size(620, 111)
+        Me.SessionStats.Size = New System.Drawing.Size(620, 104)
         Me.SessionStats.TabIndex = 14
         Me.SessionStats.TabStop = False
         Me.SessionStats.Text = "Session Statistics:"
+        '
+        'DebugEstPlotsPerDay
+        '
+        Me.DebugEstPlotsPerDay.AutoSize = True
+        Me.DebugEstPlotsPerDay.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugEstPlotsPerDay.Location = New System.Drawing.Point(467, 73)
+        Me.DebugEstPlotsPerDay.Name = "DebugEstPlotsPerDay"
+        Me.DebugEstPlotsPerDay.Size = New System.Drawing.Size(0, 20)
+        Me.DebugEstPlotsPerDay.TabIndex = 19
+        '
+        'EstPlotsPerDayLabel
+        '
+        Me.EstPlotsPerDayLabel.AutoSize = True
+        Me.EstPlotsPerDayLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.EstPlotsPerDayLabel.Location = New System.Drawing.Point(291, 73)
+        Me.EstPlotsPerDayLabel.Name = "EstPlotsPerDayLabel"
+        Me.EstPlotsPerDayLabel.Size = New System.Drawing.Size(170, 20)
+        Me.EstPlotsPerDayLabel.TabIndex = 18
+        Me.EstPlotsPerDayLabel.Text = "Estimated Plots per Day:"
+        '
+        'DebugEstPlotsPerHour
+        '
+        Me.DebugEstPlotsPerHour.AutoSize = True
+        Me.DebugEstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugEstPlotsPerHour.Location = New System.Drawing.Point(189, 73)
+        Me.DebugEstPlotsPerHour.Name = "DebugEstPlotsPerHour"
+        Me.DebugEstPlotsPerHour.Size = New System.Drawing.Size(0, 20)
+        Me.DebugEstPlotsPerHour.TabIndex = 17
+        '
+        'EstPlotsPerHour
+        '
+        Me.EstPlotsPerHour.AutoSize = True
+        Me.EstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.EstPlotsPerHour.Location = New System.Drawing.Point(6, 73)
+        Me.EstPlotsPerHour.Name = "EstPlotsPerHour"
+        Me.EstPlotsPerHour.Size = New System.Drawing.Size(177, 20)
+        Me.EstPlotsPerHour.TabIndex = 16
+        Me.EstPlotsPerHour.Text = "Estimated Plots per Hour:"
         '
         'DebugAveragePlotTime
         '
@@ -1597,54 +1625,16 @@ Partial Class Form1
         'DebugPlotterGUIUpdater
         '
         Me.DebugPlotterGUIUpdater.AutoSize = True
-        Me.DebugPlotterGUIUpdater.Location = New System.Drawing.Point(1515, 1007)
+        Me.DebugPlotterGUIUpdater.Location = New System.Drawing.Point(1515, 988)
         Me.DebugPlotterGUIUpdater.Name = "DebugPlotterGUIUpdater"
         Me.DebugPlotterGUIUpdater.Size = New System.Drawing.Size(0, 20)
         Me.DebugPlotterGUIUpdater.TabIndex = 15
-        '
-        'EstPlotsPerHour
-        '
-        Me.EstPlotsPerHour.AutoSize = True
-        Me.EstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.EstPlotsPerHour.Location = New System.Drawing.Point(6, 73)
-        Me.EstPlotsPerHour.Name = "EstPlotsPerHour"
-        Me.EstPlotsPerHour.Size = New System.Drawing.Size(177, 20)
-        Me.EstPlotsPerHour.TabIndex = 16
-        Me.EstPlotsPerHour.Text = "Estimated Plots per Hour:"
-        '
-        'DebugEstPlotsPerHour
-        '
-        Me.DebugEstPlotsPerHour.AutoSize = True
-        Me.DebugEstPlotsPerHour.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugEstPlotsPerHour.Location = New System.Drawing.Point(189, 73)
-        Me.DebugEstPlotsPerHour.Name = "DebugEstPlotsPerHour"
-        Me.DebugEstPlotsPerHour.Size = New System.Drawing.Size(0, 20)
-        Me.DebugEstPlotsPerHour.TabIndex = 17
-        '
-        'DebugEstPlotsPerDay
-        '
-        Me.DebugEstPlotsPerDay.AutoSize = True
-        Me.DebugEstPlotsPerDay.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugEstPlotsPerDay.Location = New System.Drawing.Point(467, 73)
-        Me.DebugEstPlotsPerDay.Name = "DebugEstPlotsPerDay"
-        Me.DebugEstPlotsPerDay.Size = New System.Drawing.Size(0, 20)
-        Me.DebugEstPlotsPerDay.TabIndex = 19
-        '
-        'EstPlotsPerDayLabel
-        '
-        Me.EstPlotsPerDayLabel.AutoSize = True
-        Me.EstPlotsPerDayLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.EstPlotsPerDayLabel.Location = New System.Drawing.Point(291, 73)
-        Me.EstPlotsPerDayLabel.Name = "EstPlotsPerDayLabel"
-        Me.EstPlotsPerDayLabel.Size = New System.Drawing.Size(170, 20)
-        Me.EstPlotsPerDayLabel.TabIndex = 18
-        Me.EstPlotsPerDayLabel.Text = "Estimated Plots per Day:"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1684, 1038)
+        Me.ClientSize = New System.Drawing.Size(1684, 1017)
         Me.Controls.Add(Me.DebugPlotterGUIUpdater)
         Me.Controls.Add(Me.SessionStats)
         Me.Controls.Add(Me.PlotProgressBar)
@@ -1688,8 +1678,6 @@ Partial Class Form1
     Friend WithEvents SaveToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveAsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents toolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents PrintToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents PrintPreviewToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents toolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EditToolStripMenuItem As ToolStripMenuItem
@@ -1831,4 +1819,5 @@ Partial Class Form1
     Friend WithEvents EstPlotsPerHour As Label
     Friend WithEvents DebugEstPlotsPerDay As Label
     Friend WithEvents EstPlotsPerDayLabel As Label
+    Friend WithEvents PrivacyModeToolStripMenuItem As ToolStripMenuItem
 End Class

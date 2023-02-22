@@ -53,6 +53,10 @@ Public Class Form1
     Private totalPlotTime As Double = 0.0
     Private plotTimeCount As Integer = 0
 
+    Private originalPoolText As String
+    Private originalContractText As String
+    Private originalFarmerText As String
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetDebugControlsVisibility(False)
         PopulateCLCombo()
@@ -112,6 +116,10 @@ Public Class Form1
         DebugMaxParalleCopies.Text = ""
         DebugMaxParalleCopies.Enabled = False
         ResumeButton.Enabled = False
+
+        originalPoolText = PoolKeyText.Text
+        originalContractText = ContractKeyText.Text
+        originalFarmerText = FarmerKeyText.Text
 
         Dim allValid As Boolean = True
         For Each program In cliPrograms
@@ -804,73 +812,161 @@ Public Class Form1
     End Sub
 
     Private Sub PoolKeyText_TextChanged(sender As Object, e As EventArgs) Handles PoolKeyText.TextChanged
-        Dim textbox As TextBox = DirectCast(sender, TextBox)
-        Dim addy As String = textbox.Text
-        If Not String.IsNullOrEmpty(addy) Then
-            arguments("-p") = addy
-        Else
-            arguments("-p") = ""
-            DebugPoolKey.Text = "Invalid Address"
+
+    End Sub
+
+    Private Sub PoolKeyText_Enter(sender As Object, e As EventArgs) Handles PoolKeyText.Enter
+        PoolKeyText.Text = ""
+        PoolKeyText.Text = originalPoolText
+    End Sub
+
+    Private Sub PoolKeyText_Leave(sender As Object, e As EventArgs) Handles PoolKeyText.Leave
+        ' Save the original text
+        originalPoolText = PoolKeyText.Text
+
+        ' Update the underlying value
+        If Not String.IsNullOrEmpty(PoolKeyText.Text) Then
+            arguments("-p") = PoolKeyText.Text
         End If
+
+        ' Update the debug output
         If arguments.ContainsKey("-p") Then
             DebugPoolKey.Text = "-p " & arguments("-p").ToString()
         Else
             DebugPoolKey.Text = "Invalid Address"
         End If
-        Debug.WriteLine("-p " & arguments("-p"))
+
+        ' Update the displayed text to match the underlying value
+        If PrivacyModeToolStripMenuItem.Checked Then
+            ' Replace the text with asterisks
+            ContractKeyText.Text = New String("*", originalPoolText.Length)
+        Else
+            ' Restore the original text to the textbox
+            ContractKeyText.Text = originalPoolText
+        End If
     End Sub
 
     Private Sub PoolKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles PoolKeyRadio.CheckedChanged
         If PoolKeyRadio.Checked Then
+            ' Disable the Contract Key text box
             ContractKeyText.Enabled = False
-            ContractKeyRadio.Checked = False
+
+            ' Clear the Contract Key text box and the corresponding argument
             ContractKeyText.Text = ""
+            arguments("-c") = ""
+            originalContractText = ""
+
+            If arguments.ContainsKey("-c") Then
+                DebugContractKey.Text = "-c " & arguments("-c").ToString()
+            Else
+                DebugContractKey.Text = "Invalid Address"
+            End If
+
+            ' Apply privacy mode to the Pool Key text box
+            If PrivacyModeToolStripMenuItem.Checked Then
+                originalPoolText = PoolKeyText.Text
+                PoolKeyText.Text = New String("*", originalPoolText.Length)
+            End If
         Else
+            ' Enable the Contract Key text box
             ContractKeyText.Enabled = True
         End If
     End Sub
 
     Private Sub ContractKeyText_TextChanged(sender As Object, e As EventArgs) Handles ContractKeyText.TextChanged
-        Dim textbox As TextBox = DirectCast(sender, TextBox)
-        Dim addy As String = textbox.Text
-        If Not String.IsNullOrEmpty(addy) Then
-            arguments("-c") = addy
-        Else
-            arguments("-c") = ""
-            DebugContractKey.Text = "Invalid Address"
+
+    End Sub
+
+    Private Sub ContractKeyText_Enter(sender As Object, e As EventArgs) Handles ContractKeyText.Enter
+        ContractKeyText.Text = ""
+        ContractKeyText.Text = originalContractText
+    End Sub
+
+    Private Sub ContractKeyText_Leave(sender As Object, e As EventArgs) Handles ContractKeyText.Leave
+        ' Save the original text
+        originalContractText = ContractKeyText.Text
+
+        ' Update the underlying value
+        If Not String.IsNullOrEmpty(ContractKeyText.Text) Then
+            arguments("-c") = ContractKeyText.Text
         End If
+
+        ' Update the debug output
         If arguments.ContainsKey("-c") Then
             DebugContractKey.Text = "-c " & arguments("-c").ToString()
         Else
             DebugContractKey.Text = "Invalid Address"
         End If
-        Debug.WriteLine("-c " & arguments("-c"))
+
+        ' Update the displayed text to match the underlying value
+        If PrivacyModeToolStripMenuItem.Checked Then
+            ' Replace the text with asterisks
+            ContractKeyText.Text = New String("*", originalContractText.Length)
+        Else
+            ' Restore the original text to the textbox
+            ContractKeyText.Text = originalContractText
+        End If
+    End Sub
+
+    Private Sub ContractKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles ContractKeyRadio.CheckedChanged
+        If ContractKeyRadio.Checked Then
+            ' Disable the Pool Key text box
+            PoolKeyText.Enabled = False
+
+            ' Clear the Pool Key text box and the corresponding argument
+            PoolKeyText.Text = ""
+            arguments("-p") = ""
+            originalPoolText = ""
+
+            If arguments.ContainsKey("-p") Then
+                DebugPoolKey.Text = "-p " & arguments("-p").ToString()
+            Else
+                DebugPoolKey.Text = "Invalid Address"
+            End If
+
+            ' Apply privacy mode to the Contract Key text box
+            If PrivacyModeToolStripMenuItem.Checked Then
+                originalContractText = ContractKeyText.Text
+                ContractKeyText.Text = New String("*", originalContractText.Length)
+            End If
+        Else
+            ' Enable the Pool Key text box
+            PoolKeyText.Enabled = True
+        End If
     End Sub
 
     Private Sub FarmerKeyText_TextChanged(sender As Object, e As EventArgs) Handles FarmerKeyText.TextChanged
-        Dim textbox As TextBox = DirectCast(sender, TextBox)
-        Dim addy As String = textbox.Text
-        If Not String.IsNullOrEmpty(addy) Then
-            arguments("-f") = addy
-        Else
-            arguments("-f") = ""
-            DebugFarmerKey.Text = "Invalid Address"
+
+    End Sub
+
+    Private Sub FarmerKeyText_Enter(sender As Object, e As EventArgs) Handles FarmerKeyText.Enter
+        FarmerKeyText.Text = ""
+        FarmerKeyText.Text = originalFarmerText
+    End Sub
+
+    Private Sub FarmerKeyText_Leave(sender As Object, e As EventArgs) Handles FarmerKeyText.Leave
+        ' Save the original text
+        originalFarmerText = FarmerKeyText.Text
+
+        ' Update the underlying value
+        If Not String.IsNullOrEmpty(FarmerKeyText.Text) Then
+            arguments("-f") = FarmerKeyText.Text
         End If
+
+        ' Update the debug output
         If arguments.ContainsKey("-f") Then
             DebugFarmerKey.Text = "-f " & arguments("-f").ToString()
         Else
             DebugFarmerKey.Text = "Invalid Address"
         End If
-        Debug.WriteLine("-f " & arguments("-f"))
-    End Sub
 
-    Private Sub ContractKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles ContractKeyRadio.CheckedChanged
-        If ContractKeyRadio.Checked Then
-            PoolKeyText.Enabled = False
-            PoolKeyRadio.Checked = False
-            PoolKeyText.Text = ""
+        ' Update the displayed text to match the underlying value
+        If PrivacyModeToolStripMenuItem.Checked Then
+            ' Replace the text with asterisks
+            FarmerKeyText.Text = New String("*", originalFarmerText.Length)
         Else
-            PoolKeyText.Enabled = True
+            ' Restore the original text to the textbox
+            FarmerKeyText.Text = originalFarmerText
         End If
     End Sub
 
@@ -1953,5 +2049,40 @@ Public Class Form1
 
     Private Sub DebugEstPlotsPerHour_Click(sender As Object, e As EventArgs) Handles DebugEstPlotsPerHour.Click
 
+    End Sub
+
+    Private Sub PrivacyModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PrivacyModeToolStripMenuItem.Click
+        PrivacyModeToolStripMenuItem.Checked = Not PrivacyModeToolStripMenuItem.Checked
+
+        If Not PoolKeyText.Focused And Not ContractKeyText.Focused And Not FarmerKeyText.Focused Then
+            If PrivacyModeToolStripMenuItem.Checked Then
+                ' Replace the text in each text box with asterisks
+                If Not String.IsNullOrEmpty(originalPoolText) Then
+                    PoolKeyText.Text = New String("*", originalPoolText.Length)
+                End If
+
+                If Not String.IsNullOrEmpty(originalContractText) Then
+                    ContractKeyText.Text = New String("*", originalContractText.Length)
+                End If
+
+                If Not String.IsNullOrEmpty(originalFarmerText) Then
+                    FarmerKeyText.Text = New String("*", originalFarmerText.Length)
+                End If
+
+            Else
+                ' Restore the original text to each text box
+                If Not String.IsNullOrEmpty(originalPoolText) Then
+                    PoolKeyText.Text = originalPoolText
+                End If
+
+                If Not String.IsNullOrEmpty(originalContractText) Then
+                    ContractKeyText.Text = originalContractText
+                End If
+
+                If Not String.IsNullOrEmpty(originalFarmerText) Then
+                    FarmerKeyText.Text = originalFarmerText
+                End If
+            End If
+        End If
     End Sub
 End Class
