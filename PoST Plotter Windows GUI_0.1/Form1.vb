@@ -112,6 +112,7 @@ Public Class Form1
         DebugMaxParalleCopies.Text = ""
         DebugMaxParalleCopies.Enabled = False
         ResumeButton.Enabled = False
+        PlotControls.Enabled = False
 
         Dim allValid As Boolean = True
         For Each program In cliPrograms
@@ -1307,6 +1308,7 @@ Public Class Form1
 
     Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
         StartPlotProcess()
+        PlotControls.Enabled = True
     End Sub
 
     Private Sub ClearFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearFormToolStripMenuItem.Click
@@ -1584,6 +1586,7 @@ Public Class Form1
 
             PauseButton.Enabled = True
             ResumeButton.Enabled = False
+            PlotControls.Enabled = False
             PlotProgress = 0
             PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
 
