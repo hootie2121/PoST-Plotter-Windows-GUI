@@ -401,7 +401,7 @@ Partial Class Form1
         '
         Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
         Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
-        Me.VersioningToolStripMenuItem.Text = "Version 1.2.0"
+        Me.VersioningToolStripMenuItem.Text = "Version 1.1.2"
         '
         'CommonOptions
         '
