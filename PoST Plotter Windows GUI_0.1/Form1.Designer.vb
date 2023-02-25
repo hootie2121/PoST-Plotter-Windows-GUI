@@ -377,31 +377,31 @@ Partial Class Form1
         'ReadMeToolStripMenuItem
         '
         Me.ReadMeToolStripMenuItem.Name = "ReadMeToolStripMenuItem"
-        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.ReadMeToolStripMenuItem.Text = "README"
         '
         'GitHubToolStripMenuItem
         '
         Me.GitHubToolStripMenuItem.Name = "GitHubToolStripMenuItem"
-        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.GitHubToolStripMenuItem.Text = "GitHub"
         '
         'UpdateCheckToolStripMenuItem
         '
         Me.UpdateCheckToolStripMenuItem.Name = "UpdateCheckToolStripMenuItem"
-        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.UpdateCheckToolStripMenuItem.Text = "Check for Updates"
         '
         'toolStripSeparator5
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
-        Me.toolStripSeparator5.Size = New System.Drawing.Size(210, 6)
+        Me.toolStripSeparator5.Size = New System.Drawing.Size(221, 6)
         '
         'VersioningToolStripMenuItem
         '
         Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
         Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
-        Me.VersioningToolStripMenuItem.Text = "Version 1.1.2"
+        Me.VersioningToolStripMenuItem.Text = "Version 1.1.3"
         '
         'CommonOptions
         '
