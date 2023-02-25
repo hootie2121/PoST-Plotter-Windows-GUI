@@ -1569,7 +1569,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub HardStopButton_Click(sender As Object, e As EventArgs) Handles HardStopButton.Click
+    Private Sub StopPlotButton_Click(sender As Object, e As EventArgs) Handles StopPlotButton.Click
         If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
             ' Kill the process
             cmdProcess.Kill()
@@ -1586,6 +1586,25 @@ Public Class Form1
             ResumeButton.Enabled = False
             PlotProgress = 0
             PlotProgressBar.Invoke(Sub() PlotProgressBar.Value = PlotProgress)
+
+            ' Delete any remaining files in the temp directories
+            If arguments.ContainsKey("-t") AndAlso Directory.Exists(arguments("-t")) Then
+                For Each filePath In Directory.GetFiles(arguments("-t"))
+                    File.Delete(filePath)
+                Next
+            End If
+
+            If arguments.ContainsKey("-2") AndAlso Directory.Exists(arguments("-2")) Then
+                For Each filePath In Directory.GetFiles(arguments("-2"))
+                    File.Delete(filePath)
+                Next
+            End If
+
+            If arguments.ContainsKey("-3") AndAlso Directory.Exists(arguments("-3")) Then
+                For Each filePath In Directory.GetFiles(arguments("-3"))
+                    File.Delete(filePath)
+                Next
+            End If
         End If
     End Sub
 
@@ -1732,21 +1751,21 @@ Public Class Form1
 
                     ' Move the updated application from the unzipped folder to the directory where the program is running from
                     Dim appDir As String = Path.GetDirectoryName(Application.ExecutablePath)
-                        Dim updateDir As String = Path.Combine(appDir, "PoSTPWG")
-                        For Each updateFile As String In Directory.GetFiles(updateDir, "*", SearchOption.AllDirectories)
-                            Dim destFile As String = Path.Combine(appDir, Path.GetFileName(updateFile))
-                            File.Move(updateFile, destFile)
-                        Next
+                    Dim updateDir As String = Path.Combine(appDir, "PoSTPWG")
+                    For Each updateFile As String In Directory.GetFiles(updateDir, "*", SearchOption.AllDirectories)
+                        Dim destFile As String = Path.Combine(appDir, Path.GetFileName(updateFile))
+                        File.Move(updateFile, destFile)
+                    Next
 
-                        Dim p As Process = Process.Start(Application.ExecutablePath)
+                    Dim p As Process = Process.Start(Application.ExecutablePath)
 
-                        If p Is Nothing Then
-                            MessageBox.Show("Error starting updated program.", "Error")
-                        Else
-                            ' Display a message to the user
-                            MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
-                        End If
+                    If p Is Nothing Then
+                        MessageBox.Show("Error starting updated program.", "Error")
                     Else
+                        ' Display a message to the user
+                        MessageBox.Show("The latest version has been downloaded and installed. The program will now restart.", "Update Complete")
+                    End If
+                Else
                     ' Display a message to the user that the program is up to date
                     MessageBox.Show("The program is up to date.", "Up-to-Date")
                 End If
