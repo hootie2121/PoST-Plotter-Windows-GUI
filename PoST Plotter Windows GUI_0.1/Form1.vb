@@ -1262,6 +1262,15 @@ Public Class Form1
                 ' Update the DebugShortestPlotTime label with the shortest time value seen so far
                 DebugShortestPlotTime.Invoke(Sub() DebugShortestPlotTime.Text = shortestPlotTime.ToString() & " Minutes")
             End If
+            If e.Data.Contains("Total plot creation time was") Then
+                ' Extract the time value from the message
+                Dim timeStr As String = e.Data.Split("("c)(1).Split(" "c)(0)
+                Dim time As Double = Double.Parse(timeStr)
+                ' Calculate the time in minutes
+                Dim timeInMinutes As Double = time / 60.0
+                ' Update the lastPlotTime label with the new time value
+                DebugLastPlotTime.Invoke(Sub() DebugLastPlotTime.Text = String.Format("{0:F5} Minutes", timeInMinutes))
+            End If
             ' Check for progress phrases in the console output
             If e.Data.Contains("Total plot creation time was") Then
                 ' Extract the time value from the line
@@ -1309,6 +1318,9 @@ Public Class Form1
     Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
         StartPlotProcess()
         PlotControls.Enabled = True
+        DebugLongestPlotTime.Text = ""
+        DebugShortestPlotTime.Text = ""
+        DebugAveragePlotTime.Text = ""
     End Sub
 
     Private Sub ClearFormToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearFormToolStripMenuItem.Click
@@ -1974,6 +1986,10 @@ Public Class Form1
     End Sub
 
     Private Sub DebugEstPlotsPerHour_Click(sender As Object, e As EventArgs) Handles DebugEstPlotsPerHour.Click
+
+    End Sub
+
+    Private Sub DebugLastPlotTime_Click(sender As Object, e As EventArgs) Handles DebugLastPlotTime.Click
 
     End Sub
 End Class
