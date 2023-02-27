@@ -1266,10 +1266,8 @@ Public Class Form1
                 ' Extract the time value from the message
                 Dim timeStr As String = e.Data.Split("("c)(1).Split(" "c)(0)
                 Dim time As Double = Double.Parse(timeStr)
-                ' Calculate the time in minutes
-                Dim timeInMinutes As Double = time / 60.0
                 ' Update the lastPlotTime label with the new time value
-                DebugLastPlotTime.Invoke(Sub() DebugLastPlotTime.Text = String.Format("{0:F5} Minutes", timeInMinutes))
+                DebugLastPlotTime.Invoke(Sub() DebugLastPlotTime.Text = String.Format("{0:F5} Minutes", time))
             End If
             ' Check for progress phrases in the console output
             If e.Data.Contains("Total plot creation time was") Then

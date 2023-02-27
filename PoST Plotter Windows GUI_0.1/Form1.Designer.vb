@@ -161,6 +161,8 @@ Partial Class Form1
         Me.ResumeButton = New System.Windows.Forms.Button()
         Me.PlotProgressBar = New System.Windows.Forms.ProgressBar()
         Me.SessionStats = New System.Windows.Forms.GroupBox()
+        Me.DebugLastPlotTime = New System.Windows.Forms.Label()
+        Me.LastPlotTimeLabel = New System.Windows.Forms.Label()
         Me.DebugEstPlotsPerDay = New System.Windows.Forms.Label()
         Me.EstPlotsPerDayLabel = New System.Windows.Forms.Label()
         Me.DebugEstPlotsPerHour = New System.Windows.Forms.Label()
@@ -175,8 +177,6 @@ Partial Class Form1
         Me.NumPlotsCreatedLabel = New System.Windows.Forms.Label()
         Me.DebugPlotterGUIUpdater = New System.Windows.Forms.Label()
         Me.PlotControls = New System.Windows.Forms.GroupBox()
-        Me.LastPlotTimeLabel = New System.Windows.Forms.Label()
-        Me.DebugLastPlotTime = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
@@ -379,31 +379,31 @@ Partial Class Form1
         'ReadMeToolStripMenuItem
         '
         Me.ReadMeToolStripMenuItem.Name = "ReadMeToolStripMenuItem"
-        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.ReadMeToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.ReadMeToolStripMenuItem.Text = "README"
         '
         'GitHubToolStripMenuItem
         '
         Me.GitHubToolStripMenuItem.Name = "GitHubToolStripMenuItem"
-        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.GitHubToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.GitHubToolStripMenuItem.Text = "GitHub"
         '
         'UpdateCheckToolStripMenuItem
         '
         Me.UpdateCheckToolStripMenuItem.Name = "UpdateCheckToolStripMenuItem"
-        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(213, 26)
+        Me.UpdateCheckToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.UpdateCheckToolStripMenuItem.Text = "Check for Updates"
         '
         'toolStripSeparator5
         '
         Me.toolStripSeparator5.Name = "toolStripSeparator5"
-        Me.toolStripSeparator5.Size = New System.Drawing.Size(210, 6)
+        Me.toolStripSeparator5.Size = New System.Drawing.Size(221, 6)
         '
         'VersioningToolStripMenuItem
         '
         Me.VersioningToolStripMenuItem.Name = "VersioningToolStripMenuItem"
         Me.VersioningToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
-        Me.VersioningToolStripMenuItem.Text = "Version 1.1.4"
+        Me.VersioningToolStripMenuItem.Text = "Version 1.1.5"
         '
         'CommonOptions
         '
@@ -1524,6 +1524,25 @@ Partial Class Form1
         Me.SessionStats.TabStop = False
         Me.SessionStats.Text = "Session Statistics:"
         '
+        'DebugLastPlotTime
+        '
+        Me.DebugLastPlotTime.AutoSize = True
+        Me.DebugLastPlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DebugLastPlotTime.Location = New System.Drawing.Point(117, 73)
+        Me.DebugLastPlotTime.Name = "DebugLastPlotTime"
+        Me.DebugLastPlotTime.Size = New System.Drawing.Size(0, 20)
+        Me.DebugLastPlotTime.TabIndex = 21
+        '
+        'LastPlotTimeLabel
+        '
+        Me.LastPlotTimeLabel.AutoSize = True
+        Me.LastPlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.LastPlotTimeLabel.Location = New System.Drawing.Point(6, 73)
+        Me.LastPlotTimeLabel.Name = "LastPlotTimeLabel"
+        Me.LastPlotTimeLabel.Size = New System.Drawing.Size(105, 20)
+        Me.LastPlotTimeLabel.TabIndex = 20
+        Me.LastPlotTimeLabel.Text = "Last Plot Time:"
+        '
         'DebugEstPlotsPerDay
         '
         Me.DebugEstPlotsPerDay.AutoSize = True
@@ -1658,25 +1677,6 @@ Partial Class Form1
         Me.PlotControls.TabIndex = 16
         Me.PlotControls.TabStop = False
         Me.PlotControls.Text = "Plot Controls:"
-        '
-        'LastPlotTimeLabel
-        '
-        Me.LastPlotTimeLabel.AutoSize = True
-        Me.LastPlotTimeLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.LastPlotTimeLabel.Location = New System.Drawing.Point(6, 73)
-        Me.LastPlotTimeLabel.Name = "LastPlotTimeLabel"
-        Me.LastPlotTimeLabel.Size = New System.Drawing.Size(105, 20)
-        Me.LastPlotTimeLabel.TabIndex = 20
-        Me.LastPlotTimeLabel.Text = "Last Plot Time:"
-        '
-        'DebugLastPlotTime
-        '
-        Me.DebugLastPlotTime.AutoSize = True
-        Me.DebugLastPlotTime.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.DebugLastPlotTime.Location = New System.Drawing.Point(117, 73)
-        Me.DebugLastPlotTime.Name = "DebugLastPlotTime"
-        Me.DebugLastPlotTime.Size = New System.Drawing.Size(0, 20)
-        Me.DebugLastPlotTime.TabIndex = 21
         '
         'Form1
         '
