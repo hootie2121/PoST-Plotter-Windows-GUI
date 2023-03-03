@@ -427,7 +427,7 @@ Partial Class Form1
         Me.MainTabControl.Location = New System.Drawing.Point(0, 28)
         Me.MainTabControl.Name = "MainTabControl"
         Me.MainTabControl.SelectedIndex = 0
-        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1048)
+        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1027)
         Me.MainTabControl.TabIndex = 1
         '
         'TabPage1
@@ -447,7 +447,7 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(4, 29)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1672, 1015)
+        Me.TabPage1.Size = New System.Drawing.Size(1672, 994)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "TabPage1"
         '
@@ -1731,7 +1731,7 @@ Partial Class Form1
         Me.TabPage2.Location = New System.Drawing.Point(4, 29)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1672, 1015)
+        Me.TabPage2.Size = New System.Drawing.Size(1672, 994)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         '
@@ -1766,7 +1766,7 @@ Partial Class Form1
         Me.SourcePlotDataGrid.AllowUserToDeleteRows = False
         Me.SourcePlotDataGrid.AllowUserToResizeRows = False
         Me.SourcePlotDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.SourcePlotDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.SourcePlotDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter
         Me.SourcePlotDataGrid.Location = New System.Drawing.Point(6, 53)
         Me.SourcePlotDataGrid.Name = "SourcePlotDataGrid"
         Me.SourcePlotDataGrid.RowHeadersWidth = 51
@@ -1806,7 +1806,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1680, 1076)
+        Me.ClientSize = New System.Drawing.Size(1680, 1055)
         Me.Controls.Add(Me.MainTabControl)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1

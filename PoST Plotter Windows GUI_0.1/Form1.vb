@@ -352,24 +352,38 @@ Public Class Form1
         Timer1.Interval = 500000000
         Timer1.Enabled = True
 
+        AddSourceButton.Enabled = False
 
+        ' Add the "Priority" column
+        Dim priorityColumn As New DataGridViewTextBoxColumn()
+        priorityColumn.HeaderText = "Priority"
+        priorityColumn.Name = "Priority"
+        priorityColumn.ReadOnly = False ' Set the column to be editable
+        SourcePlotDataGrid.Columns.Add(priorityColumn)
+        ' Set the default priority value for each row
+        For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
+            row.Cells("Priority").Value = row.Index + 1
+        Next
 
         ' Add the "SourceDirectory" column
         Dim sourceDirectoryColumn As New DataGridViewTextBoxColumn()
         sourceDirectoryColumn.HeaderText = "Source Directory"
         sourceDirectoryColumn.Name = "SourceDirectory"
+        sourceDirectoryColumn.ReadOnly = True
         SourcePlotDataGrid.Columns.Add(sourceDirectoryColumn)
 
         ' Add the "PercentAvailableSpace" column
         Dim percentAvailableSpaceColumn As New DataGridViewTextBoxColumn()
         percentAvailableSpaceColumn.HeaderText = "Available Space (%)"
         percentAvailableSpaceColumn.Name = "PercentAvailableSpace"
+        percentAvailableSpaceColumn.ReadOnly = True
         SourcePlotDataGrid.Columns.Add(percentAvailableSpaceColumn)
 
         ' Add the "GBAvailableSpace" column
         Dim gbAvailableSpaceColumn As New DataGridViewTextBoxColumn()
         gbAvailableSpaceColumn.HeaderText = "Available Space (GB)"
         gbAvailableSpaceColumn.Name = "GBAvailableSpace"
+        gbAvailableSpaceColumn.ReadOnly = True
         SourcePlotDataGrid.Columns.Add(gbAvailableSpaceColumn)
 
         ' Add columns for K30 to K34
@@ -378,6 +392,7 @@ Public Class Form1
             Dim column As New DataGridViewTextBoxColumn()
             column.HeaderText = columnHeaderText
             column.Name = columnHeaderText
+            column.ReadOnly = True
             SourcePlotDataGrid.Columns.Add(column)
             Debug.WriteLine($"Added column: {columnHeaderText}")
         Next
@@ -386,6 +401,7 @@ Public Class Form1
         Dim totalPlotsColumn As New DataGridViewTextBoxColumn()
         totalPlotsColumn.HeaderText = "Total Plots"
         totalPlotsColumn.Name = "TotalPlots"
+        totalPlotsColumn.ReadOnly = True
         SourcePlotDataGrid.Columns.Add(totalPlotsColumn)
         Debug.WriteLine("Added column: TotalPlots")
 
@@ -393,6 +409,7 @@ Public Class Form1
         Dim removeButtonColumn As New DataGridViewButtonColumn()
         removeButtonColumn.Text = "Delete"
         removeButtonColumn.UseColumnTextForButtonValue = True
+        removeButtonColumn.HeaderText = ""
         removeButtonColumn.Name = "RemoveButton"
         SourcePlotDataGrid.Columns.Add(removeButtonColumn)
     End Sub
@@ -2047,7 +2064,11 @@ Public Class Form1
     End Sub
 
     Private Sub SourcePlotText_TextChanged(sender As Object, e As EventArgs) Handles SourcePlotText.TextChanged
-        ' Do nothing here
+        If SourcePlotText.Text = "" Then
+            AddSourceButton.Enabled = False
+        Else
+            AddSourceButton.Enabled = True
+        End If
     End Sub
 
     Private Sub AddSourceButton_Click(sender As Object, e As EventArgs) Handles AddSourceButton.Click
@@ -2089,6 +2110,9 @@ Public Class Form1
                     Dim totalPlotsCell As New DataGridViewTextBoxCell()
                     totalPlotsCell.Value = totalPlots
                     row.Cells("TotalPlots") = totalPlotsCell
+
+                    ' Set the default priority value for each row
+                    row.Cells("Priority").Value = 0
                 End If
 
                 Array.Clear(kCounts, 0, kCounts.Length) ' Reset the kCounts array for the next subdirectory
@@ -2098,163 +2122,23 @@ Public Class Form1
                 Debug.WriteLine("Access denied to directory: " & subDirectory)
             End Try
         Next
-    End Sub
 
-    Private Sub CheckForKPlots(sourceDirectory As String)
-        Debug.WriteLine("Checking for K plots in " & sourceDirectory)
+        ' Sort the rows by source directory
+        Dim sortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) r.Cells("SourceDirectory").Value.ToString()).ToArray()
 
-        ' Retrieve all files in the source directory
-        Dim allFiles = IO.Directory.GetFiles(sourceDirectory)
-        Debug.WriteLine("Found " & allFiles.Length & " files in directory " & sourceDirectory)
-
-        For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
-            If r.Cells("SourceDirectory").Value IsNot Nothing AndAlso r.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
-                Debug.WriteLine("Found matching directory in grid")
-
-                Dim totalPlots As Integer = 0
-                For Each kSize In Enumerable.Range(30, 5)
-                    Dim columnHeaderText As String = "K" & kSize.ToString()
-                    Dim kSizeFiles = allFiles.Where(Function(f) f.Contains("plot-k" & kSize.ToString() & "-")).ToArray()
-
-                    If kSizeFiles.Length > 0 Then
-                        r.Cells(columnHeaderText).Value = kSizeFiles.Length
-                        Debug.WriteLine("Set value of column " & columnHeaderText & " to " & kSizeFiles.Length)
-                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = True
-                        totalPlots += kSizeFiles.Length
-                    Else
-                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = False
-                    End If
-                Next
-
-                ' Set the value of the TotalPlots column
-                Dim totalPlotsCell As DataGridViewCell = r.Cells(SourcePlotDataGrid.Columns("TotalPlots").Index)
-                totalPlotsCell.Value = totalPlots
-                If totalPlots = 0 Then
-                    totalPlotsCell.Value = "No Plots"
-                End If
-
-                Exit Sub
+        ' Set the default priority value for each row based on the sorted order
+        For i As Integer = 0 To sortedRows.Length - 1
+            Dim row As DataGridViewRow = sortedRows(i)
+            If row.Cells("Priority").Value.ToString() = "0" Then
+                row.Cells("Priority").Value = i + 1
             End If
         Next
 
-        Debug.WriteLine("Directory not found in grid.")
+        ' Allow users to edit the priority value
+        SourcePlotDataGrid.Columns("Priority").ReadOnly = False
+
+        SourcePlotText.Text = ""
     End Sub
-
-    Private Sub AddNoPlotsToTotalPlotsColumn(newRow As DataGridViewRow)
-        Dim totalPlots As Integer = 0
-
-        ' Loop through all K columns and add up the total number of plots
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            If col.Name.StartsWith("K") AndAlso col.Visible Then
-                For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
-                    If r.Cells(col.Name).Value IsNot Nothing Then
-                        totalPlots += Integer.Parse(r.Cells(col.Name).Value.ToString())
-                    End If
-                Next
-            End If
-        Next
-
-        ' Set "No Plots" in the TotalPlots column if no plots are found
-        Dim totalPlotsColumnIndex As Integer? = SourcePlotDataGrid.Columns.Cast(Of DataGridViewColumn)().FirstOrDefault(Function(col) col.Name = "TotalPlots")?.Index
-
-        If totalPlotsColumnIndex IsNot Nothing AndAlso totalPlotsColumnIndex >= 0 AndAlso totalPlotsColumnIndex < newRow.Cells.Count Then
-            If totalPlots = 0 Then
-                Dim totalPlotsCell As DataGridViewCell = newRow.Cells(totalPlotsColumnIndex.Value)
-                totalPlotsCell.Value = "No Plots"
-                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
-            Else
-                ' Set the total number of plots in the TotalPlots column
-                newRow.Cells(totalPlotsColumnIndex.Value).Value = totalPlots
-                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub AddRowToGrid(newRow As DataGridViewRow)
-        ' Add the row to the grid
-        SourcePlotDataGrid.Rows.Add(newRow)
-
-        ' Resize the columns to fit the contents
-        SourcePlotDataGrid.AutoResizeColumns()
-
-        ' Debug: Print the contents of the row that was added
-        Debug.WriteLine("Added row to grid:")
-        For Each cell As DataGridViewCell In newRow.Cells
-            If cell.Value IsNot Nothing Then
-                Debug.Write(cell.Value.ToString() & vbTab)
-            End If
-        Next
-        Debug.WriteLine("")
-
-        ' Debug: Print the width of each column
-        Debug.WriteLine("Column Widths:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            Debug.WriteLine(col.Name & ": " & col.Width)
-        Next
-    End Sub
-
-    Private Sub ResizeColumnsToFitContents()
-        ' Resize the columns to fit the contents
-        SourcePlotDataGrid.AutoResizeColumns()
-
-        ' Debug: Display the width of each column
-        Debug.WriteLine("Column Widths:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            Debug.WriteLine(col.Name & ": " & col.Width)
-        Next
-    End Sub
-
-    Private Sub DebugPrintVisibleColumns()
-        ' Print out the names of all visible K columns
-        Debug.WriteLine("Visible K columns:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            If col.Name.StartsWith("K") AndAlso col.Name.Length > 1 AndAlso col.Visible Then
-                Debug.WriteLine(col.Name)
-            End If
-        Next
-
-        ' Print out whether TotalPlots column is visible
-        Debug.WriteLine("TotalPlots column visibility: " & SourcePlotDataGrid.Columns("TotalPlots").Visible.ToString())
-    End Sub
-
-    Private Function CreateNewRow(sourceDirectory As String) As DataGridViewRow
-        ' Create a new DataGridViewRow for the source directory
-        Dim newRow As New DataGridViewRow()
-
-        ' Create a new DataGridViewTextBoxCell for the "SourceDirectory" column
-        Dim sourceDirectoryCell As New DataGridViewTextBoxCell()
-        sourceDirectoryCell.Value = sourceDirectory
-        newRow.Cells.Add(sourceDirectoryCell)
-
-        ' Create a new DataGridViewTextBoxCell for the "PercentAvailableSpace" column
-        Dim percentAvailableSpaceCell As New DataGridViewTextBoxCell()
-        newRow.Cells.Add(percentAvailableSpaceCell)
-
-        ' Create a new DataGridViewTextBoxCell for the "GBAvailableSpace" column
-        Dim gbAvailableSpaceCell As New DataGridViewTextBoxCell()
-        newRow.Cells.Add(gbAvailableSpaceCell)
-
-        ' Create a new DataGridViewButtonCell for the "RemoveButton" column
-        Dim removeButtonCell As New DataGridViewButtonCell()
-        removeButtonCell.Value = "Delete"
-        newRow.Cells.Add(removeButtonCell)
-
-        Return newRow
-    End Function
-
-    Private Function DirectoryAlreadyExistsInGrid(sourceDirectory As String) As Boolean
-        ' Iterate through each row in the DataGridView
-        For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
-            ' Check if the SourceDirectory cell in the row matches the sourceDirectory string
-            If row.Cells("SourceDirectory").Value IsNot Nothing AndAlso row.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
-                ' If a match is found, return true
-                Return True
-            End If
-        Next
-
-        ' If no match is found, return false
-        Return False
-    End Function
 
     Private Function GetPercentFreeSpace(directory As String) As Integer
         Dim driveInfo As New System.IO.DriveInfo(directory)
@@ -2273,6 +2157,57 @@ Public Class Form1
         If e.ColumnIndex = SourcePlotDataGrid.Columns.Count - 1 AndAlso e.RowIndex >= 0 Then
             ' Remove the row when the remove button is clicked
             SourcePlotDataGrid.Rows.RemoveAt(e.RowIndex)
+        End If
+    End Sub
+
+    Private Sub SourcePlotDataGrid_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles SourcePlotDataGrid.CellValueChanged
+        If e.ColumnIndex = SourcePlotDataGrid.Columns("Priority").Index Then
+            ' Commit the current edit
+            SourcePlotDataGrid.EndEdit()
+
+            ' Save the current cell and selection
+            Dim currentCell = SourcePlotDataGrid.CurrentCell
+            Dim selectedRows = SourcePlotDataGrid.SelectedRows.Cast(Of DataGridViewRow)().ToArray()
+
+            ' Update the priority value for the changed row
+            Dim newPriority As Integer
+            If Integer.TryParse(SourcePlotDataGrid.Rows(e.RowIndex).Cells("Priority").Value.ToString(), newPriority) Then
+                ' Check if the entered priority value already exists
+                Dim duplicateRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().Where(Function(r) CInt(r.Cells("Priority").Value) = newPriority AndAlso r.Index <> e.RowIndex).ToArray()
+                If duplicateRows.Any() Then
+                    ' If a duplicate exists, adjust the priority values of the affected rows
+                    Dim affectedRows = duplicateRows.Concat({SourcePlotDataGrid.Rows(e.RowIndex)}).OrderBy(Function(r) r.Index).ToArray()
+                    For i As Integer = 0 To affectedRows.Length - 1
+                        affectedRows(i).Cells("Priority").Value = i + 1
+                    Next
+                End If
+            Else
+                ' If the entered priority value is not a valid integer, update the priority values of all affected rows
+                Dim newSortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) CInt(r.Cells("Priority").Value)).ToArray()
+                For i As Integer = 0 To newSortedRows.Length - 1
+                    newSortedRows(i).Cells("Priority").Value = i + 1
+                Next
+            End If
+
+            ' Sort the rows based on the priority values
+            Dim sortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) CInt(r.Cells("Priority").Value)).ToArray()
+
+            ' Reorder the rows based on the new priority values
+            SourcePlotDataGrid.BeginInvoke(Sub()
+                                               SourcePlotDataGrid.Rows.Clear()
+                                               SourcePlotDataGrid.Rows.AddRange(sortedRows)
+                                           End Sub)
+
+            ' Restore the current cell and selection
+            If currentCell IsNot Nothing AndAlso currentCell.RowIndex >= 0 AndAlso currentCell.RowIndex < SourcePlotDataGrid.Rows.Count Then
+                SourcePlotDataGrid.CurrentCell = currentCell
+            End If
+
+            For Each row In selectedRows
+                If row.Index >= 0 AndAlso row.Index < SourcePlotDataGrid.Rows.Count Then
+                    SourcePlotDataGrid.Rows(row.Index).Selected = True
+                End If
+            Next
         End If
     End Sub
 
