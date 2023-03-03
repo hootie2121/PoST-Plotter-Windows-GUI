@@ -2058,30 +2058,46 @@ Public Class Form1
         Dim percentFreeSpace As Integer = GetPercentFreeSpace(sourceDirectory)
         Dim availableSpaceInGB As Double = GetAvailableSpaceInGB(sourceDirectory)
 
-        For Each kValue As String In kValues
-            Dim files() As String = Directory.GetFiles(sourceDirectory, "plot-" & kValue & "-*")
-            kCounts(Array.IndexOf(kValues, kValue)) = files.Length
-            totalPlots += files.Length
+        Dim subDirectories() As String = Directory.GetDirectories(sourceDirectory)
+
+        For Each subDirectory As String In subDirectories
+            Try
+                Dim directoryName As String = Path.GetFileName(subDirectory)
+                Dim hasValidPlot As Boolean = False
+
+                For Each kValue As String In kValues
+                    Dim files() As String = Directory.GetFiles(subDirectory, "plot-" & kValue & "-*")
+                    If files.Length > 0 Then
+                        kCounts(Array.IndexOf(kValues, kValue)) += files.Length
+                        hasValidPlot = True
+                        totalPlots += files.Length
+                    End If
+                Next
+
+                If hasValidPlot Then
+                    Dim rowIndex As Integer = SourcePlotDataGrid.Rows.Add()
+                    Dim row As DataGridViewRow = SourcePlotDataGrid.Rows(rowIndex)
+                    row.Cells("SourceDirectory").Value = subDirectory
+                    row.Cells("PercentAvailableSpace").Value = percentFreeSpace
+                    row.Cells("GBAvailableSpace").Value = availableSpaceInGB
+
+                    For i As Integer = 0 To kValues.Length - 1
+                        row.Cells(kValues(i)).Value = kCounts(i)
+                    Next
+
+                    ' Set the cell data type to DataGridViewTextBoxCell
+                    Dim totalPlotsCell As New DataGridViewTextBoxCell()
+                    totalPlotsCell.Value = totalPlots
+                    row.Cells("TotalPlots") = totalPlotsCell
+                End If
+
+                Array.Clear(kCounts, 0, kCounts.Length) ' Reset the kCounts array for the next subdirectory
+                totalPlots = 0 ' Reset the totalPlots count for the next subdirectory
+            Catch ex As UnauthorizedAccessException
+                ' handle the access denied error here
+                Debug.WriteLine("Access denied to directory: " & subDirectory)
+            End Try
         Next
-
-        If totalPlots = 0 Then
-            totalPlots = "No Plots"
-        End If
-
-        Dim rowIndex As Integer = SourcePlotDataGrid.Rows.Add()
-        Dim row As DataGridViewRow = SourcePlotDataGrid.Rows(rowIndex)
-        row.Cells("SourceDirectory").Value = sourceDirectory
-        row.Cells("PercentAvailableSpace").Value = percentFreeSpace
-        row.Cells("GBAvailableSpace").Value = availableSpaceInGB
-
-        For i As Integer = 0 To kValues.Length - 1
-            row.Cells(kValues(i)).Value = kCounts(i)
-        Next
-
-        ' Set the cell data type to DataGridViewTextBoxCell
-        Dim totalPlotsCell As New DataGridViewTextBoxCell()
-        totalPlotsCell.Value = totalPlots
-        row.Cells("TotalPlots") = totalPlotsCell
     End Sub
 
     Private Sub CheckForKPlots(sourceDirectory As String)
