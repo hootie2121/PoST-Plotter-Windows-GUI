@@ -3,6 +3,8 @@ Imports System.IO.Compression
 Imports System.Net.Http
 Imports System.Text
 Imports Newtonsoft.Json.Linq
+Imports System.Threading
+Imports System.Windows.Forms
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
@@ -53,11 +55,14 @@ Public Class Form1
     Private totalPlotTime As Double = 0.0
     Private plotTimeCount As Integer = 0
 
+    Private WithEvents Timer1 As New System.Windows.Forms.Timer()
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SetDebugControlsVisibility(False)
         PopulateCLCombo()
         PopulateNumThreadsCombo()
         PopulateCPortCombo()
+        SourcePlotForm()
         TempDir2Check.Checked = True
         TempDir3Check.Checked = True
         AdvancedOptionsCheck.Checked = False
@@ -267,7 +272,7 @@ Public Class Form1
         Debug.WriteLine("latestVersion: " & latestVersion)
 
         ' Set up a timer to check for updates once per day
-        Dim updateTimer As New Timer()
+        Dim updateTimer As New System.Windows.Forms.Timer()
         AddHandler updateTimer.Tick, AddressOf UpdateTimer_Tick
         updateTimer.Interval = 86400000 ' One day in milliseconds
         updateTimer.Start()
@@ -342,6 +347,56 @@ Public Class Form1
         CPortCombo.Items.AddRange({"Chia", "MMX", "Other"})
     End Sub
 
+    Private Sub SourcePlotForm()
+        ' Set the timer to update the grid every 5 minutes
+        Timer1.Interval = 500000000
+        Timer1.Enabled = True
+
+
+
+        ' Add the "SourceDirectory" column
+        Dim sourceDirectoryColumn As New DataGridViewTextBoxColumn()
+        sourceDirectoryColumn.HeaderText = "Source Directory"
+        sourceDirectoryColumn.Name = "SourceDirectory"
+        SourcePlotDataGrid.Columns.Add(sourceDirectoryColumn)
+
+        ' Add the "PercentAvailableSpace" column
+        Dim percentAvailableSpaceColumn As New DataGridViewTextBoxColumn()
+        percentAvailableSpaceColumn.HeaderText = "Available Space (%)"
+        percentAvailableSpaceColumn.Name = "PercentAvailableSpace"
+        SourcePlotDataGrid.Columns.Add(percentAvailableSpaceColumn)
+
+        ' Add the "GBAvailableSpace" column
+        Dim gbAvailableSpaceColumn As New DataGridViewTextBoxColumn()
+        gbAvailableSpaceColumn.HeaderText = "Available Space (GB)"
+        gbAvailableSpaceColumn.Name = "GBAvailableSpace"
+        SourcePlotDataGrid.Columns.Add(gbAvailableSpaceColumn)
+
+        ' Add columns for K30 to K34
+        For Each kSize In Enumerable.Range(30, 5)
+            Dim columnHeaderText As String = "K" & kSize.ToString()
+            Dim column As New DataGridViewTextBoxColumn()
+            column.HeaderText = columnHeaderText
+            column.Name = columnHeaderText
+            SourcePlotDataGrid.Columns.Add(column)
+            Debug.WriteLine($"Added column: {columnHeaderText}")
+        Next
+
+        ' Add the "TotalPlots" column
+        Dim totalPlotsColumn As New DataGridViewTextBoxColumn()
+        totalPlotsColumn.HeaderText = "Total Plots"
+        totalPlotsColumn.Name = "TotalPlots"
+        SourcePlotDataGrid.Columns.Add(totalPlotsColumn)
+        Debug.WriteLine("Added column: TotalPlots")
+
+        ' Add the "Remove" button column
+        Dim removeButtonColumn As New DataGridViewButtonColumn()
+        removeButtonColumn.Text = "Delete"
+        removeButtonColumn.UseColumnTextForButtonValue = True
+        removeButtonColumn.Name = "RemoveButton"
+        SourcePlotDataGrid.Columns.Add(removeButtonColumn)
+    End Sub
+
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
         DebugModeToolStripMenuItem.Checked = Not DebugModeToolStripMenuItem.Checked
         DebugPM.Visible = DebugModeToolStripMenuItem.Checked
@@ -376,13 +431,13 @@ Public Class Form1
         DebugMaxParalleCopies.Visible = DebugModeToolStripMenuItem.Checked
     End Sub
 
-    Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMCPURadio.CheckedChanged
+    Private Sub PMCPURadio_CheckedChanged(sender As Object, e As EventArgs)
         If PMCPURadio.Checked Then
             UpdateProcessingMode("CPU")
         End If
     End Sub
 
-    Private Sub PMGPURadio_CheckedChanged(sender As Object, e As EventArgs) Handles PMGPURadio.CheckedChanged
+    Private Sub PMGPURadio_CheckedChanged(sender As Object, e As EventArgs)
         If PMGPURadio.Checked Then
             UpdateProcessingMode("GPU")
         End If
@@ -437,11 +492,11 @@ Public Class Form1
         Debug.WriteLine("-PM " & arguments("-PM"))
     End Sub
 
-    Private Sub DebugPM_Click(sender As Object, e As EventArgs) Handles DebugPM.Click
+    Private Sub DebugPM_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub KValueCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles KValueCombo.SelectedIndexChanged
+    Private Sub KValueCombo_SelectedIndexChanged(sender As Object, e As EventArgs)
         arguments("-k") = KValueCombo.SelectedItem.ToString()
         If arguments.ContainsKey("-k") Then
             DebugKValue.Text = "-k " & arguments("-k").ToString()
@@ -508,11 +563,11 @@ Public Class Form1
         Debug.WriteLine($"{arguments("-pl")}")
     End Sub
 
-    Private Sub DebugKValue_Click(sender As Object, e As EventArgs) Handles DebugKValue.Click
+    Private Sub DebugKValue_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub CLCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CLCombo.SelectedIndexChanged
+    Private Sub CLCombo_SelectedIndexChanged(sender As Object, e As EventArgs)
         If CLCombo.SelectedIndex >= 0 Then
             arguments("-C") = CLCombo.SelectedItem.ToString()
         Else
@@ -526,11 +581,11 @@ Public Class Form1
         Debug.WriteLine("-C " & arguments("-C"))
     End Sub
 
-    Private Sub DebugCL_Click(sender As Object, e As EventArgs) Handles DebugCL.Click
+    Private Sub DebugCL_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub CPortCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CPortCombo.SelectedIndexChanged
+    Private Sub CPortCombo_SelectedIndexChanged(sender As Object, e As EventArgs)
         If CPortCombo.SelectedItem.ToString() = "Other" Then
             CPortText.Enabled = True
             If Not String.IsNullOrEmpty(CPortText.Text) Then
@@ -550,7 +605,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub CPortText_TextChanged(sender As Object, e As EventArgs) Handles CPortText.TextChanged
+    Private Sub CPortText_TextChanged(sender As Object, e As EventArgs)
         If CPortCombo.SelectedItem IsNot Nothing AndAlso CPortCombo.SelectedItem.ToString() = "Other" AndAlso Not String.IsNullOrEmpty(CPortText.Text) Then
             Dim portValue As Integer
             If Integer.TryParse(CPortText.Text, portValue) Then
@@ -571,11 +626,11 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugCPort_Click(sender As Object, e As EventArgs) Handles DebugCPort.Click
+    Private Sub DebugCPort_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub NPlotsText_TextChanged(sender As Object, e As EventArgs) Handles NPlotsText.TextChanged
+    Private Sub NPlotsText_TextChanged(sender As Object, e As EventArgs)
         Dim nValue As Integer
         If NPlotsCheck.Checked Then
             nValue = -1
@@ -594,7 +649,7 @@ Public Class Form1
         Debug.WriteLine("-n " & arguments("-n"))
     End Sub
 
-    Private Sub NPlotsCheck_CheckedChanged(sender As Object, e As EventArgs) Handles NPlotsCheck.CheckedChanged
+    Private Sub NPlotsCheck_CheckedChanged(sender As Object, e As EventArgs)
         NPlotsText.Enabled = Not NPlotsCheck.Checked
         Dim nValue As Integer
         If NPlotsCheck.Checked Then
@@ -616,11 +671,11 @@ Public Class Form1
         Debug.WriteLine("-n " & arguments("-n"))
     End Sub
 
-    Private Sub DebugNPlots_Click(sender As Object, e As EventArgs) Handles DebugNPlots.Click
+    Private Sub DebugNPlots_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub TempDir1Text_TextChanged(sender As Object, e As EventArgs) Handles TempDir1Text.TextChanged
+    Private Sub TempDir1Text_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim path As String = textbox.Text
         If Not String.IsNullOrEmpty(path) AndAlso path.EndsWith("\") Then
@@ -636,7 +691,7 @@ Public Class Form1
         Debug.WriteLine("-t " & arguments("-t"))
     End Sub
 
-    Private Sub TempDir1Button_Click(sender As Object, e As EventArgs) Handles TempDir1Button.Click
+    Private Sub TempDir1Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
             If fbd.ShowDialog = DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
@@ -652,11 +707,11 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub DebugTempDir1_Click(sender As Object, e As EventArgs) Handles DebugTempDir1.Click
+    Private Sub DebugTempDir1_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub TempDir2Text_TextChanged(sender As Object, e As EventArgs) Handles TempDir2Text.TextChanged
+    Private Sub TempDir2Text_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim path As String = textbox.Text
         If Not String.IsNullOrEmpty(path) AndAlso path.EndsWith("\") Then
@@ -672,7 +727,7 @@ Public Class Form1
         Debug.WriteLine("-2 " & arguments("-2"))
     End Sub
 
-    Private Sub TempDir2Button_Click(sender As Object, e As EventArgs) Handles TempDir2Button.Click
+    Private Sub TempDir2Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
             If fbd.ShowDialog = DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
@@ -688,7 +743,7 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub TempDir2Check_CheckedChanged(sender As Object, e As EventArgs) Handles TempDir2Check.CheckedChanged
+    Private Sub TempDir2Check_CheckedChanged(sender As Object, e As EventArgs)
         Dim checkbox As CheckBox = DirectCast(sender, CheckBox)
 
         If checkbox.Checked Then
@@ -708,11 +763,11 @@ Public Class Form1
         Debug.WriteLine("-2 " & arguments("-2"))
     End Sub
 
-    Private Sub DebugTempDir2_Click(sender As Object, e As EventArgs) Handles DebugTempDir2.Click
+    Private Sub DebugTempDir2_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub TempDir3Text_TextChanged(sender As Object, e As EventArgs) Handles TempDir3Text.TextChanged
+    Private Sub TempDir3Text_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim path As String = textbox.Text
         If Not String.IsNullOrEmpty(path) AndAlso path.EndsWith("\") Then
@@ -728,7 +783,7 @@ Public Class Form1
         Debug.WriteLine("-3 " & arguments("-3"))
     End Sub
 
-    Private Sub TempDir3Button_Click(sender As Object, e As EventArgs) Handles TempDir3Button.Click
+    Private Sub TempDir3Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
             If fbd.ShowDialog = DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
@@ -744,7 +799,7 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub TempDir3Check_CheckedChanged(sender As Object, e As EventArgs) Handles TempDir3Check.CheckedChanged
+    Private Sub TempDir3Check_CheckedChanged(sender As Object, e As EventArgs)
         Dim checkbox As CheckBox = DirectCast(sender, CheckBox)
 
         If checkbox.Checked Then
@@ -764,11 +819,11 @@ Public Class Form1
         Debug.WriteLine("-3 " & arguments("-3"))
     End Sub
 
-    Private Sub DebugTempDir3_Click(sender As Object, e As EventArgs) Handles DebugTempDir3.Click
+    Private Sub DebugTempDir3_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub FinalDirText_TextChanged(sender As Object, e As EventArgs) Handles FinalDirText.TextChanged
+    Private Sub FinalDirText_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim path As String = textbox.Text
         If Not String.IsNullOrEmpty(path) AndAlso path.EndsWith("\") Then
@@ -784,7 +839,7 @@ Public Class Form1
         Debug.WriteLine("-d " & arguments("-d"))
     End Sub
 
-    Private Sub FinalDirButton_Click(sender As Object, e As EventArgs) Handles FinalDirButton.Click
+    Private Sub FinalDirButton_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
             If fbd.ShowDialog = DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
@@ -800,11 +855,11 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub DebugFinalDir_Click(sender As Object, e As EventArgs) Handles DebugFinalDir.Click
+    Private Sub DebugFinalDir_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub PoolKeyText_TextChanged(sender As Object, e As EventArgs) Handles PoolKeyText.TextChanged
+    Private Sub PoolKeyText_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim addy As String = textbox.Text
         If Not String.IsNullOrEmpty(addy) Then
@@ -821,7 +876,7 @@ Public Class Form1
         Debug.WriteLine("-p " & arguments("-p"))
     End Sub
 
-    Private Sub PoolKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles PoolKeyRadio.CheckedChanged
+    Private Sub PoolKeyRadio_CheckedChanged(sender As Object, e As EventArgs)
         If PoolKeyRadio.Checked Then
             ContractKeyText.Enabled = False
             ContractKeyRadio.Checked = False
@@ -831,7 +886,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub ContractKeyText_TextChanged(sender As Object, e As EventArgs) Handles ContractKeyText.TextChanged
+    Private Sub ContractKeyText_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim addy As String = textbox.Text
         If Not String.IsNullOrEmpty(addy) Then
@@ -848,7 +903,7 @@ Public Class Form1
         Debug.WriteLine("-c " & arguments("-c"))
     End Sub
 
-    Private Sub FarmerKeyText_TextChanged(sender As Object, e As EventArgs) Handles FarmerKeyText.TextChanged
+    Private Sub FarmerKeyText_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim addy As String = textbox.Text
         If Not String.IsNullOrEmpty(addy) Then
@@ -865,7 +920,7 @@ Public Class Form1
         Debug.WriteLine("-f " & arguments("-f"))
     End Sub
 
-    Private Sub ContractKeyRadio_CheckedChanged(sender As Object, e As EventArgs) Handles ContractKeyRadio.CheckedChanged
+    Private Sub ContractKeyRadio_CheckedChanged(sender As Object, e As EventArgs)
         If ContractKeyRadio.Checked Then
             PoolKeyText.Enabled = False
             PoolKeyRadio.Checked = False
@@ -875,7 +930,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub NumThreadsCombo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles NumThreadsCombo.SelectedIndexChanged
+    Private Sub NumThreadsCombo_SelectedIndexChanged(sender As Object, e As EventArgs)
         arguments("-r") = NumThreadsCombo.SelectedItem.ToString()
         If arguments.ContainsKey("-r") Then
             DebugNumThreads.Text = "-r " & arguments("-r").ToString()
@@ -885,11 +940,11 @@ Public Class Form1
         Debug.WriteLine("-r " & arguments("-r"))
     End Sub
 
-    Private Sub DebugNumThreads_Click(sender As Object, e As EventArgs) Handles DebugNumThreads.Click
+    Private Sub DebugNumThreads_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub BucketsText_TextChanged(sender As Object, e As EventArgs) Handles BucketsText.TextChanged
+    Private Sub BucketsText_TextChanged(sender As Object, e As EventArgs)
         arguments("-u") = BucketsText.Text.ToString()
         If arguments.ContainsKey("-u") Then
             DebugBuckets.Text = "-u " & arguments("-u").ToString()
@@ -900,11 +955,11 @@ Public Class Form1
         BucketsP23Text.Text = BucketsText.Text
     End Sub
 
-    Private Sub DebugBuckets_Click(sender As Object, e As EventArgs) Handles DebugBuckets.Click
+    Private Sub DebugBuckets_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub BucketsP23Text_TextChanged(sender As Object, e As EventArgs) Handles BucketsP23Text.TextChanged
+    Private Sub BucketsP23Text_TextChanged(sender As Object, e As EventArgs)
         arguments("-v") = BucketsP23Text.Text.ToString()
         If arguments.ContainsKey("-v") Then
             DebugBucketsP23.Text = "-v " & arguments("-v").ToString()
@@ -914,11 +969,11 @@ Public Class Form1
         Debug.WriteLine("-v " & arguments("-v"))
     End Sub
 
-    Private Sub DebugBucketsP23_Click(sender As Object, e As EventArgs) Handles DebugBucketsP23.Click
+    Private Sub DebugBucketsP23_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub CudaDeviceText_TextChanged(sender As Object, e As EventArgs) Handles CudaDeviceText.TextChanged
+    Private Sub CudaDeviceText_TextChanged(sender As Object, e As EventArgs)
         Dim previousText As String = CudaDeviceText.Text
         For Each c As Char In CudaDeviceText.Text
             If Not Char.IsDigit(c) AndAlso c <> "," Then
@@ -935,7 +990,7 @@ Public Class Form1
         Debug.WriteLine("-g " & arguments("-g"))
     End Sub
 
-    Private Sub NumCudaText_TextChanged(sender As Object, e As EventArgs) Handles NumCudaText.TextChanged
+    Private Sub NumCudaText_TextChanged(sender As Object, e As EventArgs)
         Dim previousText As String = NumCudaText.Text
         For Each c As Char In NumCudaText.Text
             If Not Char.IsDigit(c) Then
@@ -952,11 +1007,11 @@ Public Class Form1
         Debug.WriteLine("-r " & arguments("-r2"))
     End Sub
 
-    Private Sub DebugNumCuda_Click(sender As Object, e As EventArgs) Handles DebugNumCuda.Click
+    Private Sub DebugNumCuda_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub StreamsText_TextChanged(sender As Object, e As EventArgs) Handles StreamsText.TextChanged
+    Private Sub StreamsText_TextChanged(sender As Object, e As EventArgs)
         If StreamsText.Text = "" Then
             arguments("-S") = StreamsText.Text.ToString()
         ElseIf Not Integer.TryParse(StreamsText.Text, Nothing) Then
@@ -975,11 +1030,11 @@ Public Class Form1
         Debug.WriteLine("-S " & arguments("-S"))
     End Sub
 
-    Private Sub DebugStreams_Click(sender As Object, e As EventArgs) Handles DebugStreams.Click
+    Private Sub DebugStreams_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub MaxMemText_TextChanged(sender As Object, e As EventArgs) Handles MaxMemText.TextChanged
+    Private Sub MaxMemText_TextChanged(sender As Object, e As EventArgs)
         If MaxMemText.Text = "" Then
             arguments("-M") = MaxMemText.Text.ToString()
         Else
@@ -1000,7 +1055,7 @@ Public Class Form1
         Debug.WriteLine("-M " & arguments("-M"))
     End Sub
 
-    Private Sub DebugMaxMem_Click(sender As Object, e As EventArgs) Handles DebugMaxMem.Click
+    Private Sub DebugMaxMem_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -1021,11 +1076,11 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugPlotterPath_Click(sender As Object, e As EventArgs) Handles DebugPlotterPath.Click
+    Private Sub DebugPlotterPath_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugPlotter_Click(sender As Object, e As EventArgs) Handles DebugPlotter.Click
+    Private Sub DebugPlotter_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -1313,7 +1368,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub PlotButton_Click(sender As Object, e As EventArgs) Handles PlotButton.Click
+    Private Sub PlotButton_Click(sender As Object, e As EventArgs)
         StartPlotProcess()
         PlotControls.Enabled = True
         DebugLongestPlotTime.Text = ""
@@ -1367,7 +1422,7 @@ Public Class Form1
         DebugPlotter.Text = ""
     End Sub
 
-    Private Sub AdvancedOptionsCheck_CheckedChanged(sender As Object, e As EventArgs) Handles AdvancedOptionsCheck.CheckedChanged
+    Private Sub AdvancedOptionsCheck_CheckedChanged(sender As Object, e As EventArgs)
         Dim controls() As Control = {RemoteCopyPortLabel, RemoteCopyPortText, DebugRemoteCopyPort, WaitforCopyCheck, DebugWaitforCopy, UniquePlotCheck, DebugUniquePlot, ThreadMultiplierP2Label, ThreadMultiplierP2Text, DebugThreadMultiplierP2, DirectInFinalDirCheck, DebugDirectInFinalDir, AlternateTempDirCheck, DebugAlternateTempDir, StageDirectoryLabel, StageDirectoryText, StageDirectoryButton, DebugStageDirectory, MaxPlotstoCacheinTempDirLabel, MaxPlotsCacheTempDirText, DebugMaxPlotsCacheTempDir, MaxParallelCopiesCheck, DebugMaxParalleCopies}
         For Each control As Control In controls
             control.Enabled = AdvancedOptionsCheck.Checked
@@ -1396,7 +1451,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub RemoteCopyPortText_TextChanged(sender As Object, e As EventArgs) Handles RemoteCopyPortText.TextChanged
+    Private Sub RemoteCopyPortText_TextChanged(sender As Object, e As EventArgs)
         If Not String.IsNullOrEmpty(RemoteCopyPortText.Text) Then
             Dim portValue As Integer
             If Integer.TryParse(RemoteCopyPortText.Text, portValue) Then
@@ -1415,11 +1470,11 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugRemoteCopyPort_Click(sender As Object, e As EventArgs) Handles DebugRemoteCopyPort.Click
+    Private Sub DebugRemoteCopyPort_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub WaitforCopyCheck_CheckedChanged(sender As Object, e As EventArgs) Handles WaitforCopyCheck.CheckedChanged
+    Private Sub WaitforCopyCheck_CheckedChanged(sender As Object, e As EventArgs)
         If WaitforCopyCheck.Checked = True Then arguments("-w") = "-w"
         If arguments.ContainsKey("-w") Then
             DebugWaitforCopy.Text = arguments("-w")
@@ -1429,7 +1484,7 @@ Public Class Form1
         Debug.WriteLine(arguments("-w"))
     End Sub
 
-    Private Sub UniquePlotCheck_CheckedChanged(sender As Object, e As EventArgs) Handles UniquePlotCheck.CheckedChanged
+    Private Sub UniquePlotCheck_CheckedChanged(sender As Object, e As EventArgs)
         If WaitforCopyCheck.Checked = True Then arguments("-Z") = "-Z"
         If arguments.ContainsKey("-Z") Then
             DebugUniquePlot.Text = arguments("-Z")
@@ -1439,11 +1494,11 @@ Public Class Form1
         Debug.WriteLine(arguments("-Z"))
     End Sub
 
-    Private Sub DebugUniquePlot_Click(sender As Object, e As EventArgs) Handles DebugUniquePlot.Click
+    Private Sub DebugUniquePlot_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub ThreadMultiplierP2Text_TextChanged(sender As Object, e As EventArgs) Handles ThreadMultiplierP2Text.TextChanged
+    Private Sub ThreadMultiplierP2Text_TextChanged(sender As Object, e As EventArgs)
         If Not String.IsNullOrEmpty(ThreadMultiplierP2Text.Text) Then
             Dim multiplierValue As Integer
             If Integer.TryParse(ThreadMultiplierP2Text.Text, multiplierValue) Then
@@ -1462,11 +1517,11 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugThreadMultiplierP2_Click(sender As Object, e As EventArgs) Handles DebugThreadMultiplierP2.Click
+    Private Sub DebugThreadMultiplierP2_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub StageDirectoryText_TextChanged(sender As Object, e As EventArgs) Handles StageDirectoryText.TextChanged
+    Private Sub StageDirectoryText_TextChanged(sender As Object, e As EventArgs)
         Dim textbox As TextBox = DirectCast(sender, TextBox)
         Dim path As String = textbox.Text
         If Not String.IsNullOrEmpty(path) AndAlso path.EndsWith("\") Then
@@ -1482,7 +1537,7 @@ Public Class Form1
         Debug.WriteLine("-s " & arguments("-s"))
     End Sub
 
-    Private Sub StageDirectoryButton_Click(sender As Object, e As EventArgs) Handles StageDirectoryButton.Click
+    Private Sub StageDirectoryButton_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
             If fbd.ShowDialog = DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
@@ -1498,11 +1553,11 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub DebugStageDirectory_Click(sender As Object, e As EventArgs) Handles DebugStageDirectory.Click
+    Private Sub DebugStageDirectory_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DirectInFinalDirCheck_CheckedChanged(sender As Object, e As EventArgs) Handles DirectInFinalDirCheck.CheckedChanged
+    Private Sub DirectInFinalDirCheck_CheckedChanged(sender As Object, e As EventArgs)
         If DirectInFinalDirCheck.Checked = True Then arguments("-D") = "-D"
         If arguments.ContainsKey("-D") Then
             DebugDirectInFinalDir.Text = arguments("-D")
@@ -1512,11 +1567,11 @@ Public Class Form1
         Debug.WriteLine(arguments("-D"))
     End Sub
 
-    Private Sub DebugDirectInFinalDir_Click(sender As Object, e As EventArgs) Handles DebugDirectInFinalDir.Click
+    Private Sub DebugDirectInFinalDir_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub AlternateTempDirCheck_CheckedChanged(sender As Object, e As EventArgs) Handles AlternateTempDirCheck.CheckedChanged
+    Private Sub AlternateTempDirCheck_CheckedChanged(sender As Object, e As EventArgs)
         If AlternateTempDirCheck.Checked = True Then arguments("-G") = "-G"
         If arguments.ContainsKey("-G") Then
             DebugAlternateTempDir.Text = arguments("-G")
@@ -1526,11 +1581,11 @@ Public Class Form1
         Debug.WriteLine(arguments("-G"))
     End Sub
 
-    Private Sub DebugAlternateTempDir_Click(sender As Object, e As EventArgs) Handles DebugAlternateTempDir.Click
+    Private Sub DebugAlternateTempDir_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub MaxPlotsCacheTempDirText_TextChanged(sender As Object, e As EventArgs) Handles MaxPlotsCacheTempDirText.TextChanged
+    Private Sub MaxPlotsCacheTempDirText_TextChanged(sender As Object, e As EventArgs)
         If Not String.IsNullOrEmpty(MaxPlotsCacheTempDirText.Text) Then
             Dim cacheValue As Integer
             If Integer.TryParse(MaxPlotsCacheTempDirText.Text, cacheValue) Then
@@ -1549,11 +1604,11 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugMaxPlotsCacheTempDir_Click(sender As Object, e As EventArgs) Handles DebugMaxPlotsCacheTempDir.Click
+    Private Sub DebugMaxPlotsCacheTempDir_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub MaxParallelCopiesCheck_CheckedChanged(sender As Object, e As EventArgs) Handles MaxParallelCopiesCheck.CheckedChanged
+    Private Sub MaxParallelCopiesCheck_CheckedChanged(sender As Object, e As EventArgs)
         If MaxParallelCopiesCheck.Checked = True Then arguments("-W") = "-W"
         If arguments.ContainsKey("-W") Then
             DebugMaxParalleCopies.Text = arguments("-W")
@@ -1563,11 +1618,11 @@ Public Class Form1
         Debug.WriteLine(arguments("-W"))
     End Sub
 
-    Private Sub DebugMaxParalleCopies_Click(sender As Object, e As EventArgs) Handles DebugMaxParalleCopies.Click
+    Private Sub DebugMaxParalleCopies_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub ConsolePrintOutTextBox_TextChanged(sender As Object, e As EventArgs) Handles ConsolePrintOutTextBox.TextChanged
+    Private Sub ConsolePrintOutTextBox_TextChanged(sender As Object, e As EventArgs)
         ' Scroll the TextBox control to the bottom to show the latest output
         ConsolePrintOutTextBox.SelectionStart = ConsolePrintOutTextBox.Text.Length
         ConsolePrintOutTextBox.ScrollToCaret()
@@ -1581,7 +1636,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub StopPlotButton_Click(sender As Object, e As EventArgs) Handles StopPlotButton.Click
+    Private Sub StopPlotButton_Click(sender As Object, e As EventArgs)
         If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
             ' Kill the process
             cmdProcess.Kill()
@@ -1621,7 +1676,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub PauseButton_Click(sender As Object, e As EventArgs) Handles PauseButton.Click
+    Private Sub PauseButton_Click(sender As Object, e As EventArgs)
         If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
             ' Suspend the main thread of the process
             Dim hThread As IntPtr = OpenThread(THREAD_ALL_ACCESS, False, cmdProcess.Threads(0).Id)
@@ -1636,7 +1691,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub ResumeButton_Click(sender As Object, e As EventArgs) Handles ResumeButton.Click
+    Private Sub ResumeButton_Click(sender As Object, e As EventArgs)
         If cmdProcess IsNot Nothing AndAlso Not cmdProcess.HasExited Then
             ' Resume the main thread of the process
             Dim hThread As IntPtr = OpenThread(THREAD_ALL_ACCESS, False, cmdProcess.Threads(0).Id)
@@ -1651,7 +1706,7 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub PlotProgressBar_Click(sender As Object, e As EventArgs) Handles PlotProgressBar.Click
+    Private Sub PlotProgressBar_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -1959,23 +2014,23 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub DebugNumPlotsCreated_Click(sender As Object, e As EventArgs) Handles DebugNumPlotsCreated.Click
+    Private Sub DebugNumPlotsCreated_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugLongestPlotTime_Click(sender As Object, e As EventArgs) Handles DebugLongestPlotTime.Click
+    Private Sub DebugLongestPlotTime_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugShortestPlotTime_Click(sender As Object, e As EventArgs) Handles DebugShortestPlotTime.Click
+    Private Sub DebugShortestPlotTime_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugAveragePlotTime_Click(sender As Object, e As EventArgs) Handles DebugAveragePlotTime.Click
+    Private Sub DebugAveragePlotTime_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugPlotterGUIUpdater_Click(sender As Object, e As EventArgs) Handles DebugPlotterGUIUpdater.Click
+    Private Sub DebugPlotterGUIUpdater_Click(sender As Object, e As EventArgs)
         UpdateCheckToolStripMenuItem_Click(sender, e)
     End Sub
 
@@ -1983,11 +2038,243 @@ Public Class Form1
 
     End Sub
 
-    Private Sub DebugEstPlotsPerHour_Click(sender As Object, e As EventArgs) Handles DebugEstPlotsPerHour.Click
+    Private Sub DebugEstPlotsPerHour_Click(sender As Object, e As EventArgs)
 
     End Sub
 
-    Private Sub DebugLastPlotTime_Click(sender As Object, e As EventArgs) Handles DebugLastPlotTime.Click
+    Private Sub DebugLastPlotTime_Click(sender As Object, e As EventArgs)
 
+    End Sub
+
+    Private Sub SourcePlotText_TextChanged(sender As Object, e As EventArgs) Handles SourcePlotText.TextChanged
+        ' Do nothing here
+    End Sub
+
+    Private Sub AddSourceButton_Click(sender As Object, e As EventArgs) Handles AddSourceButton.Click
+        Dim sourceDirectory As String = SourcePlotText.Text
+        Dim kValues() As String = {"K30", "K31", "K32", "K33", "K34"}
+        Dim kCounts(kValues.Length - 1) As Integer
+        Dim totalPlots As Object = 0 ' Set the data type to Object to handle string values
+        Dim percentFreeSpace As Integer = GetPercentFreeSpace(sourceDirectory)
+        Dim availableSpaceInGB As Double = GetAvailableSpaceInGB(sourceDirectory)
+
+        For Each kValue As String In kValues
+            Dim files() As String = Directory.GetFiles(sourceDirectory, "plot-" & kValue & "-*")
+            kCounts(Array.IndexOf(kValues, kValue)) = files.Length
+            totalPlots += files.Length
+        Next
+
+        If totalPlots = 0 Then
+            totalPlots = "No Plots"
+        End If
+
+        Dim rowIndex As Integer = SourcePlotDataGrid.Rows.Add()
+        Dim row As DataGridViewRow = SourcePlotDataGrid.Rows(rowIndex)
+        row.Cells("SourceDirectory").Value = sourceDirectory
+        row.Cells("PercentAvailableSpace").Value = percentFreeSpace
+        row.Cells("GBAvailableSpace").Value = availableSpaceInGB
+
+        For i As Integer = 0 To kValues.Length - 1
+            row.Cells(kValues(i)).Value = kCounts(i)
+        Next
+
+        ' Set the cell data type to DataGridViewTextBoxCell
+        Dim totalPlotsCell As New DataGridViewTextBoxCell()
+        totalPlotsCell.Value = totalPlots
+        row.Cells("TotalPlots") = totalPlotsCell
+    End Sub
+
+    Private Sub CheckForKPlots(sourceDirectory As String)
+        Debug.WriteLine("Checking for K plots in " & sourceDirectory)
+
+        ' Retrieve all files in the source directory
+        Dim allFiles = IO.Directory.GetFiles(sourceDirectory)
+        Debug.WriteLine("Found " & allFiles.Length & " files in directory " & sourceDirectory)
+
+        For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
+            If r.Cells("SourceDirectory").Value IsNot Nothing AndAlso r.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
+                Debug.WriteLine("Found matching directory in grid")
+
+                Dim totalPlots As Integer = 0
+                For Each kSize In Enumerable.Range(30, 5)
+                    Dim columnHeaderText As String = "K" & kSize.ToString()
+                    Dim kSizeFiles = allFiles.Where(Function(f) f.Contains("plot-k" & kSize.ToString() & "-")).ToArray()
+
+                    If kSizeFiles.Length > 0 Then
+                        r.Cells(columnHeaderText).Value = kSizeFiles.Length
+                        Debug.WriteLine("Set value of column " & columnHeaderText & " to " & kSizeFiles.Length)
+                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = True
+                        totalPlots += kSizeFiles.Length
+                    Else
+                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = False
+                    End If
+                Next
+
+                ' Set the value of the TotalPlots column
+                Dim totalPlotsCell As DataGridViewCell = r.Cells(SourcePlotDataGrid.Columns("TotalPlots").Index)
+                totalPlotsCell.Value = totalPlots
+                If totalPlots = 0 Then
+                    totalPlotsCell.Value = "No Plots"
+                End If
+
+                Exit Sub
+            End If
+        Next
+
+        Debug.WriteLine("Directory not found in grid.")
+    End Sub
+
+    Private Sub AddNoPlotsToTotalPlotsColumn(newRow As DataGridViewRow)
+        Dim totalPlots As Integer = 0
+
+        ' Loop through all K columns and add up the total number of plots
+        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
+            If col.Name.StartsWith("K") AndAlso col.Visible Then
+                For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
+                    If r.Cells(col.Name).Value IsNot Nothing Then
+                        totalPlots += Integer.Parse(r.Cells(col.Name).Value.ToString())
+                    End If
+                Next
+            End If
+        Next
+
+        ' Set "No Plots" in the TotalPlots column if no plots are found
+        Dim totalPlotsColumnIndex As Integer? = SourcePlotDataGrid.Columns.Cast(Of DataGridViewColumn)().FirstOrDefault(Function(col) col.Name = "TotalPlots")?.Index
+
+        If totalPlotsColumnIndex IsNot Nothing AndAlso totalPlotsColumnIndex >= 0 AndAlso totalPlotsColumnIndex < newRow.Cells.Count Then
+            If totalPlots = 0 Then
+                Dim totalPlotsCell As DataGridViewCell = newRow.Cells(totalPlotsColumnIndex.Value)
+                totalPlotsCell.Value = "No Plots"
+                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
+            Else
+                ' Set the total number of plots in the TotalPlots column
+                newRow.Cells(totalPlotsColumnIndex.Value).Value = totalPlots
+                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
+            End If
+        End If
+    End Sub
+
+    Private Sub AddRowToGrid(newRow As DataGridViewRow)
+        ' Add the row to the grid
+        SourcePlotDataGrid.Rows.Add(newRow)
+
+        ' Resize the columns to fit the contents
+        SourcePlotDataGrid.AutoResizeColumns()
+
+        ' Debug: Print the contents of the row that was added
+        Debug.WriteLine("Added row to grid:")
+        For Each cell As DataGridViewCell In newRow.Cells
+            If cell.Value IsNot Nothing Then
+                Debug.Write(cell.Value.ToString() & vbTab)
+            End If
+        Next
+        Debug.WriteLine("")
+
+        ' Debug: Print the width of each column
+        Debug.WriteLine("Column Widths:")
+        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
+            Debug.WriteLine(col.Name & ": " & col.Width)
+        Next
+    End Sub
+
+    Private Sub ResizeColumnsToFitContents()
+        ' Resize the columns to fit the contents
+        SourcePlotDataGrid.AutoResizeColumns()
+
+        ' Debug: Display the width of each column
+        Debug.WriteLine("Column Widths:")
+        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
+            Debug.WriteLine(col.Name & ": " & col.Width)
+        Next
+    End Sub
+
+    Private Sub DebugPrintVisibleColumns()
+        ' Print out the names of all visible K columns
+        Debug.WriteLine("Visible K columns:")
+        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
+            If col.Name.StartsWith("K") AndAlso col.Name.Length > 1 AndAlso col.Visible Then
+                Debug.WriteLine(col.Name)
+            End If
+        Next
+
+        ' Print out whether TotalPlots column is visible
+        Debug.WriteLine("TotalPlots column visibility: " & SourcePlotDataGrid.Columns("TotalPlots").Visible.ToString())
+    End Sub
+
+    Private Function CreateNewRow(sourceDirectory As String) As DataGridViewRow
+        ' Create a new DataGridViewRow for the source directory
+        Dim newRow As New DataGridViewRow()
+
+        ' Create a new DataGridViewTextBoxCell for the "SourceDirectory" column
+        Dim sourceDirectoryCell As New DataGridViewTextBoxCell()
+        sourceDirectoryCell.Value = sourceDirectory
+        newRow.Cells.Add(sourceDirectoryCell)
+
+        ' Create a new DataGridViewTextBoxCell for the "PercentAvailableSpace" column
+        Dim percentAvailableSpaceCell As New DataGridViewTextBoxCell()
+        newRow.Cells.Add(percentAvailableSpaceCell)
+
+        ' Create a new DataGridViewTextBoxCell for the "GBAvailableSpace" column
+        Dim gbAvailableSpaceCell As New DataGridViewTextBoxCell()
+        newRow.Cells.Add(gbAvailableSpaceCell)
+
+        ' Create a new DataGridViewButtonCell for the "RemoveButton" column
+        Dim removeButtonCell As New DataGridViewButtonCell()
+        removeButtonCell.Value = "Delete"
+        newRow.Cells.Add(removeButtonCell)
+
+        Return newRow
+    End Function
+
+    Private Function DirectoryAlreadyExistsInGrid(sourceDirectory As String) As Boolean
+        ' Iterate through each row in the DataGridView
+        For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
+            ' Check if the SourceDirectory cell in the row matches the sourceDirectory string
+            If row.Cells("SourceDirectory").Value IsNot Nothing AndAlso row.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
+                ' If a match is found, return true
+                Return True
+            End If
+        Next
+
+        ' If no match is found, return false
+        Return False
+    End Function
+
+    Private Function GetPercentFreeSpace(directory As String) As Integer
+        Dim driveInfo As New System.IO.DriveInfo(directory)
+        Dim percentFreeSpace As Integer = (driveInfo.AvailableFreeSpace / driveInfo.TotalSize) * 100
+        Return percentFreeSpace
+    End Function
+
+    Private Function GetAvailableSpaceInGB(directory As String) As Double
+        Dim driveInfo As New System.IO.DriveInfo(directory)
+        Dim availableSpaceInGB As Double = driveInfo.AvailableFreeSpace / (1024 * 1024 * 1024)
+        Return Math.Round(availableSpaceInGB, 2)
+    End Function
+
+    ' Event handler for when the Remove button is clicked
+    Private Sub SourcePlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles SourcePlotDataGrid.CellContentClick
+        If e.ColumnIndex = SourcePlotDataGrid.Columns.Count - 1 AndAlso e.RowIndex >= 0 Then
+            ' Remove the row when the remove button is clicked
+            SourcePlotDataGrid.Rows.RemoveAt(e.RowIndex)
+        End If
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        ' Update the grid every 5 minutes
+
+    End Sub
+
+    Private Sub SourcePlotButton_Click(sender As Object, e As EventArgs) Handles SourcePlotButton.Click
+        Using ofd As New OpenFileDialog()
+            ofd.ValidateNames = False
+            ofd.CheckFileExists = False
+            ofd.CheckPathExists = True
+            ofd.FileName = "Folder Selection."
+            If ofd.ShowDialog() = DialogResult.OK Then
+                Dim folderPath = Path.GetDirectoryName(ofd.FileName)
+                SourcePlotText.Text = folderPath
+            End If
+        End Using
     End Sub
 End Class
