@@ -2100,162 +2100,6 @@ Public Class Form1
         Next
     End Sub
 
-    Private Sub CheckForKPlots(sourceDirectory As String)
-        Debug.WriteLine("Checking for K plots in " & sourceDirectory)
-
-        ' Retrieve all files in the source directory
-        Dim allFiles = IO.Directory.GetFiles(sourceDirectory)
-        Debug.WriteLine("Found " & allFiles.Length & " files in directory " & sourceDirectory)
-
-        For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
-            If r.Cells("SourceDirectory").Value IsNot Nothing AndAlso r.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
-                Debug.WriteLine("Found matching directory in grid")
-
-                Dim totalPlots As Integer = 0
-                For Each kSize In Enumerable.Range(30, 5)
-                    Dim columnHeaderText As String = "K" & kSize.ToString()
-                    Dim kSizeFiles = allFiles.Where(Function(f) f.Contains("plot-k" & kSize.ToString() & "-")).ToArray()
-
-                    If kSizeFiles.Length > 0 Then
-                        r.Cells(columnHeaderText).Value = kSizeFiles.Length
-                        Debug.WriteLine("Set value of column " & columnHeaderText & " to " & kSizeFiles.Length)
-                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = True
-                        totalPlots += kSizeFiles.Length
-                    Else
-                        SourcePlotDataGrid.Columns(columnHeaderText).Visible = False
-                    End If
-                Next
-
-                ' Set the value of the TotalPlots column
-                Dim totalPlotsCell As DataGridViewCell = r.Cells(SourcePlotDataGrid.Columns("TotalPlots").Index)
-                totalPlotsCell.Value = totalPlots
-                If totalPlots = 0 Then
-                    totalPlotsCell.Value = "No Plots"
-                End If
-
-                Exit Sub
-            End If
-        Next
-
-        Debug.WriteLine("Directory not found in grid.")
-    End Sub
-
-    Private Sub AddNoPlotsToTotalPlotsColumn(newRow As DataGridViewRow)
-        Dim totalPlots As Integer = 0
-
-        ' Loop through all K columns and add up the total number of plots
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            If col.Name.StartsWith("K") AndAlso col.Visible Then
-                For Each r As DataGridViewRow In SourcePlotDataGrid.Rows
-                    If r.Cells(col.Name).Value IsNot Nothing Then
-                        totalPlots += Integer.Parse(r.Cells(col.Name).Value.ToString())
-                    End If
-                Next
-            End If
-        Next
-
-        ' Set "No Plots" in the TotalPlots column if no plots are found
-        Dim totalPlotsColumnIndex As Integer? = SourcePlotDataGrid.Columns.Cast(Of DataGridViewColumn)().FirstOrDefault(Function(col) col.Name = "TotalPlots")?.Index
-
-        If totalPlotsColumnIndex IsNot Nothing AndAlso totalPlotsColumnIndex >= 0 AndAlso totalPlotsColumnIndex < newRow.Cells.Count Then
-            If totalPlots = 0 Then
-                Dim totalPlotsCell As DataGridViewCell = newRow.Cells(totalPlotsColumnIndex.Value)
-                totalPlotsCell.Value = "No Plots"
-                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
-            Else
-                ' Set the total number of plots in the TotalPlots column
-                newRow.Cells(totalPlotsColumnIndex.Value).Value = totalPlots
-                SourcePlotDataGrid.Columns(totalPlotsColumnIndex.Value).Visible = True
-            End If
-        End If
-    End Sub
-
-    Private Sub AddRowToGrid(newRow As DataGridViewRow)
-        ' Add the row to the grid
-        SourcePlotDataGrid.Rows.Add(newRow)
-
-        ' Resize the columns to fit the contents
-        SourcePlotDataGrid.AutoResizeColumns()
-
-        ' Debug: Print the contents of the row that was added
-        Debug.WriteLine("Added row to grid:")
-        For Each cell As DataGridViewCell In newRow.Cells
-            If cell.Value IsNot Nothing Then
-                Debug.Write(cell.Value.ToString() & vbTab)
-            End If
-        Next
-        Debug.WriteLine("")
-
-        ' Debug: Print the width of each column
-        Debug.WriteLine("Column Widths:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            Debug.WriteLine(col.Name & ": " & col.Width)
-        Next
-    End Sub
-
-    Private Sub ResizeColumnsToFitContents()
-        ' Resize the columns to fit the contents
-        SourcePlotDataGrid.AutoResizeColumns()
-
-        ' Debug: Display the width of each column
-        Debug.WriteLine("Column Widths:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            Debug.WriteLine(col.Name & ": " & col.Width)
-        Next
-    End Sub
-
-    Private Sub DebugPrintVisibleColumns()
-        ' Print out the names of all visible K columns
-        Debug.WriteLine("Visible K columns:")
-        For Each col As DataGridViewColumn In SourcePlotDataGrid.Columns
-            If col.Name.StartsWith("K") AndAlso col.Name.Length > 1 AndAlso col.Visible Then
-                Debug.WriteLine(col.Name)
-            End If
-        Next
-
-        ' Print out whether TotalPlots column is visible
-        Debug.WriteLine("TotalPlots column visibility: " & SourcePlotDataGrid.Columns("TotalPlots").Visible.ToString())
-    End Sub
-
-    Private Function CreateNewRow(sourceDirectory As String) As DataGridViewRow
-        ' Create a new DataGridViewRow for the source directory
-        Dim newRow As New DataGridViewRow()
-
-        ' Create a new DataGridViewTextBoxCell for the "SourceDirectory" column
-        Dim sourceDirectoryCell As New DataGridViewTextBoxCell()
-        sourceDirectoryCell.Value = sourceDirectory
-        newRow.Cells.Add(sourceDirectoryCell)
-
-        ' Create a new DataGridViewTextBoxCell for the "PercentAvailableSpace" column
-        Dim percentAvailableSpaceCell As New DataGridViewTextBoxCell()
-        newRow.Cells.Add(percentAvailableSpaceCell)
-
-        ' Create a new DataGridViewTextBoxCell for the "GBAvailableSpace" column
-        Dim gbAvailableSpaceCell As New DataGridViewTextBoxCell()
-        newRow.Cells.Add(gbAvailableSpaceCell)
-
-        ' Create a new DataGridViewButtonCell for the "RemoveButton" column
-        Dim removeButtonCell As New DataGridViewButtonCell()
-        removeButtonCell.Value = "Delete"
-        newRow.Cells.Add(removeButtonCell)
-
-        Return newRow
-    End Function
-
-    Private Function DirectoryAlreadyExistsInGrid(sourceDirectory As String) As Boolean
-        ' Iterate through each row in the DataGridView
-        For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
-            ' Check if the SourceDirectory cell in the row matches the sourceDirectory string
-            If row.Cells("SourceDirectory").Value IsNot Nothing AndAlso row.Cells("SourceDirectory").Value.ToString().Equals(sourceDirectory, StringComparison.OrdinalIgnoreCase) Then
-                ' If a match is found, return true
-                Return True
-            End If
-        Next
-
-        ' If no match is found, return false
-        Return False
-    End Function
-
     Private Function GetPercentFreeSpace(directory As String) As Integer
         Dim driveInfo As New System.IO.DriveInfo(directory)
         Dim percentFreeSpace As Integer = (driveInfo.AvailableFreeSpace / driveInfo.TotalSize) * 100
@@ -2274,6 +2118,120 @@ Public Class Form1
             ' Remove the row when the remove button is clicked
             SourcePlotDataGrid.Rows.RemoveAt(e.RowIndex)
         End If
+    End Sub
+
+    ' Enable drag and drop on the DataGridView control
+    Private Sub SourcePlotDataGrid_DragEnter(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            e.Effect = DragDropEffects.Move
+        Else
+            e.Effect = DragDropEffects.None
+        End If
+    End Sub
+
+    ' Handle the drop event
+    Private Sub SourcePlotDataGrid_DragDrop(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            ' Get the dropped files
+            Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+
+            ' Add the files to the DataGridView control
+            For Each file In files
+                SourcePlotDataGrid.Rows.Add(file)
+            Next
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = SourcePlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = SourcePlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Remove the row being dragged from the DataGridView control
+                SourcePlotDataGrid.Rows.Remove(dragRow)
+
+                ' Move the row to the new location
+                If targetIndex = -1 Then
+                    SourcePlotDataGrid.Rows.Add(dragRow)
+                Else
+                    SourcePlotDataGrid.Rows.Insert(targetIndex, dragRow)
+                End If
+            End If
+        End If
+    End Sub
+
+    ' Allow row selection during drag-and-drop operations
+    Private Sub SourcePlotDataGrid_MouseDown(sender As Object, e As MouseEventArgs) Handles SourcePlotDataGrid.MouseDown
+        If e.Button = MouseButtons.Left Then
+            Dim hitTest As DataGridView.HitTestInfo = SourcePlotDataGrid.HitTest(e.X, e.Y)
+            If hitTest.Type = DataGridViewHitTestType.Cell Then
+                Dim dragRow As DataGridViewRow = SourcePlotDataGrid.Rows(hitTest.RowIndex)
+                SourcePlotDataGrid.DoDragDrop(dragRow, DragDropEffects.Move)
+            End If
+        End If
+    End Sub
+
+    Private Sub SourcePlotDataGrid_DragOver(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragOver
+        If e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = SourcePlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = SourcePlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Determine if auto-scrolling is required
+                Dim scrollMargin As Integer = 10
+                Dim clientRect As Rectangle = SourcePlotDataGrid.ClientRectangle
+                clientRect.Inflate(-scrollMargin, -scrollMargin)
+                If Not clientRect.Contains(cursorLocation) Then
+                    ' Determine the direction and speed of the auto-scroll
+                    Dim scrollDelta As Integer = 0
+                    If cursorLocation.Y < clientRect.Top Then
+                        scrollDelta = -SystemInformation.MouseWheelScrollLines
+                    ElseIf cursorLocation.Y > clientRect.Bottom Then
+                        scrollDelta = SystemInformation.MouseWheelScrollLines
+                    End If
+
+                    ' Perform the auto-scroll
+                    If scrollDelta <> 0 Then
+                        Dim currentScroll As Integer = SourcePlotDataGrid.FirstDisplayedScrollingRowIndex
+                        Dim newScroll As Integer = currentScroll + scrollDelta
+                        If newScroll < 0 Then
+                            newScroll = 0
+                        ElseIf newScroll >= SourcePlotDataGrid.RowCount Then
+                            newScroll = SourcePlotDataGrid.RowCount - 1
+                        End If
+                        SourcePlotDataGrid.FirstDisplayedScrollingRowIndex = newScroll
+                    End If
+                End If
+
+                ' Draw the graphical indicator
+                If targetIndex >= 0 AndAlso targetIndex < SourcePlotDataGrid.Rows.Count Then
+                    Dim targetRect As Rectangle = SourcePlotDataGrid.GetRowDisplayRectangle(targetIndex, False)
+                    If cursorLocation.Y < targetRect.Top + targetRect.Height / 2 Then
+                        targetRect.Height = 2
+                    Else
+                        targetRect.Y += targetRect.Height - 2
+                        targetRect.Height = 2
+                    End If
+                    SourcePlotDataGrid.Invalidate(targetRect)
+                End If
+
+                ' Set the drag effect
+                e.Effect = DragDropEffects.Move
+            Else
+                e.Effect = DragDropEffects.None
+            End If
+        End If
+    End Sub
+
+    ' Handle the drag-leave event
+    Private Sub SourcePlotDataGrid_DragLeave(sender As Object, e As EventArgs) Handles SourcePlotDataGrid.DragLeave
+        ' Remove the graphical indicator
+        SourcePlotDataGrid.Invalidate()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
