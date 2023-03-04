@@ -352,7 +352,7 @@ Public Class Form1
         Timer1.Interval = 500000000
         Timer1.Enabled = True
 
-
+        AddSourceButton.Enabled = False
 
         ' Add the "SourceDirectory" column
         Dim sourceDirectoryColumn As New DataGridViewTextBoxColumn()
@@ -378,6 +378,7 @@ Public Class Form1
             Dim column As New DataGridViewTextBoxColumn()
             column.HeaderText = columnHeaderText
             column.Name = columnHeaderText
+            column.Visible = False
             SourcePlotDataGrid.Columns.Add(column)
             Debug.WriteLine($"Added column: {columnHeaderText}")
         Next
@@ -394,7 +395,21 @@ Public Class Form1
         removeButtonColumn.Text = "Delete"
         removeButtonColumn.UseColumnTextForButtonValue = True
         removeButtonColumn.Name = "RemoveButton"
+        removeButtonColumn.HeaderText = ""
         SourcePlotDataGrid.Columns.Add(removeButtonColumn)
+
+        ' Set the default cell style for the DataGridView to remove underlining
+        Dim cellStyle As New DataGridViewCellStyle()
+        cellStyle.Font = New Font(Font.Name, Font.Size, FontStyle.Regular)
+        cellStyle.BackColor = Color.White
+        cellStyle.SelectionBackColor = Color.LightGray
+        cellStyle.SelectionForeColor = Color.Black
+        cellStyle.WrapMode = DataGridViewTriState.True
+        cellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+
+        cellStyle.Font = New Font(cellStyle.Font, FontStyle.Regular) ' remove underlining
+
+        SourcePlotDataGrid.DefaultCellStyle = cellStyle
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -2047,20 +2062,30 @@ Public Class Form1
     End Sub
 
     Private Sub SourcePlotText_TextChanged(sender As Object, e As EventArgs) Handles SourcePlotText.TextChanged
-        ' Do nothing here
+        If SourcePlotText.Text = "" Then
+            AddSourceButton.Enabled = False
+        Else
+            AddSourceButton.Enabled = True
+        End If
     End Sub
 
     Private Sub AddSourceButton_Click(sender As Object, e As EventArgs) Handles AddSourceButton.Click
         Dim sourceDirectory As String = SourcePlotText.Text
         Dim kValues() As String = {"K30", "K31", "K32", "K33", "K34"}
-        Dim kCounts(kValues.Length - 1) As Integer
-        Dim totalPlots As Object = 0 ' Set the data type to Object to handle string values
         Dim percentFreeSpace As Integer = GetPercentFreeSpace(sourceDirectory)
         Dim availableSpaceInGB As Double = GetAvailableSpaceInGB(sourceDirectory)
 
         Dim subDirectories() As String = Directory.GetDirectories(sourceDirectory)
 
+        ' Set all K columns to be hidden by default
+        For Each kValue As String In kValues
+            SourcePlotDataGrid.Columns(kValue).Visible = False
+        Next
+
         For Each subDirectory As String In subDirectories
+            Dim kCounts(kValues.Length - 1) As Integer
+            Dim totalPlots As Object = 0 ' Set the data type to Object to handle string values
+
             Try
                 Dim directoryName As String = Path.GetFileName(subDirectory)
                 Dim hasValidPlot As Boolean = False
@@ -2071,6 +2096,9 @@ Public Class Form1
                         kCounts(Array.IndexOf(kValues, kValue)) += files.Length
                         hasValidPlot = True
                         totalPlots += files.Length
+
+                        ' Show the K column if there are any plots for the given K value
+                        SourcePlotDataGrid.Columns(kValue).Visible = True
                     End If
                 Next
 
@@ -2082,7 +2110,9 @@ Public Class Form1
                     row.Cells("GBAvailableSpace").Value = availableSpaceInGB
 
                     For i As Integer = 0 To kValues.Length - 1
-                        row.Cells(kValues(i)).Value = kCounts(i)
+                        If kCounts(i) > 0 Then
+                            row.Cells(kValues(i)).Value = kCounts(i)
+                        End If
                     Next
 
                     ' Set the cell data type to DataGridViewTextBoxCell
@@ -2090,14 +2120,13 @@ Public Class Form1
                     totalPlotsCell.Value = totalPlots
                     row.Cells("TotalPlots") = totalPlotsCell
                 End If
-
-                Array.Clear(kCounts, 0, kCounts.Length) ' Reset the kCounts array for the next subdirectory
-                totalPlots = 0 ' Reset the totalPlots count for the next subdirectory
             Catch ex As UnauthorizedAccessException
                 ' handle the access denied error here
                 Debug.WriteLine("Access denied to directory: " & subDirectory)
             End Try
         Next
+        AddSourceButton.Enabled = False
+        SourcePlotText.Text = ""
     End Sub
 
     Private Function GetPercentFreeSpace(directory As String) As Integer
@@ -2240,13 +2269,9 @@ Public Class Form1
     End Sub
 
     Private Sub SourcePlotButton_Click(sender As Object, e As EventArgs) Handles SourcePlotButton.Click
-        Using ofd As New OpenFileDialog()
-            ofd.ValidateNames = False
-            ofd.CheckFileExists = False
-            ofd.CheckPathExists = True
-            ofd.FileName = "Folder Selection."
-            If ofd.ShowDialog() = DialogResult.OK Then
-                Dim folderPath = Path.GetDirectoryName(ofd.FileName)
+        Using fbd As New FolderBrowserDialog()
+            If fbd.ShowDialog() = DialogResult.OK Then
+                Dim folderPath As String = fbd.SelectedPath
                 SourcePlotText.Text = folderPath
             End If
         End Using
