@@ -1996,6 +1996,7 @@ Partial Class Form1
         Me.SourcePlotDataGrid.Name = "SourcePlotDataGrid"
         Me.SourcePlotDataGrid.RowHeadersWidth = 51
         Me.SourcePlotDataGrid.RowTemplate.Height = 29
+        Me.SourcePlotDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SourcePlotDataGrid.Size = New System.Drawing.Size(1662, 242)
         Me.SourcePlotDataGrid.TabIndex = 20
         '
