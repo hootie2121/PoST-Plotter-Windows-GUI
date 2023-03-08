@@ -180,12 +180,30 @@ Partial Class Form1
         Me.PMCPURadio = New System.Windows.Forms.RadioButton()
         Me.PMLabel = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.PlotDestination = New System.Windows.Forms.GroupBox()
+        Me.MoveControls = New System.Windows.Forms.GroupBox()
+        Me.StopMoveButton = New System.Windows.Forms.Button()
+        Me.ResumeMoveButton = New System.Windows.Forms.Button()
+        Me.PauseMoveButton = New System.Windows.Forms.Button()
+        Me.StartMoveButton = New System.Windows.Forms.Button()
+        Me.ParentK34Check = New System.Windows.Forms.CheckBox()
+        Me.ParentK33Check = New System.Windows.Forms.CheckBox()
+        Me.ParentK32Check = New System.Windows.Forms.CheckBox()
+        Me.ParentK31Check = New System.Windows.Forms.CheckBox()
+        Me.ParentK30Check = New System.Windows.Forms.CheckBox()
+        Me.MaxParallelMovesText = New System.Windows.Forms.TextBox()
+        Me.MaxParallelMovesLabel = New System.Windows.Forms.Label()
+        Me.AddDestinationButton = New System.Windows.Forms.Button()
+        Me.DestinationPlotDataGrid = New System.Windows.Forms.DataGridView()
+        Me.DestinationPlotButton = New System.Windows.Forms.Button()
+        Me.DestinationPlotText = New System.Windows.Forms.TextBox()
+        Me.DestinationDirectoryLabel = New System.Windows.Forms.Label()
         Me.PlotSource = New System.Windows.Forms.GroupBox()
         Me.AddSourceButton = New System.Windows.Forms.Button()
         Me.SourcePlotDataGrid = New System.Windows.Forms.DataGridView()
         Me.SourcePlotButton = New System.Windows.Forms.Button()
         Me.SourcePlotText = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
+        Me.SourceDirectoryLabel = New System.Windows.Forms.Label()
         Me.MenuStrip1.SuspendLayout()
         Me.MainTabControl.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -197,6 +215,9 @@ Partial Class Form1
         Me.CommonOptions.SuspendLayout()
         Me.AccountKeys.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.PlotDestination.SuspendLayout()
+        Me.MoveControls.SuspendLayout()
+        CType(Me.DestinationPlotDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PlotSource.SuspendLayout()
         CType(Me.SourcePlotDataGrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -427,7 +448,7 @@ Partial Class Form1
         Me.MainTabControl.Location = New System.Drawing.Point(0, 28)
         Me.MainTabControl.Name = "MainTabControl"
         Me.MainTabControl.SelectedIndex = 0
-        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1027)
+        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1052)
         Me.MainTabControl.TabIndex = 1
         '
         'TabPage1
@@ -1727,13 +1748,216 @@ Partial Class Form1
         'TabPage2
         '
         Me.TabPage2.BackColor = System.Drawing.SystemColors.Control
+        Me.TabPage2.Controls.Add(Me.PlotDestination)
         Me.TabPage2.Controls.Add(Me.PlotSource)
         Me.TabPage2.Location = New System.Drawing.Point(4, 29)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1672, 994)
+        Me.TabPage2.Size = New System.Drawing.Size(1672, 1019)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
+        '
+        'PlotDestination
+        '
+        Me.PlotDestination.Controls.Add(Me.MoveControls)
+        Me.PlotDestination.Controls.Add(Me.ParentK34Check)
+        Me.PlotDestination.Controls.Add(Me.ParentK33Check)
+        Me.PlotDestination.Controls.Add(Me.ParentK32Check)
+        Me.PlotDestination.Controls.Add(Me.ParentK31Check)
+        Me.PlotDestination.Controls.Add(Me.ParentK30Check)
+        Me.PlotDestination.Controls.Add(Me.MaxParallelMovesText)
+        Me.PlotDestination.Controls.Add(Me.MaxParallelMovesLabel)
+        Me.PlotDestination.Controls.Add(Me.AddDestinationButton)
+        Me.PlotDestination.Controls.Add(Me.DestinationPlotDataGrid)
+        Me.PlotDestination.Controls.Add(Me.DestinationPlotButton)
+        Me.PlotDestination.Controls.Add(Me.DestinationPlotText)
+        Me.PlotDestination.Controls.Add(Me.DestinationDirectoryLabel)
+        Me.PlotDestination.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
+        Me.PlotDestination.Location = New System.Drawing.Point(3, 313)
+        Me.PlotDestination.Name = "PlotDestination"
+        Me.PlotDestination.Size = New System.Drawing.Size(1671, 698)
+        Me.PlotDestination.TabIndex = 1
+        Me.PlotDestination.TabStop = False
+        Me.PlotDestination.Text = "Plot Destination:"
+        '
+        'MoveControls
+        '
+        Me.MoveControls.Controls.Add(Me.StopMoveButton)
+        Me.MoveControls.Controls.Add(Me.ResumeMoveButton)
+        Me.MoveControls.Controls.Add(Me.PauseMoveButton)
+        Me.MoveControls.Controls.Add(Me.StartMoveButton)
+        Me.MoveControls.Location = New System.Drawing.Point(6, 636)
+        Me.MoveControls.Name = "MoveControls"
+        Me.MoveControls.Size = New System.Drawing.Size(429, 62)
+        Me.MoveControls.TabIndex = 30
+        Me.MoveControls.TabStop = False
+        Me.MoveControls.Text = "Move Controls:"
+        '
+        'StopMoveButton
+        '
+        Me.StopMoveButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StopMoveButton.Location = New System.Drawing.Point(330, 26)
+        Me.StopMoveButton.Name = "StopMoveButton"
+        Me.StopMoveButton.Size = New System.Drawing.Size(92, 29)
+        Me.StopMoveButton.TabIndex = 32
+        Me.StopMoveButton.Text = "Stop Move"
+        Me.StopMoveButton.UseVisualStyleBackColor = True
+        '
+        'ResumeMoveButton
+        '
+        Me.ResumeMoveButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ResumeMoveButton.Location = New System.Drawing.Point(211, 26)
+        Me.ResumeMoveButton.Name = "ResumeMoveButton"
+        Me.ResumeMoveButton.Size = New System.Drawing.Size(113, 29)
+        Me.ResumeMoveButton.TabIndex = 31
+        Me.ResumeMoveButton.Text = "Resume Move"
+        Me.ResumeMoveButton.UseVisualStyleBackColor = True
+        '
+        'PauseMoveButton
+        '
+        Me.PauseMoveButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.PauseMoveButton.Location = New System.Drawing.Point(104, 26)
+        Me.PauseMoveButton.Name = "PauseMoveButton"
+        Me.PauseMoveButton.Size = New System.Drawing.Size(101, 29)
+        Me.PauseMoveButton.TabIndex = 30
+        Me.PauseMoveButton.Text = "Pause Move"
+        Me.PauseMoveButton.UseVisualStyleBackColor = True
+        '
+        'StartMoveButton
+        '
+        Me.StartMoveButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.StartMoveButton.Location = New System.Drawing.Point(6, 26)
+        Me.StartMoveButton.Name = "StartMoveButton"
+        Me.StartMoveButton.Size = New System.Drawing.Size(92, 29)
+        Me.StartMoveButton.TabIndex = 29
+        Me.StartMoveButton.Text = "Start Move"
+        Me.StartMoveButton.UseVisualStyleBackColor = True
+        '
+        'ParentK34Check
+        '
+        Me.ParentK34Check.AutoSize = True
+        Me.ParentK34Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ParentK34Check.Location = New System.Drawing.Point(1128, 22)
+        Me.ParentK34Check.Name = "ParentK34Check"
+        Me.ParentK34Check.Size = New System.Drawing.Size(56, 24)
+        Me.ParentK34Check.TabIndex = 28
+        Me.ParentK34Check.Text = "K34"
+        Me.ParentK34Check.UseVisualStyleBackColor = True
+        '
+        'ParentK33Check
+        '
+        Me.ParentK33Check.AutoSize = True
+        Me.ParentK33Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ParentK33Check.Location = New System.Drawing.Point(1066, 22)
+        Me.ParentK33Check.Name = "ParentK33Check"
+        Me.ParentK33Check.Size = New System.Drawing.Size(56, 24)
+        Me.ParentK33Check.TabIndex = 27
+        Me.ParentK33Check.Text = "K33"
+        Me.ParentK33Check.UseVisualStyleBackColor = True
+        '
+        'ParentK32Check
+        '
+        Me.ParentK32Check.AutoSize = True
+        Me.ParentK32Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ParentK32Check.Location = New System.Drawing.Point(1004, 22)
+        Me.ParentK32Check.Name = "ParentK32Check"
+        Me.ParentK32Check.Size = New System.Drawing.Size(56, 24)
+        Me.ParentK32Check.TabIndex = 26
+        Me.ParentK32Check.Text = "K32"
+        Me.ParentK32Check.UseVisualStyleBackColor = True
+        '
+        'ParentK31Check
+        '
+        Me.ParentK31Check.AutoSize = True
+        Me.ParentK31Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ParentK31Check.Location = New System.Drawing.Point(942, 22)
+        Me.ParentK31Check.Name = "ParentK31Check"
+        Me.ParentK31Check.Size = New System.Drawing.Size(56, 24)
+        Me.ParentK31Check.TabIndex = 25
+        Me.ParentK31Check.Text = "K31"
+        Me.ParentK31Check.UseVisualStyleBackColor = True
+        '
+        'ParentK30Check
+        '
+        Me.ParentK30Check.AutoSize = True
+        Me.ParentK30Check.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.ParentK30Check.Location = New System.Drawing.Point(880, 22)
+        Me.ParentK30Check.Name = "ParentK30Check"
+        Me.ParentK30Check.Size = New System.Drawing.Size(56, 24)
+        Me.ParentK30Check.TabIndex = 24
+        Me.ParentK30Check.Text = "K30"
+        Me.ParentK30Check.UseVisualStyleBackColor = True
+        '
+        'MaxParallelMovesText
+        '
+        Me.MaxParallelMovesText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxParallelMovesText.Location = New System.Drawing.Point(837, 20)
+        Me.MaxParallelMovesText.Name = "MaxParallelMovesText"
+        Me.MaxParallelMovesText.Size = New System.Drawing.Size(37, 27)
+        Me.MaxParallelMovesText.TabIndex = 23
+        '
+        'MaxParallelMovesLabel
+        '
+        Me.MaxParallelMovesLabel.AutoSize = True
+        Me.MaxParallelMovesLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.MaxParallelMovesLabel.Location = New System.Drawing.Point(692, 23)
+        Me.MaxParallelMovesLabel.Name = "MaxParallelMovesLabel"
+        Me.MaxParallelMovesLabel.Size = New System.Drawing.Size(139, 20)
+        Me.MaxParallelMovesLabel.TabIndex = 22
+        Me.MaxParallelMovesLabel.Text = "Max Parallel Moves:"
+        '
+        'AddDestinationButton
+        '
+        Me.AddDestinationButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.AddDestinationButton.Location = New System.Drawing.Point(639, 19)
+        Me.AddDestinationButton.Name = "AddDestinationButton"
+        Me.AddDestinationButton.Size = New System.Drawing.Size(47, 29)
+        Me.AddDestinationButton.TabIndex = 21
+        Me.AddDestinationButton.Text = "Add"
+        Me.AddDestinationButton.UseVisualStyleBackColor = True
+        '
+        'DestinationPlotDataGrid
+        '
+        Me.DestinationPlotDataGrid.AllowDrop = True
+        Me.DestinationPlotDataGrid.AllowUserToAddRows = False
+        Me.DestinationPlotDataGrid.AllowUserToDeleteRows = False
+        Me.DestinationPlotDataGrid.AllowUserToResizeRows = False
+        Me.DestinationPlotDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DestinationPlotDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.DestinationPlotDataGrid.Location = New System.Drawing.Point(6, 53)
+        Me.DestinationPlotDataGrid.Name = "DestinationPlotDataGrid"
+        Me.DestinationPlotDataGrid.RowHeadersWidth = 51
+        Me.DestinationPlotDataGrid.RowTemplate.Height = 29
+        Me.DestinationPlotDataGrid.Size = New System.Drawing.Size(1662, 577)
+        Me.DestinationPlotDataGrid.TabIndex = 20
+        '
+        'DestinationPlotButton
+        '
+        Me.DestinationPlotButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DestinationPlotButton.Location = New System.Drawing.Point(488, 18)
+        Me.DestinationPlotButton.Name = "DestinationPlotButton"
+        Me.DestinationPlotButton.Size = New System.Drawing.Size(63, 29)
+        Me.DestinationPlotButton.TabIndex = 19
+        Me.DestinationPlotButton.Text = "Search"
+        Me.DestinationPlotButton.UseVisualStyleBackColor = True
+        '
+        'DestinationPlotText
+        '
+        Me.DestinationPlotText.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DestinationPlotText.Location = New System.Drawing.Point(165, 20)
+        Me.DestinationPlotText.Name = "DestinationPlotText"
+        Me.DestinationPlotText.Size = New System.Drawing.Size(317, 27)
+        Me.DestinationPlotText.TabIndex = 18
+        '
+        'DestinationDirectoryLabel
+        '
+        Me.DestinationDirectoryLabel.AutoSize = True
+        Me.DestinationDirectoryLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.DestinationDirectoryLabel.Location = New System.Drawing.Point(6, 23)
+        Me.DestinationDirectoryLabel.Name = "DestinationDirectoryLabel"
+        Me.DestinationDirectoryLabel.Size = New System.Drawing.Size(153, 20)
+        Me.DestinationDirectoryLabel.TabIndex = 17
+        Me.DestinationDirectoryLabel.Text = "Destination Directory:"
         '
         'PlotSource
         '
@@ -1741,11 +1965,11 @@ Partial Class Form1
         Me.PlotSource.Controls.Add(Me.SourcePlotDataGrid)
         Me.PlotSource.Controls.Add(Me.SourcePlotButton)
         Me.PlotSource.Controls.Add(Me.SourcePlotText)
-        Me.PlotSource.Controls.Add(Me.Label1)
+        Me.PlotSource.Controls.Add(Me.SourceDirectoryLabel)
         Me.PlotSource.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
         Me.PlotSource.Location = New System.Drawing.Point(24, 37)
         Me.PlotSource.Name = "PlotSource"
-        Me.PlotSource.Size = New System.Drawing.Size(1370, 301)
+        Me.PlotSource.Size = New System.Drawing.Size(1671, 301)
         Me.PlotSource.TabIndex = 0
         Me.PlotSource.TabStop = False
         Me.PlotSource.Text = "Plot Source:"
@@ -1792,21 +2016,21 @@ Partial Class Form1
         Me.SourcePlotText.Size = New System.Drawing.Size(317, 27)
         Me.SourcePlotText.TabIndex = 18
         '
-        'Label1
+        'SourceDirectoryLabel
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-        Me.Label1.Location = New System.Drawing.Point(6, 23)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(122, 20)
-        Me.Label1.TabIndex = 17
-        Me.Label1.Text = "Source Directory:"
+        Me.SourceDirectoryLabel.AutoSize = True
+        Me.SourceDirectoryLabel.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.SourceDirectoryLabel.Location = New System.Drawing.Point(6, 23)
+        Me.SourceDirectoryLabel.Name = "SourceDirectoryLabel"
+        Me.SourceDirectoryLabel.Size = New System.Drawing.Size(122, 20)
+        Me.SourceDirectoryLabel.TabIndex = 17
+        Me.SourceDirectoryLabel.Text = "Source Directory:"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1680, 1055)
+        Me.ClientSize = New System.Drawing.Size(1680, 1080)
         Me.Controls.Add(Me.MainTabControl)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -1830,6 +2054,10 @@ Partial Class Form1
         Me.AccountKeys.ResumeLayout(False)
         Me.AccountKeys.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
+        Me.PlotDestination.ResumeLayout(False)
+        Me.PlotDestination.PerformLayout()
+        Me.MoveControls.ResumeLayout(False)
+        CType(Me.DestinationPlotDataGrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PlotSource.ResumeLayout(False)
         Me.PlotSource.PerformLayout()
         CType(Me.SourcePlotDataGrid, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1998,7 +2226,25 @@ Partial Class Form1
     Friend WithEvents PlotSource As GroupBox
     Friend WithEvents SourcePlotButton As Button
     Friend WithEvents SourcePlotText As TextBox
-    Friend WithEvents Label1 As Label
+    Friend WithEvents SourceDirectoryLabel As Label
     Friend WithEvents AddSourceButton As Button
     Friend WithEvents SourcePlotDataGrid As DataGridView
+    Friend WithEvents PlotDestination As GroupBox
+    Friend WithEvents AddDestinationButton As Button
+    Friend WithEvents DestinationPlotDataGrid As DataGridView
+    Friend WithEvents DestinationPlotButton As Button
+    Friend WithEvents DestinationPlotText As TextBox
+    Friend WithEvents DestinationDirectoryLabel As Label
+    Friend WithEvents MaxParallelMovesText As TextBox
+    Friend WithEvents MaxParallelMovesLabel As Label
+    Friend WithEvents MoveControls As GroupBox
+    Friend WithEvents StopMoveButton As Button
+    Friend WithEvents ResumeMoveButton As Button
+    Friend WithEvents PauseMoveButton As Button
+    Friend WithEvents StartMoveButton As Button
+    Friend WithEvents ParentK34Check As CheckBox
+    Friend WithEvents ParentK33Check As CheckBox
+    Friend WithEvents ParentK32Check As CheckBox
+    Friend WithEvents ParentK31Check As CheckBox
+    Friend WithEvents ParentK30Check As CheckBox
 End Class

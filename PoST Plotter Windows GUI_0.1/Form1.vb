@@ -3,8 +3,11 @@ Imports System.IO.Compression
 Imports System.Net.Http
 Imports System.Text
 Imports Newtonsoft.Json.Linq
+Imports System.Security
 Imports System.Threading
 Imports System.Windows.Forms
+Imports System.Management
+Imports CredentialManagement
 
 Public Class Form1
     Dim arguments As Dictionary(Of String, String) = New Dictionary(Of String, String)
@@ -63,6 +66,7 @@ Public Class Form1
         PopulateNumThreadsCombo()
         PopulateCPortCombo()
         SourcePlotForm()
+        DestinationPlotForm()
         TempDir2Check.Checked = True
         TempDir3Check.Checked = True
         AdvancedOptionsCheck.Checked = False
@@ -144,8 +148,8 @@ Public Class Form1
 
         If Not allValid Then
             Try
-                Dim result As DialogResult = MessageBox.Show("One or more paths to PoST Plotters has not been found or is invalid. Would you like to update the paths now?", "Error", MessageBoxButtons.YesNo)
-                If result = DialogResult.No Then
+                Dim result As System.Windows.Forms.DialogResult = MessageBox.Show("One or more paths to PoST Plotters has not been found or is invalid. Would you like to update the paths now?", "Error", MessageBoxButtons.YesNo)
+                If result = System.Windows.Forms.DialogResult.No Then
                     ' User does not want to update the paths, exit the config process
                     Return
                 End If
@@ -179,7 +183,7 @@ Public Class Form1
                     .Filter = program.Value & "|" & program.Value,
                     .Title = "Select " & program.Value
                 }
-                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                If openFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     ' Update the file path in the config file
                     filePath = openFileDialog.FileName
                     cliPrograms(program.Key) = filePath
@@ -209,7 +213,7 @@ Public Class Form1
                 .Filter = program.Value & "|" & program.Value,
                 .Title = "Select " & program.Value
             }
-                If openFileDialog.ShowDialog() = DialogResult.OK Then
+                If openFileDialog.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                     ' Update the file path in the dictionary
                     filePath = openFileDialog.FileName
                     cliPrograms(program.Key) = filePath
@@ -412,6 +416,105 @@ Public Class Form1
         removeButtonColumn.HeaderText = ""
         removeButtonColumn.Name = "RemoveButton"
         SourcePlotDataGrid.Columns.Add(removeButtonColumn)
+    End Sub
+
+    Private Sub DestinationPlotForm()
+        ' Add the "Status" column
+        Dim StatusColumn As New DataGridViewTextBoxColumn()
+        StatusColumn.HeaderText = "Status"
+        StatusColumn.Name = "StatusColumn"
+        DestinationPlotDataGrid.Columns.Add(StatusColumn)
+
+        ' Create a new text column for displaying progress
+        Dim progressColumn As New DataGridViewTextBoxColumn()
+        progressColumn.HeaderText = "Progress"
+        progressColumn.Name = "Progress"
+        progressColumn.DefaultCellStyle.Format = "P0" ' Display as percentage with no decimal places
+        DestinationPlotDataGrid.Columns.Add(progressColumn)
+
+        ' Add the "SourceDirectory" column
+        Dim DestinationDirectoryColumn As New DataGridViewTextBoxColumn()
+        DestinationDirectoryColumn.HeaderText = "Destination Directory"
+        DestinationDirectoryColumn.Name = "DestinationDirectory"
+        DestinationPlotDataGrid.Columns.Add(DestinationDirectoryColumn)
+
+        ' Add the "PercentAvailableSpace" column
+        Dim percentAvailableSpaceColumn As New DataGridViewTextBoxColumn()
+        percentAvailableSpaceColumn.HeaderText = "Available Space (%)"
+        percentAvailableSpaceColumn.Name = "PercentAvailableSpace"
+        DestinationPlotDataGrid.Columns.Add(percentAvailableSpaceColumn)
+
+        ' Add the "GBAvailableSpace" column
+        Dim gbAvailableSpaceColumn As New DataGridViewTextBoxColumn()
+        gbAvailableSpaceColumn.HeaderText = "Available Space (GB)"
+        gbAvailableSpaceColumn.Name = "GBAvailableSpace"
+        DestinationPlotDataGrid.Columns.Add(gbAvailableSpaceColumn)
+
+        ' Add the "UncompressedPlots" column
+        Dim UncompressedPlotsColumn As New DataGridViewTextBoxColumn()
+        UncompressedPlotsColumn.HeaderText = "Uncompressed Plots"
+        UncompressedPlotsColumn.Name = "UncompressedPlots"
+        DestinationPlotDataGrid.Columns.Add(UncompressedPlotsColumn)
+
+        ' Add the "CompressedPlots" column
+        Dim CompressedPlotsColumn As New DataGridViewTextBoxColumn()
+        CompressedPlotsColumn.HeaderText = "Compressed Plots"
+        CompressedPlotsColumn.Name = "CompressedPlots"
+        DestinationPlotDataGrid.Columns.Add(CompressedPlotsColumn)
+
+        ' Add the "Pause" column
+        Dim PauseColumn As New DataGridViewButtonColumn()
+        PauseColumn.Text = "Pause"
+        PauseColumn.UseColumnTextForButtonValue = True
+        PauseColumn.HeaderText = ""
+        PauseColumn.Name = "PauseColumn"
+        DestinationPlotDataGrid.Columns.Add(PauseColumn)
+
+        ' Add the "Resume" column
+        Dim ResumeColumn As New DataGridViewButtonColumn()
+        ResumeColumn.Text = "Resume"
+        ResumeColumn.UseColumnTextForButtonValue = True
+        ResumeColumn.HeaderText = ""
+        ResumeColumn.Name = "ResumeColumn"
+        DestinationPlotDataGrid.Columns.Add(ResumeColumn)
+
+        ' Add the "Stop" column
+        Dim StopColumn As New DataGridViewButtonColumn()
+        StopColumn.Text = "Stop"
+        StopColumn.UseColumnTextForButtonValue = True
+        StopColumn.HeaderText = ""
+        StopColumn.Name = "StopColumn"
+        DestinationPlotDataGrid.Columns.Add(StopColumn)
+
+        ' Add the "K30 Check" column
+        Dim K30Column As New DataGridViewCheckBoxColumn()
+        K30Column.HeaderText = "K30"
+        K30Column.Name = "K30Column"
+        DestinationPlotDataGrid.Columns.Add(K30Column)
+
+        ' Add the "K31 Check" column
+        Dim K31Column As New DataGridViewCheckBoxColumn()
+        K31Column.HeaderText = "K31"
+        K31Column.Name = "K31Column"
+        DestinationPlotDataGrid.Columns.Add(K31Column)
+
+        ' Add the "K32 Check" column
+        Dim K32Column As New DataGridViewCheckBoxColumn()
+        K32Column.HeaderText = "K32"
+        K32Column.Name = "K32Column"
+        DestinationPlotDataGrid.Columns.Add(K32Column)
+
+        ' Add the "K33 Check" column
+        Dim K33Column As New DataGridViewCheckBoxColumn()
+        K33Column.HeaderText = "K33"
+        K33Column.Name = "K33Column"
+        DestinationPlotDataGrid.Columns.Add(K33Column)
+
+        ' Add the "K34 Check" column
+        Dim K34Column As New DataGridViewCheckBoxColumn()
+        K34Column.HeaderText = "K34"
+        K34Column.Name = "K34Column"
+        DestinationPlotDataGrid.Columns.Add(K34Column)
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -710,7 +813,7 @@ Public Class Form1
 
     Private Sub TempDir1Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
-            If fbd.ShowDialog = DialogResult.OK Then
+            If fbd.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
                 If path <> String.Empty AndAlso Not path.EndsWith("\") Then '<-- Check for empty string
                     path &= "\" '<-- Append to end of path
@@ -746,7 +849,7 @@ Public Class Form1
 
     Private Sub TempDir2Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
-            If fbd.ShowDialog = DialogResult.OK Then
+            If fbd.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
                 If path <> String.Empty AndAlso Not path.EndsWith("\") Then '<-- Check for empty string
                     path &= "\" '<-- Append to end of path
@@ -802,7 +905,7 @@ Public Class Form1
 
     Private Sub TempDir3Button_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
-            If fbd.ShowDialog = DialogResult.OK Then
+            If fbd.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
                 If path <> String.Empty AndAlso Not path.EndsWith("\") Then '<-- Check for empty string
                     path &= "\" '<-- Append to end of path
@@ -858,7 +961,7 @@ Public Class Form1
 
     Private Sub FinalDirButton_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
-            If fbd.ShowDialog = DialogResult.OK Then
+            If fbd.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
                 If path <> String.Empty AndAlso Not path.EndsWith("\") Then '<-- Check for empty string
                     path &= "\" '<-- Append to end of path
@@ -1085,9 +1188,9 @@ Public Class Form1
     End Sub
 
     Private Sub ClearConfigToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ClearConfigToolStripMenuItem.Click
-        Dim clearConfigDialog As New DialogResult
+        Dim clearConfigDialog As New System.Windows.Forms.DialogResult
         clearConfigDialog = MessageBox.Show("Are you sure you want to clear the contents of the config file? This action will restart the application and any unsaved changes will be lost. Do you wish to continue?", "Warning", MessageBoxButtons.YesNo)
-        If clearConfigDialog = DialogResult.Yes Then
+        If clearConfigDialog = System.Windows.Forms.DialogResult.Yes Then
             System.IO.File.WriteAllText(configFilePath, String.Empty)
             Application.Restart()
         End If
@@ -1556,7 +1659,7 @@ Public Class Form1
 
     Private Sub StageDirectoryButton_Click(sender As Object, e As EventArgs)
         Using fbd As New FolderBrowserDialog
-            If fbd.ShowDialog = DialogResult.OK Then
+            If fbd.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 Dim path As String = fbd.SelectedPath
                 If path <> String.Empty AndAlso Not path.EndsWith("\") Then '<-- Check for empty string
                     path &= "\" '<-- Append to end of path
@@ -1766,15 +1869,15 @@ Public Class Form1
             ' Check if the current version is newer than the latest version
             If String.Compare(currentVersion, latestVersion) > 0 Then
                 ' Prompt the user to revert to the latest version
-                Dim result As DialogResult = MessageBox.Show("This version is newer than the latest released version. Would you like to revert to the latest version?", "Revert to Latest Version", MessageBoxButtons.YesNo)
-                If result = DialogResult.Yes Then
+                Dim result As System.Windows.Forms.DialogResult = MessageBox.Show("This version is newer than the latest released version. Would you like to revert to the latest version?", "Revert to Latest Version", MessageBoxButtons.YesNo)
+                If result = System.Windows.Forms.DialogResult.Yes Then
                     ' Prompt the user for confirmation to revert
-                    Dim confirmResult As DialogResult = MessageBox.Show("Are you sure you want to revert to the latest version?", "Confirm Revert", MessageBoxButtons.YesNo)
+                    Dim confirmResult As System.Windows.Forms.DialogResult = MessageBox.Show("Are you sure you want to revert to the latest version?", "Confirm Revert", MessageBoxButtons.YesNo)
 
-                    If confirmResult = DialogResult.Yes Then
+                    If confirmResult = System.Windows.Forms.DialogResult.Yes Then
                         ' Prompt the user with a warning before reverting
-                        Dim warningResult As DialogResult = MessageBox.Show("This cannot be undone! Are you sure you want to revert to the latest version?", "Warning", MessageBoxButtons.YesNo)
-                        If warningResult = DialogResult.Yes Then
+                        Dim warningResult As System.Windows.Forms.DialogResult = MessageBox.Show("This cannot be undone! Are you sure you want to revert to the latest version?", "Warning", MessageBoxButtons.YesNo)
+                        If warningResult = System.Windows.Forms.DialogResult.Yes Then
                             ' Close the program
                             Me.Close()
 
@@ -1816,8 +1919,8 @@ Public Class Form1
                 End If
             Else
                 ' Prompt the user to download the latest release
-                Dim result As DialogResult = MessageBox.Show("A new version of the program is available. Do you want to download it?", "Update Available", MessageBoxButtons.YesNo)
-                If result = DialogResult.Yes Then
+                Dim result As System.Windows.Forms.DialogResult = MessageBox.Show("A new version of the program is available. Do you want to download it?", "Update Available", MessageBoxButtons.YesNo)
+                If result = System.Windows.Forms.DialogResult.Yes Then
                     ' Close the program
                     Me.Close()
                     ' Download and unzip the latest release file
@@ -2217,15 +2320,125 @@ Public Class Form1
     End Sub
 
     Private Sub SourcePlotButton_Click(sender As Object, e As EventArgs) Handles SourcePlotButton.Click
-        Using ofd As New OpenFileDialog()
-            ofd.ValidateNames = False
-            ofd.CheckFileExists = False
-            ofd.CheckPathExists = True
-            ofd.FileName = "Folder Selection."
-            If ofd.ShowDialog() = DialogResult.OK Then
-                Dim folderPath = Path.GetDirectoryName(ofd.FileName)
+        Using fbd As New FolderBrowserDialog()
+            If fbd.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                Dim folderPath As String = fbd.SelectedPath
                 SourcePlotText.Text = folderPath
             End If
         End Using
+    End Sub
+
+    Private Sub DestinationPlotText_TextChanged(sender As Object, e As EventArgs) Handles DestinationPlotText.TextChanged
+        If DestinationPlotText.Text = "" Then
+            AddDestinationButton.Enabled = False
+        Else
+            AddDestinationButton.Enabled = True
+        End If
+    End Sub
+
+    Private Sub DestinationPlotButton_Click(sender As Object, e As EventArgs) Handles DestinationPlotButton.Click
+        Using fbd As New FolderBrowserDialog()
+            If fbd.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                Dim folderPath As String = fbd.SelectedPath
+                DestinationPlotText.Text = folderPath
+            End If
+        End Using
+    End Sub
+
+    Private Sub AddDestinationButton_Click(sender As Object, e As EventArgs) Handles AddDestinationButton.Click
+        Dim destinationDirectory As String = DestinationPlotText.Text
+
+        Try
+            ' Loop through each subdirectory and count plot files
+            For Each subDirectory As String In Directory.GetDirectories(destinationDirectory)
+                Try
+                    ' Create a set to keep track of plot files that have already been counted
+                    Dim countedPlots As New HashSet(Of String)
+
+                    ' Count the number of plot files for k values 30 to 34 and c values 1 to 9 in the current subdirectory
+                    Dim uncompressedPlots As Integer = 0
+                    Dim compressedPlots As Integer = 0
+
+                    For Each kValue As Integer In Enumerable.Range(30, 5)
+                        For Each cValue As Integer In Enumerable.Range(1, 9)
+                            ' Modify the kPattern and cPattern variables to match the actual file names in your subdirectory
+                            Dim kPattern As String = String.Format("plot-k{0}-*", kValue)
+                            Dim cPattern As String = String.Format("plot-k{0}-c{1}-*", kValue, cValue)
+
+                            ' Get all plot files that match the k and c patterns
+                            Dim kPlots = Directory.GetFiles(subDirectory, kPattern)
+                            Dim cPlots = Directory.GetFiles(subDirectory, cPattern)
+
+                            ' Count only the plot files that haven't been counted before
+                            uncompressedPlots += kPlots.Except(countedPlots).Count()
+                            compressedPlots += cPlots.Except(countedPlots).Count()
+
+                            ' Add the new plot files to the countedPlots set
+                            countedPlots.UnionWith(kPlots)
+                            countedPlots.UnionWith(cPlots)
+                        Next
+                    Next
+
+                    ' Add a new row to the DestinationPlotDataGrid
+                    Dim rowIndex As Integer = DestinationPlotDataGrid.Rows.Add()
+                    Dim row As DataGridViewRow = DestinationPlotDataGrid.Rows(rowIndex)
+                    row.Cells("DestinationDirectory").Value = subDirectory
+                    row.Cells("StatusColumn").Value = "Ready"
+                    row.Cells("UncompressedPlots").Value = uncompressedPlots.ToString()
+                    row.Cells("CompressedPlots").Value = compressedPlots.ToString()
+                    'row.Cells("PercentAvailableSpace").Value = GetAvailableSpaceInPercent(destinationDirectory)
+                    row.Cells("GBAvailableSpace").Value = GetAvailableSpaceInGB(destinationDirectory)
+
+                    Debug.WriteLine($"Processed directory: {subDirectory}")
+                Catch ex As UnauthorizedAccessException
+                    ' Ignore unauthorized directories and continue with remaining directories
+                    Debug.WriteLine($"Error: Access denied for directory {subDirectory}. Skipping...")
+                Catch ex As Exception When TypeOf ex Is IOException OrElse TypeOf ex Is SecurityException
+                    ' Catch specific exception and continue with remaining directories
+                    Debug.WriteLine($"Error accessing directory {subDirectory}: {ex.Message}. Skipping...")
+                End Try
+            Next
+        Catch ex As Exception
+            MessageBox.Show("Error adding destination directory: " & ex.Message)
+        End Try
+    End Sub
+
+    Private Function CheckDirectoryAccess(directoryInfo As DirectoryInfo) As Boolean
+        Try
+            Dim accessTest As String = Path.Combine(directoryInfo.FullName, Guid.NewGuid().ToString("N"))
+            Using stream = File.Create(accessTest)
+            End Using
+            File.Delete(accessTest)
+            Return True
+        Catch ex As Exception
+            Return False
+        End Try
+    End Function
+
+    Private Function GetMappedDriveFromUNCPath(uncPath As String) As String
+        Dim mappedDrive As String = ""
+
+        If Directory.Exists(uncPath) Then
+            Dim pathRoot As String = Path.GetPathRoot(uncPath)
+
+            For Each drive As DriveInfo In DriveInfo.GetDrives()
+                If drive.DriveType = DriveType.Network AndAlso drive.IsReady AndAlso drive.Name.StartsWith(pathRoot) Then
+                    mappedDrive = drive.Name
+                    Exit For
+                End If
+            Next
+        Else
+            Throw New ArgumentException("UNC path does not exist")
+        End If
+
+        Return mappedDrive
+    End Function
+
+    Private Sub DestinationPlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DestinationPlotDataGrid.CellContentClick
+
+    End Sub
+
+    Private Sub CheckNetworkShareFreeSpace(ByVal path As String, ByVal ipAddress As String, Optional ByVal userName As String = Nothing, Optional ByVal password As String = Nothing)
+
     End Sub
 End Class
