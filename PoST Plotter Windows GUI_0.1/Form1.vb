@@ -420,20 +420,6 @@ Public Class Form1
         SourcePlotDataGrid.Columns.Add(totalPlotsColumn)
         Debug.WriteLine("Added column: TotalPlots")
 
-        ' Add the "Remove" button column
-        Dim removeButtonColumn As New DataGridViewButtonColumn()
-        removeButtonColumn.Text = "Delete"
-        removeButtonColumn.UseColumnTextForButtonValue = True
-        removeButtonColumn.HeaderText = ""
-        removeButtonColumn.Name = "RemoveButton"
-        removeButtonColumn.ReadOnly = False
-        removeButtonColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
-        removeButtonColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        removeButtonColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        SourcePlotDataGrid.Columns.Add(removeButtonColumn)
-        AddHandler SourcePlotDataGrid.CellContentClick, AddressOf SourcePlotDataGrid_CellContentClick
-
-
         ' Center align all cells and remove underline from non-header cells
         For Each column As DataGridViewColumn In SourcePlotDataGrid.Columns
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -446,102 +432,161 @@ Public Class Form1
     End Sub
 
     Private Sub DestinationPlotForm()
+        AddDestinationButton.Enabled = False
+
         ' Add the "Status" column
         Dim StatusColumn As New DataGridViewTextBoxColumn()
         StatusColumn.HeaderText = "Status"
         StatusColumn.Name = "StatusColumn"
+        StatusColumn.ReadOnly = True
+        StatusColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        StatusColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        StatusColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        StatusColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(StatusColumn)
 
         ' Create a new text column for displaying progress
         Dim progressColumn As New DataGridViewTextBoxColumn()
-        progressColumn.HeaderText = "Progress"
+        progressColumn.HeaderText = "Current Progress"
         progressColumn.Name = "Progress"
         progressColumn.DefaultCellStyle.Format = "P0" ' Display as percentage with no decimal places
+        progressColumn.ReadOnly = True
+        progressColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        progressColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        progressColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        progressColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(progressColumn)
+
+        ' Create a new text column for displaying progress
+        Dim FileTransferRateColumn As New DataGridViewTextBoxColumn()
+        FileTransferRateColumn.HeaderText = "Current Transfer Rate"
+        FileTransferRateColumn.Name = "TransferRate"
+        FileTransferRateColumn.ReadOnly = True
+        FileTransferRateColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        FileTransferRateColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        FileTransferRateColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        FileTransferRateColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+        DestinationPlotDataGrid.Columns.Add(FileTransferRateColumn)
 
         ' Add the "SourceDirectory" column
         Dim DestinationDirectoryColumn As New DataGridViewTextBoxColumn()
         DestinationDirectoryColumn.HeaderText = "Destination Directory"
         DestinationDirectoryColumn.Name = "DestinationDirectory"
+        DestinationDirectoryColumn.ReadOnly = True
+        DestinationDirectoryColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        DestinationDirectoryColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DestinationDirectoryColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        DestinationDirectoryColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(DestinationDirectoryColumn)
 
         ' Add the "PercentAvailableSpace" column
         Dim percentAvailableSpaceColumn As New DataGridViewTextBoxColumn()
         percentAvailableSpaceColumn.HeaderText = "Available Space (%)"
         percentAvailableSpaceColumn.Name = "PercentAvailableSpace"
+        percentAvailableSpaceColumn.ReadOnly = True
+        percentAvailableSpaceColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        percentAvailableSpaceColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        percentAvailableSpaceColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        percentAvailableSpaceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(percentAvailableSpaceColumn)
 
         ' Add the "GBAvailableSpace" column
         Dim gbAvailableSpaceColumn As New DataGridViewTextBoxColumn()
         gbAvailableSpaceColumn.HeaderText = "Available Space (GB)"
         gbAvailableSpaceColumn.Name = "GBAvailableSpace"
+        gbAvailableSpaceColumn.ReadOnly = True
+        gbAvailableSpaceColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        gbAvailableSpaceColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        gbAvailableSpaceColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        gbAvailableSpaceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(gbAvailableSpaceColumn)
 
         ' Add the "UncompressedPlots" column
         Dim UncompressedPlotsColumn As New DataGridViewTextBoxColumn()
         UncompressedPlotsColumn.HeaderText = "Uncompressed Plots"
         UncompressedPlotsColumn.Name = "UncompressedPlots"
+        UncompressedPlotsColumn.ReadOnly = True
+        UncompressedPlotsColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        UncompressedPlotsColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        UncompressedPlotsColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        UncompressedPlotsColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(UncompressedPlotsColumn)
 
         ' Add the "CompressedPlots" column
         Dim CompressedPlotsColumn As New DataGridViewTextBoxColumn()
         CompressedPlotsColumn.HeaderText = "Compressed Plots"
         CompressedPlotsColumn.Name = "CompressedPlots"
+        CompressedPlotsColumn.ReadOnly = True
+        CompressedPlotsColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        CompressedPlotsColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        CompressedPlotsColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        CompressedPlotsColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(CompressedPlotsColumn)
-
-        ' Add the "Pause" column
-        Dim PauseColumn As New DataGridViewButtonColumn()
-        PauseColumn.Text = "Pause"
-        PauseColumn.UseColumnTextForButtonValue = True
-        PauseColumn.HeaderText = ""
-        PauseColumn.Name = "PauseColumn"
-        DestinationPlotDataGrid.Columns.Add(PauseColumn)
-
-        ' Add the "Resume" column
-        Dim ResumeColumn As New DataGridViewButtonColumn()
-        ResumeColumn.Text = "Resume"
-        ResumeColumn.UseColumnTextForButtonValue = True
-        ResumeColumn.HeaderText = ""
-        ResumeColumn.Name = "ResumeColumn"
-        DestinationPlotDataGrid.Columns.Add(ResumeColumn)
-
-        ' Add the "Stop" column
-        Dim StopColumn As New DataGridViewButtonColumn()
-        StopColumn.Text = "Stop"
-        StopColumn.UseColumnTextForButtonValue = True
-        StopColumn.HeaderText = ""
-        StopColumn.Name = "StopColumn"
-        DestinationPlotDataGrid.Columns.Add(StopColumn)
 
         ' Add the "K30 Check" column
         Dim K30Column As New DataGridViewCheckBoxColumn()
         K30Column.HeaderText = "K30"
         K30Column.Name = "K30Column"
+        K30Column.ReadOnly = False
+        K30Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        K30Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        K30Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        K30Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(K30Column)
 
         ' Add the "K31 Check" column
         Dim K31Column As New DataGridViewCheckBoxColumn()
         K31Column.HeaderText = "K31"
         K31Column.Name = "K31Column"
+        K31Column.ReadOnly = False
+        K31Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        K31Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        K31Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        K31Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(K31Column)
 
         ' Add the "K32 Check" column
         Dim K32Column As New DataGridViewCheckBoxColumn()
         K32Column.HeaderText = "K32"
         K32Column.Name = "K32Column"
+        K32Column.ReadOnly = False
+        K32Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        K32Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        K32Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        K32Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(K32Column)
 
         ' Add the "K33 Check" column
         Dim K33Column As New DataGridViewCheckBoxColumn()
         K33Column.HeaderText = "K33"
         K33Column.Name = "K33Column"
+        K33Column.ReadOnly = False
+        K33Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        K33Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        K33Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        K33Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(K33Column)
 
         ' Add the "K34 Check" column
         Dim K34Column As New DataGridViewCheckBoxColumn()
         K34Column.HeaderText = "K34"
         K34Column.Name = "K34Column"
+        K34Column.ReadOnly = False
+        K34Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        K34Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        K34Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        K34Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(K34Column)
+
+        ' Center align all cells and remove underline from non-header cells
+        For Each column As DataGridViewColumn In DestinationPlotDataGrid.Columns
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            If Not column.HeaderText.Equals("Status") AndAlso Not column.HeaderText.Equals("Current Progress") AndAlso Not column.HeaderText.Equals("Current Transfer Rate") AndAlso Not column.HeaderText.Equals("Destination Directory") AndAlso Not column.HeaderText.Equals("Available Space (%)") AndAlso Not column.HeaderText.Equals("Available Space (GB)") AndAlso Not column.HeaderText.Equals("Uncompressed Plots") AndAlso Not column.HeaderText.Equals("Compressed Plots") AndAlso Not column.HeaderText.Equals("K30") AndAlso Not column.HeaderText.Equals("K31") AndAlso Not column.HeaderText.Equals("K32") AndAlso Not column.HeaderText.Equals("K33") AndAlso Not column.HeaderText.Equals("K34") Then
+                column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+            End If
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        Next
     End Sub
 
     Private Sub DebugModeToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles DebugModeToolStripMenuItem.Click
@@ -2274,6 +2319,19 @@ Public Class Form1
         SourcePlotText.Text = ""
     End Sub
 
+    Private Sub RemoveRowButton_Click(sender As Object, e As EventArgs) Handles RemoveRowButton.Click
+        ' Get the indices of the selected rows
+        Dim selectedRowIndices As New List(Of Integer)
+        For Each selectedRow As DataGridViewRow In SourcePlotDataGrid.SelectedRows
+            selectedRowIndices.Add(selectedRow.Index)
+        Next
+
+        ' Remove the selected rows
+        For i As Integer = selectedRowIndices.Count - 1 To 0 Step -1
+            SourcePlotDataGrid.Rows.RemoveAt(selectedRowIndices(i))
+        Next
+    End Sub
+
     Private Function GetPercentFreeSpace(directory As String) As Integer
         Dim driveInfo As New System.IO.DriveInfo(directory)
         Dim percentFreeSpace As Integer = (driveInfo.AvailableFreeSpace / driveInfo.TotalSize) * 100
@@ -2286,13 +2344,8 @@ Public Class Form1
         Return Math.Round(availableSpaceInGB, 2)
     End Function
 
-    ' Event handler for when the Remove button is clicked
     Private Sub SourcePlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles SourcePlotDataGrid.CellContentClick
-        Debug.WriteLine("CellContentClick event triggered with column index: " & e.ColumnIndex & ", row index: " & e.RowIndex)
-        If e.ColumnIndex = SourcePlotDataGrid.Columns.Count - 1 AndAlso e.RowIndex >= 0 Then
-            ' Remove the row when the remove button is clicked
-            SourcePlotDataGrid.Rows.RemoveAt(e.RowIndex)
-        End If
+
     End Sub
 
     ' Enable drag and drop on the DataGridView control
@@ -2514,26 +2567,129 @@ Public Class Form1
         Catch ex As Exception
             MessageBox.Show("Error adding destination directory: " & ex.Message)
         End Try
+        DestinationPlotText.Text = ""
     End Sub
 
     Private Sub DestinationPlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DestinationPlotDataGrid.CellContentClick
 
     End Sub
 
-    Private Sub CheckNetworkShareFreeSpace(ByVal path As String, ByVal ipAddress As String, Optional ByVal userName As String = Nothing, Optional ByVal password As String = Nothing)
-
+    ' Enable drag and drop on the DestinationPlotDataGrid control
+    Private Sub DestinationPlotDataGrid_DragEnter(sender As Object, e As DragEventArgs) Handles DestinationPlotDataGrid.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            e.Effect = DragDropEffects.Move
+        Else
+            e.Effect = DragDropEffects.None
+        End If
     End Sub
 
-    Private Sub RemoveRowButton_Click(sender As Object, e As EventArgs) Handles RemoveRowButton.Click
-        ' Get the indices of the selected rows
-        Dim selectedRowIndices As New List(Of Integer)
-        For Each selectedRow As DataGridViewRow In SourcePlotDataGrid.SelectedRows
-            selectedRowIndices.Add(selectedRow.Index)
-        Next
+    ' Handle the drop event
+    Private Sub DestinationPlotDataGrid_DragDrop(sender As Object, e As DragEventArgs) Handles DestinationPlotDataGrid.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            ' Get the dropped files
+            Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
 
-        ' Remove the selected rows
-        For i As Integer = selectedRowIndices.Count - 1 To 0 Step -1
-            SourcePlotDataGrid.Rows.RemoveAt(selectedRowIndices(i))
-        Next
+            ' Add the files to the DestinationPlotDataGrid control
+            For Each file In files
+                DestinationPlotDataGrid.Rows.Add(file)
+            Next
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = DestinationPlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = DestinationPlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Remove the row being dragged from the DestinationPlotDataGrid control
+                DestinationPlotDataGrid.Rows.Remove(dragRow)
+
+                ' Move the row to the new location
+                If targetIndex = -1 Then
+                    DestinationPlotDataGrid.Rows.Add(dragRow)
+                Else
+                    DestinationPlotDataGrid.Rows.Insert(targetIndex, dragRow)
+                End If
+            End If
+        End If
+    End Sub
+
+    ' Allow row selection during drag-and-drop operations
+    Private Sub DestinationPlotDataGrid_MouseDown(sender As Object, e As MouseEventArgs) Handles DestinationPlotDataGrid.MouseDown
+        If e.Button = MouseButtons.Left Then
+            Dim hitTest As DataGridView.HitTestInfo = DestinationPlotDataGrid.HitTest(e.X, e.Y)
+            If hitTest.Type = DataGridViewHitTestType.Cell Then
+                Dim dragRow As DataGridViewRow = DestinationPlotDataGrid.Rows(hitTest.RowIndex)
+                DestinationPlotDataGrid.DoDragDrop(dragRow, DragDropEffects.Move)
+            End If
+        End If
+    End Sub
+
+    ' Handle the drag-over event for the DestinationPlotDataGrid control
+    Private Sub DestinationPlotDataGrid_DragOver(sender As Object, e As DragEventArgs) Handles DestinationPlotDataGrid.DragOver
+        If e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = DestinationPlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = DestinationPlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Determine if auto-scrolling is required
+                Dim scrollMargin As Integer = 10
+                Dim clientRect As Rectangle = DestinationPlotDataGrid.ClientRectangle
+                clientRect.Inflate(-scrollMargin, -scrollMargin)
+                If Not clientRect.Contains(cursorLocation) Then
+                    ' Determine the direction and speed of the auto-scroll
+                    Dim scrollDelta As Integer = 0
+                    If cursorLocation.Y < clientRect.Top Then
+                        scrollDelta = -SystemInformation.MouseWheelScrollLines
+                    ElseIf cursorLocation.Y > clientRect.Bottom Then
+                        scrollDelta = SystemInformation.MouseWheelScrollLines
+                    End If
+
+                    ' Perform the auto-scroll
+                    If scrollDelta <> 0 Then
+                        Dim currentScroll As Integer = DestinationPlotDataGrid.FirstDisplayedScrollingRowIndex
+                        Dim newScroll As Integer = currentScroll + scrollDelta
+                        If newScroll < 0 Then
+                            newScroll = 0
+                        ElseIf newScroll >= DestinationPlotDataGrid.RowCount Then
+                            newScroll = DestinationPlotDataGrid.RowCount - 1
+                        End If
+                        DestinationPlotDataGrid.FirstDisplayedScrollingRowIndex = newScroll
+                    End If
+                End If
+
+                ' Draw the graphical indicator
+                If targetIndex >= 0 AndAlso targetIndex < DestinationPlotDataGrid.Rows.Count Then
+                    Dim targetRect As Rectangle = DestinationPlotDataGrid.GetRowDisplayRectangle(targetIndex, False)
+                    If cursorLocation.Y < targetRect.Top + targetRect.Height / 2 Then
+                        targetRect.Height = 2
+                    Else
+                        targetRect.Y += targetRect.Height - 2
+                        targetRect.Height = 2
+                    End If
+                    DestinationPlotDataGrid.Invalidate(targetRect)
+                End If
+
+                ' Set the drag effect
+                e.Effect = DragDropEffects.Move
+            Else
+                e.Effect = DragDropEffects.None
+            End If
+        End If
+    End Sub
+
+    ' Handle the drag-leave event
+    Private Sub DestinationPlotDataGrid_DragLeave(sender As Object, e As EventArgs) Handles DestinationPlotDataGrid.DragLeave
+        ' Remove the graphical indicator
+        DestinationPlotDataGrid.Invalidate()
+    End Sub
+
+    Private Sub CheckNetworkShareFreeSpace(ByVal path As String, ByVal ipAddress As String, Optional ByVal userName As String = Nothing, Optional ByVal password As String = Nothing)
+
     End Sub
 End Class
