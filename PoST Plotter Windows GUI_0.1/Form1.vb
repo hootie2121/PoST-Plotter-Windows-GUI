@@ -2403,37 +2403,6 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Function CheckDirectoryAccess(directoryInfo As DirectoryInfo) As Boolean
-        Try
-            Dim accessTest As String = Path.Combine(directoryInfo.FullName, Guid.NewGuid().ToString("N"))
-            Using stream = File.Create(accessTest)
-            End Using
-            File.Delete(accessTest)
-            Return True
-        Catch ex As Exception
-            Return False
-        End Try
-    End Function
-
-    Private Function GetMappedDriveFromUNCPath(uncPath As String) As String
-        Dim mappedDrive As String = ""
-
-        If Directory.Exists(uncPath) Then
-            Dim pathRoot As String = Path.GetPathRoot(uncPath)
-
-            For Each drive As DriveInfo In DriveInfo.GetDrives()
-                If drive.DriveType = DriveType.Network AndAlso drive.IsReady AndAlso drive.Name.StartsWith(pathRoot) Then
-                    mappedDrive = drive.Name
-                    Exit For
-                End If
-            Next
-        Else
-            Throw New ArgumentException("UNC path does not exist")
-        End If
-
-        Return mappedDrive
-    End Function
-
     Private Sub DestinationPlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DestinationPlotDataGrid.CellContentClick
 
     End Sub
