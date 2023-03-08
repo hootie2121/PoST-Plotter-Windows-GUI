@@ -204,6 +204,8 @@ Partial Class Form1
         Me.SourcePlotButton = New System.Windows.Forms.Button()
         Me.SourcePlotText = New System.Windows.Forms.TextBox()
         Me.SourceDirectoryLabel = New System.Windows.Forms.Label()
+        Me.RemoveRowButton = New System.Windows.Forms.Button()
+        Me.RemoveAllRowsButton = New System.Windows.Forms.Button()
         Me.MenuStrip1.SuspendLayout()
         Me.MainTabControl.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -1961,6 +1963,8 @@ Partial Class Form1
         '
         'PlotSource
         '
+        Me.PlotSource.Controls.Add(Me.RemoveAllRowsButton)
+        Me.PlotSource.Controls.Add(Me.RemoveRowButton)
         Me.PlotSource.Controls.Add(Me.AddSourceButton)
         Me.PlotSource.Controls.Add(Me.SourcePlotDataGrid)
         Me.PlotSource.Controls.Add(Me.SourcePlotButton)
@@ -2027,6 +2031,26 @@ Partial Class Form1
         Me.SourceDirectoryLabel.Size = New System.Drawing.Size(122, 20)
         Me.SourceDirectoryLabel.TabIndex = 17
         Me.SourceDirectoryLabel.Text = "Source Directory:"
+        '
+        'RemoveRowButton
+        '
+        Me.RemoveRowButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.RemoveRowButton.Location = New System.Drawing.Point(744, 19)
+        Me.RemoveRowButton.Name = "RemoveRowButton"
+        Me.RemoveRowButton.Size = New System.Drawing.Size(106, 29)
+        Me.RemoveRowButton.TabIndex = 22
+        Me.RemoveRowButton.Text = "Remove Row"
+        Me.RemoveRowButton.UseVisualStyleBackColor = True
+        '
+        'RemoveAllRowsButton
+        '
+        Me.RemoveAllRowsButton.Font = New System.Drawing.Font("Segoe UI Semibold", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
+        Me.RemoveAllRowsButton.Location = New System.Drawing.Point(856, 18)
+        Me.RemoveAllRowsButton.Name = "RemoveAllRowsButton"
+        Me.RemoveAllRowsButton.Size = New System.Drawing.Size(142, 29)
+        Me.RemoveAllRowsButton.TabIndex = 23
+        Me.RemoveAllRowsButton.Text = "Remove ALL Rows"
+        Me.RemoveAllRowsButton.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -2249,4 +2273,6 @@ Partial Class Form1
     Friend WithEvents ParentK32Check As CheckBox
     Friend WithEvents ParentK31Check As CheckBox
     Friend WithEvents ParentK30Check As CheckBox
+    Friend WithEvents RemoveAllRowsButton As Button
+    Friend WithEvents RemoveRowButton As Button
 End Class

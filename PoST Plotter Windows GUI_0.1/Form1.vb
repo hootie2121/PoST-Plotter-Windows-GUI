@@ -363,6 +363,10 @@ Public Class Form1
         sourceDirectoryColumn.HeaderText = "Source Directory"
         sourceDirectoryColumn.Name = "SourceDirectory"
         sourceDirectoryColumn.ReadOnly = True
+        sourceDirectoryColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        sourceDirectoryColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        sourceDirectoryColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        sourceDirectoryColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         SourcePlotDataGrid.Columns.Add(sourceDirectoryColumn)
 
         ' Add the "PercentAvailableSpace" column
@@ -370,6 +374,10 @@ Public Class Form1
         percentAvailableSpaceColumn.HeaderText = "Available Space (%)"
         percentAvailableSpaceColumn.Name = "PercentAvailableSpace"
         percentAvailableSpaceColumn.ReadOnly = True
+        percentAvailableSpaceColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        percentAvailableSpaceColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        percentAvailableSpaceColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        percentAvailableSpaceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         SourcePlotDataGrid.Columns.Add(percentAvailableSpaceColumn)
 
         ' Add the "GBAvailableSpace" column
@@ -377,6 +385,10 @@ Public Class Form1
         gbAvailableSpaceColumn.HeaderText = "Available Space (GB)"
         gbAvailableSpaceColumn.Name = "GBAvailableSpace"
         gbAvailableSpaceColumn.ReadOnly = True
+        gbAvailableSpaceColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        gbAvailableSpaceColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        gbAvailableSpaceColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        gbAvailableSpaceColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         SourcePlotDataGrid.Columns.Add(gbAvailableSpaceColumn)
 
         ' Add columns for K30 to K34
@@ -386,6 +398,11 @@ Public Class Form1
             column.HeaderText = columnHeaderText
             column.Name = columnHeaderText
             column.ReadOnly = True
+            column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             SourcePlotDataGrid.Columns.Add(column)
             Debug.WriteLine($"Added column: {columnHeaderText}")
         Next
@@ -395,6 +412,11 @@ Public Class Form1
         totalPlotsColumn.HeaderText = "Total Plots"
         totalPlotsColumn.Name = "TotalPlots"
         totalPlotsColumn.ReadOnly = True
+        totalPlotsColumn.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+        totalPlotsColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        totalPlotsColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        totalPlotsColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
+        totalPlotsColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
         SourcePlotDataGrid.Columns.Add(totalPlotsColumn)
         Debug.WriteLine("Added column: TotalPlots")
 
@@ -404,7 +426,23 @@ Public Class Form1
         removeButtonColumn.UseColumnTextForButtonValue = True
         removeButtonColumn.HeaderText = ""
         removeButtonColumn.Name = "RemoveButton"
+        removeButtonColumn.ReadOnly = False
+        removeButtonColumn.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+        removeButtonColumn.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+        removeButtonColumn.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
         SourcePlotDataGrid.Columns.Add(removeButtonColumn)
+        AddHandler SourcePlotDataGrid.CellContentClick, AddressOf SourcePlotDataGrid_CellContentClick
+
+
+        ' Center align all cells and remove underline from non-header cells
+        For Each column As DataGridViewColumn In SourcePlotDataGrid.Columns
+            column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            If Not column.HeaderText.Equals("Source Directory") AndAlso Not column.HeaderText.Equals("Available Space (%)") AndAlso Not column.HeaderText.Equals("Available Space (GB)") Then
+                column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
+            End If
+            column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
+            column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
+        Next
     End Sub
 
     Private Sub DestinationPlotForm()
@@ -2188,20 +2226,38 @@ Public Class Form1
                 Next
 
                 If hasValidPlot Then
-                    Dim rowIndex As Integer = SourcePlotDataGrid.Rows.Add()
-                    Dim row As DataGridViewRow = SourcePlotDataGrid.Rows(rowIndex)
-                    row.Cells("SourceDirectory").Value = subDirectory
-                    row.Cells("PercentAvailableSpace").Value = percentFreeSpace
-                    row.Cells("GBAvailableSpace").Value = availableSpaceInGB
-
-                    For i As Integer = 0 To kValues.Length - 1
-                        row.Cells(kValues(i)).Value = kCounts(i)
+                    ' Check if row already exists
+                    Dim existingRow As DataGridViewRow = Nothing
+                    For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
+                        If row.Cells("SourceDirectory").Value.ToString() = subDirectory Then
+                            existingRow = row
+                            Exit For
+                        End If
                     Next
 
-                    ' Set the cell data type to DataGridViewTextBoxCell
-                    Dim totalPlotsCell As New DataGridViewTextBoxCell()
-                    totalPlotsCell.Value = totalPlots
-                    row.Cells("TotalPlots") = totalPlotsCell
+                    If existingRow IsNot Nothing Then
+                        ' Update existing row
+                        For i As Integer = 0 To kValues.Length - 1
+                            existingRow.Cells(kValues(i)).Value = kCounts(i)
+                        Next
+                        existingRow.Cells("TotalPlots").Value = totalPlots
+                    Else
+                        ' Add new row
+                        Dim rowIndex As Integer = SourcePlotDataGrid.Rows.Add()
+                        Dim row As DataGridViewRow = SourcePlotDataGrid.Rows(rowIndex)
+                        row.Cells("SourceDirectory").Value = subDirectory
+                        row.Cells("PercentAvailableSpace").Value = percentFreeSpace
+                        row.Cells("GBAvailableSpace").Value = availableSpaceInGB
+
+                        For i As Integer = 0 To kValues.Length - 1
+                            row.Cells(kValues(i)).Value = kCounts(i)
+                        Next
+
+                        ' Set the cell data type to DataGridViewTextBoxCell
+                        Dim totalPlotsCell As New DataGridViewTextBoxCell()
+                        totalPlotsCell.Value = totalPlots
+                        row.Cells("TotalPlots") = totalPlotsCell
+                    End If
                 End If
 
                 Array.Clear(kCounts, 0, kCounts.Length) ' Reset the kCounts array for the next subdirectory
@@ -2232,6 +2288,7 @@ Public Class Form1
 
     ' Event handler for when the Remove button is clicked
     Private Sub SourcePlotDataGrid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles SourcePlotDataGrid.CellContentClick
+        Debug.WriteLine("CellContentClick event triggered with column index: " & e.ColumnIndex & ", row index: " & e.RowIndex)
         If e.ColumnIndex = SourcePlotDataGrid.Columns.Count - 1 AndAlso e.RowIndex >= 0 Then
             ' Remove the row when the remove button is clicked
             SourcePlotDataGrid.Rows.RemoveAt(e.RowIndex)
@@ -2418,15 +2475,32 @@ Public Class Form1
                         Next
                     Next
 
-                    ' Add a new row to the DestinationPlotDataGrid
-                    Dim rowIndex As Integer = DestinationPlotDataGrid.Rows.Add()
-                    Dim row As DataGridViewRow = DestinationPlotDataGrid.Rows(rowIndex)
-                    row.Cells("DestinationDirectory").Value = subDirectory
-                    row.Cells("StatusColumn").Value = "Ready"
-                    row.Cells("UncompressedPlots").Value = uncompressedPlots.ToString()
-                    row.Cells("CompressedPlots").Value = compressedPlots.ToString()
-                    'row.Cells("PercentAvailableSpace").Value = GetAvailableSpaceInPercent(destinationDirectory)
-                    row.Cells("GBAvailableSpace").Value = GetAvailableSpaceInGB(destinationDirectory)
+                    ' Check if row already exists
+                    Dim existingRow As DataGridViewRow = Nothing
+                    For Each row As DataGridViewRow In DestinationPlotDataGrid.Rows
+                        If row.Cells("DestinationDirectory").Value.ToString() = subDirectory Then
+                            existingRow = row
+                            Exit For
+                        End If
+                    Next
+
+                    If existingRow IsNot Nothing Then
+                        ' Update existing row
+                        existingRow.Cells("UncompressedPlots").Value = uncompressedPlots.ToString()
+                        existingRow.Cells("CompressedPlots").Value = compressedPlots.ToString()
+                        'existingRow.Cells("PercentAvailableSpace").Value = GetAvailableSpaceInPercent(destinationDirectory)
+                        existingRow.Cells("GBAvailableSpace").Value = GetAvailableSpaceInGB(destinationDirectory)
+                    Else
+                        ' Add new row
+                        Dim rowIndex As Integer = DestinationPlotDataGrid.Rows.Add()
+                        Dim row As DataGridViewRow = DestinationPlotDataGrid.Rows(rowIndex)
+                        row.Cells("DestinationDirectory").Value = subDirectory
+                        row.Cells("StatusColumn").Value = "Ready"
+                        row.Cells("UncompressedPlots").Value = uncompressedPlots.ToString()
+                        row.Cells("CompressedPlots").Value = compressedPlots.ToString()
+                        'row.Cells("PercentAvailableSpace").Value = GetAvailableSpaceInPercent(destinationDirectory)
+                        row.Cells("GBAvailableSpace").Value = GetAvailableSpaceInGB(destinationDirectory)
+                    End If
 
                     Debug.WriteLine($"Processed directory: {subDirectory}")
                 Catch ex As UnauthorizedAccessException
@@ -2448,5 +2522,18 @@ Public Class Form1
 
     Private Sub CheckNetworkShareFreeSpace(ByVal path As String, ByVal ipAddress As String, Optional ByVal userName As String = Nothing, Optional ByVal password As String = Nothing)
 
+    End Sub
+
+    Private Sub RemoveRowButton_Click(sender As Object, e As EventArgs) Handles RemoveRowButton.Click
+        ' Get the indices of the selected rows
+        Dim selectedRowIndices As New List(Of Integer)
+        For Each selectedRow As DataGridViewRow In SourcePlotDataGrid.SelectedRows
+            selectedRowIndices.Add(selectedRow.Index)
+        Next
+
+        ' Remove the selected rows
+        For i As Integer = selectedRowIndices.Count - 1 To 0 Step -1
+            SourcePlotDataGrid.Rows.RemoveAt(selectedRowIndices(i))
+        Next
     End Sub
 End Class
