@@ -2280,6 +2280,7 @@ Public Class Form1
         End If
     End Sub
 
+
     ' Allow row selection during drag-and-drop operations
     Private Sub SourcePlotDataGrid_MouseDown(sender As Object, e As MouseEventArgs) Handles SourcePlotDataGrid.MouseDown
         If e.Button = MouseButtons.Left Then
