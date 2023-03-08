@@ -358,17 +358,6 @@ Public Class Form1
 
         AddSourceButton.Enabled = False
 
-        ' Add the "Priority" column
-        Dim priorityColumn As New DataGridViewTextBoxColumn()
-        priorityColumn.HeaderText = "Priority"
-        priorityColumn.Name = "Priority"
-        priorityColumn.ReadOnly = False ' Set the column to be editable
-        SourcePlotDataGrid.Columns.Add(priorityColumn)
-        ' Set the default priority value for each row
-        For Each row As DataGridViewRow In SourcePlotDataGrid.Rows
-            row.Cells("Priority").Value = row.Index + 1
-        Next
-
         ' Add the "SourceDirectory" column
         Dim sourceDirectoryColumn As New DataGridViewTextBoxColumn()
         sourceDirectoryColumn.HeaderText = "Source Directory"
@@ -2213,9 +2202,6 @@ Public Class Form1
                     Dim totalPlotsCell As New DataGridViewTextBoxCell()
                     totalPlotsCell.Value = totalPlots
                     row.Cells("TotalPlots") = totalPlotsCell
-
-                    ' Set the default priority value for each row
-                    row.Cells("Priority").Value = 0
                 End If
 
                 Array.Clear(kCounts, 0, kCounts.Length) ' Reset the kCounts array for the next subdirectory
@@ -2228,17 +2214,6 @@ Public Class Form1
 
         ' Sort the rows by source directory
         Dim sortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) r.Cells("SourceDirectory").Value.ToString()).ToArray()
-
-        ' Set the default priority value for each row based on the sorted order
-        For i As Integer = 0 To sortedRows.Length - 1
-            Dim row As DataGridViewRow = sortedRows(i)
-            If row.Cells("Priority").Value.ToString() = "0" Then
-                row.Cells("Priority").Value = i + 1
-            End If
-        Next
-
-        ' Allow users to edit the priority value
-        SourcePlotDataGrid.Columns("Priority").ReadOnly = False
 
         SourcePlotText.Text = ""
     End Sub
@@ -2263,55 +2238,118 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub SourcePlotDataGrid_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles SourcePlotDataGrid.CellValueChanged
-        If e.ColumnIndex = SourcePlotDataGrid.Columns("Priority").Index Then
-            ' Commit the current edit
-            SourcePlotDataGrid.EndEdit()
-
-            ' Save the current cell and selection
-            Dim currentCell = SourcePlotDataGrid.CurrentCell
-            Dim selectedRows = SourcePlotDataGrid.SelectedRows.Cast(Of DataGridViewRow)().ToArray()
-
-            ' Update the priority value for the changed row
-            Dim newPriority As Integer
-            If Integer.TryParse(SourcePlotDataGrid.Rows(e.RowIndex).Cells("Priority").Value.ToString(), newPriority) Then
-                ' Check if the entered priority value already exists
-                Dim duplicateRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().Where(Function(r) CInt(r.Cells("Priority").Value) = newPriority AndAlso r.Index <> e.RowIndex).ToArray()
-                If duplicateRows.Any() Then
-                    ' If a duplicate exists, adjust the priority values of the affected rows
-                    Dim affectedRows = duplicateRows.Concat({SourcePlotDataGrid.Rows(e.RowIndex)}).OrderBy(Function(r) r.Index).ToArray()
-                    For i As Integer = 0 To affectedRows.Length - 1
-                        affectedRows(i).Cells("Priority").Value = i + 1
-                    Next
-                End If
-            Else
-                ' If the entered priority value is not a valid integer, update the priority values of all affected rows
-                Dim newSortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) CInt(r.Cells("Priority").Value)).ToArray()
-                For i As Integer = 0 To newSortedRows.Length - 1
-                    newSortedRows(i).Cells("Priority").Value = i + 1
-                Next
-            End If
-
-            ' Sort the rows based on the priority values
-            Dim sortedRows = SourcePlotDataGrid.Rows.Cast(Of DataGridViewRow)().OrderBy(Function(r) CInt(r.Cells("Priority").Value)).ToArray()
-
-            ' Reorder the rows based on the new priority values
-            SourcePlotDataGrid.BeginInvoke(Sub()
-                                               SourcePlotDataGrid.Rows.Clear()
-                                               SourcePlotDataGrid.Rows.AddRange(sortedRows)
-                                           End Sub)
-
-            ' Restore the current cell and selection
-            If currentCell IsNot Nothing AndAlso currentCell.RowIndex >= 0 AndAlso currentCell.RowIndex < SourcePlotDataGrid.Rows.Count Then
-                SourcePlotDataGrid.CurrentCell = currentCell
-            End If
-
-            For Each row In selectedRows
-                If row.Index >= 0 AndAlso row.Index < SourcePlotDataGrid.Rows.Count Then
-                    SourcePlotDataGrid.Rows(row.Index).Selected = True
-                End If
-            Next
+    ' Enable drag and drop on the DataGridView control
+    Private Sub SourcePlotDataGrid_DragEnter(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragEnter
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            e.Effect = DragDropEffects.Copy
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            e.Effect = DragDropEffects.Move
+        Else
+            e.Effect = DragDropEffects.None
         End If
+    End Sub
+
+    ' Handle the drop event
+    Private Sub SourcePlotDataGrid_DragDrop(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragDrop
+        If e.Data.GetDataPresent(DataFormats.FileDrop) Then
+            ' Get the dropped files
+            Dim files() As String = e.Data.GetData(DataFormats.FileDrop)
+
+            ' Add the files to the DataGridView control
+            For Each file In files
+                SourcePlotDataGrid.Rows.Add(file)
+            Next
+        ElseIf e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = SourcePlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = SourcePlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Remove the row being dragged from the DataGridView control
+                SourcePlotDataGrid.Rows.Remove(dragRow)
+
+                ' Move the row to the new location
+                If targetIndex = -1 Then
+                    SourcePlotDataGrid.Rows.Add(dragRow)
+                Else
+                    SourcePlotDataGrid.Rows.Insert(targetIndex, dragRow)
+                End If
+            End If
+        End If
+    End Sub
+
+    ' Allow row selection during drag-and-drop operations
+    Private Sub SourcePlotDataGrid_MouseDown(sender As Object, e As MouseEventArgs) Handles SourcePlotDataGrid.MouseDown
+        If e.Button = MouseButtons.Left Then
+            Dim hitTest As DataGridView.HitTestInfo = SourcePlotDataGrid.HitTest(e.X, e.Y)
+            If hitTest.Type = DataGridViewHitTestType.Cell Then
+                Dim dragRow As DataGridViewRow = SourcePlotDataGrid.Rows(hitTest.RowIndex)
+                SourcePlotDataGrid.DoDragDrop(dragRow, DragDropEffects.Move)
+            End If
+        End If
+    End Sub
+
+    Private Sub SourcePlotDataGrid_DragOver(sender As Object, e As DragEventArgs) Handles SourcePlotDataGrid.DragOver
+        If e.Data.GetDataPresent(GetType(DataGridViewRow)) Then
+            ' Get the row being dragged
+            Dim dragRow As DataGridViewRow = TryCast(e.Data.GetData(GetType(DataGridViewRow)), DataGridViewRow)
+            If dragRow IsNot Nothing Then
+                ' Get the index of the row under the mouse cursor
+                Dim cursorLocation As Point = SourcePlotDataGrid.PointToClient(New Point(e.X, e.Y))
+                Dim targetIndex As Integer = SourcePlotDataGrid.HitTest(cursorLocation.X, cursorLocation.Y).RowIndex
+
+                ' Determine if auto-scrolling is required
+                Dim scrollMargin As Integer = 10
+                Dim clientRect As Rectangle = SourcePlotDataGrid.ClientRectangle
+                clientRect.Inflate(-scrollMargin, -scrollMargin)
+                If Not clientRect.Contains(cursorLocation) Then
+                    ' Determine the direction and speed of the auto-scroll
+                    Dim scrollDelta As Integer = 0
+                    If cursorLocation.Y < clientRect.Top Then
+                        scrollDelta = -SystemInformation.MouseWheelScrollLines
+                    ElseIf cursorLocation.Y > clientRect.Bottom Then
+                        scrollDelta = SystemInformation.MouseWheelScrollLines
+                    End If
+
+                    ' Perform the auto-scroll
+                    If scrollDelta <> 0 Then
+                        Dim currentScroll As Integer = SourcePlotDataGrid.FirstDisplayedScrollingRowIndex
+                        Dim newScroll As Integer = currentScroll + scrollDelta
+                        If newScroll < 0 Then
+                            newScroll = 0
+                        ElseIf newScroll >= SourcePlotDataGrid.RowCount Then
+                            newScroll = SourcePlotDataGrid.RowCount - 1
+                        End If
+                        SourcePlotDataGrid.FirstDisplayedScrollingRowIndex = newScroll
+                    End If
+                End If
+
+                ' Draw the graphical indicator
+                If targetIndex >= 0 AndAlso targetIndex < SourcePlotDataGrid.Rows.Count Then
+                    Dim targetRect As Rectangle = SourcePlotDataGrid.GetRowDisplayRectangle(targetIndex, False)
+                    If cursorLocation.Y < targetRect.Top + targetRect.Height / 2 Then
+                        targetRect.Height = 2
+                    Else
+                        targetRect.Y += targetRect.Height - 2
+                        targetRect.Height = 2
+                    End If
+                    SourcePlotDataGrid.Invalidate(targetRect)
+                End If
+
+                ' Set the drag effect
+                e.Effect = DragDropEffects.Move
+            Else
+                e.Effect = DragDropEffects.None
+            End If
+        End If
+    End Sub
+
+    ' Handle the drag-leave event
+    Private Sub SourcePlotDataGrid_DragLeave(sender As Object, e As EventArgs) Handles SourcePlotDataGrid.DragLeave
+        ' Remove the graphical indicator
+        SourcePlotDataGrid.Invalidate()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick

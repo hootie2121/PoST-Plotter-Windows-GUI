@@ -448,7 +448,7 @@ Partial Class Form1
         Me.MainTabControl.Location = New System.Drawing.Point(0, 28)
         Me.MainTabControl.Name = "MainTabControl"
         Me.MainTabControl.SelectedIndex = 0
-        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1052)
+        Me.MainTabControl.Size = New System.Drawing.Size(1680, 1027)
         Me.MainTabControl.TabIndex = 1
         '
         'TabPage1
@@ -1753,7 +1753,7 @@ Partial Class Form1
         Me.TabPage2.Location = New System.Drawing.Point(4, 29)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1672, 1019)
+        Me.TabPage2.Size = New System.Drawing.Size(1672, 994)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "TabPage2"
         '
@@ -1967,7 +1967,7 @@ Partial Class Form1
         Me.PlotSource.Controls.Add(Me.SourcePlotText)
         Me.PlotSource.Controls.Add(Me.SourceDirectoryLabel)
         Me.PlotSource.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point)
-        Me.PlotSource.Location = New System.Drawing.Point(24, 37)
+        Me.PlotSource.Location = New System.Drawing.Point(3, 6)
         Me.PlotSource.Name = "PlotSource"
         Me.PlotSource.Size = New System.Drawing.Size(1671, 301)
         Me.PlotSource.TabIndex = 0
@@ -1986,6 +1986,7 @@ Partial Class Form1
         '
         'SourcePlotDataGrid
         '
+        Me.SourcePlotDataGrid.AllowDrop = True
         Me.SourcePlotDataGrid.AllowUserToAddRows = False
         Me.SourcePlotDataGrid.AllowUserToDeleteRows = False
         Me.SourcePlotDataGrid.AllowUserToResizeRows = False
@@ -1995,7 +1996,7 @@ Partial Class Form1
         Me.SourcePlotDataGrid.Name = "SourcePlotDataGrid"
         Me.SourcePlotDataGrid.RowHeadersWidth = 51
         Me.SourcePlotDataGrid.RowTemplate.Height = 29
-        Me.SourcePlotDataGrid.Size = New System.Drawing.Size(1319, 188)
+        Me.SourcePlotDataGrid.Size = New System.Drawing.Size(1662, 242)
         Me.SourcePlotDataGrid.TabIndex = 20
         '
         'SourcePlotButton
@@ -2030,7 +2031,7 @@ Partial Class Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1680, 1080)
+        Me.ClientSize = New System.Drawing.Size(1680, 1055)
         Me.Controls.Add(Me.MainTabControl)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
