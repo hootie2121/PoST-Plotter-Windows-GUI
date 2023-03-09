@@ -523,61 +523,6 @@ Public Class Form1
         CompressedPlotsColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         DestinationPlotDataGrid.Columns.Add(CompressedPlotsColumn)
 
-        ' Add the "K30 Check" column
-        Dim K30Column As New DataGridViewCheckBoxColumn()
-        K30Column.HeaderText = "K30"
-        K30Column.Name = "K30Column"
-        K30Column.ReadOnly = False
-        K30Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-        K30Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        K30Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        K30Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        DestinationPlotDataGrid.Columns.Add(K30Column)
-
-        ' Add the "K31 Check" column
-        Dim K31Column As New DataGridViewCheckBoxColumn()
-        K31Column.HeaderText = "K31"
-        K31Column.Name = "K31Column"
-        K31Column.ReadOnly = False
-        K31Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-        K31Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        K31Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        K31Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        DestinationPlotDataGrid.Columns.Add(K31Column)
-
-        ' Add the "K32 Check" column
-        Dim K32Column As New DataGridViewCheckBoxColumn()
-        K32Column.HeaderText = "K32"
-        K32Column.Name = "K32Column"
-        K32Column.ReadOnly = False
-        K32Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-        K32Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        K32Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        K32Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        DestinationPlotDataGrid.Columns.Add(K32Column)
-
-        ' Add the "K33 Check" column
-        Dim K33Column As New DataGridViewCheckBoxColumn()
-        K33Column.HeaderText = "K33"
-        K33Column.Name = "K33Column"
-        K33Column.ReadOnly = False
-        K33Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-        K33Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        K33Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        K33Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        DestinationPlotDataGrid.Columns.Add(K33Column)
-
-        ' Add the "K34 Check" column
-        Dim K34Column As New DataGridViewCheckBoxColumn()
-        K34Column.HeaderText = "K34"
-        K34Column.Name = "K34Column"
-        K34Column.ReadOnly = False
-        K34Column.DefaultCellStyle.Font = New Font("Segoe UI", 9, FontStyle.Regular)
-        K34Column.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter
-        K34Column.HeaderCell.Style.Font = New Font("Segoe UI", 9, FontStyle.Underline)
-        K34Column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
-        DestinationPlotDataGrid.Columns.Add(K34Column)
-
         ' Center align all cells and remove underline from non-header cells
         For Each column As DataGridViewColumn In DestinationPlotDataGrid.Columns
             column.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
@@ -2687,9 +2632,5 @@ Public Class Form1
     Private Sub DestinationPlotDataGrid_DragLeave(sender As Object, e As EventArgs) Handles DestinationPlotDataGrid.DragLeave
         ' Remove the graphical indicator
         DestinationPlotDataGrid.Invalidate()
-    End Sub
-
-    Private Sub CheckNetworkShareFreeSpace(ByVal path As String, ByVal ipAddress As String, Optional ByVal userName As String = Nothing, Optional ByVal password As String = Nothing)
-
     End Sub
 End Class
